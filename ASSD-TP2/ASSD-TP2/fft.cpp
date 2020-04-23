@@ -1,15 +1,21 @@
 #include "fft.h"
 #include <cmath>
 
+#define PI (3.141592653589793238463)
+
 void FFTCalculator::FFT(complex<double>* in, complex<double>* out, size_t n)
 {
 	// Calculating Wn.
-	complex<double>* Wn;
+	vector<complex<double>> Wn;
+	for (size_t i = 0; i < n/2; i++)
+	{
+		complex<double> newWn = exp(complex<double>(0.0, 1.0) * 2.0 * complex<double>(i) * PI / complex<double>(n));
+	}
 	
 	recursiveFFT(out, Wn, n, n, 0, 0);
 }
 
-void FFTCalculator::recursiveFFT(complex<double>* Xk, complex<double>* Wn, size_t N, size_t totalN, int groupNumber, int level)
+void FFTCalculator::recursiveFFT(complex<double>* Xk, vector<complex<double>>& Wn, size_t N, size_t totalN, int groupNumber, int level)
 {
 	unsigned int offsetInXn = N * groupNumber;
 	unsigned int currentWn = bitReverse(sqrt(totalN), groupNumber);
