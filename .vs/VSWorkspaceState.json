@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\ASSD-TP2",
+    "\\ASSD-TP2\\ASSD-TP2"
   ],
-  "SelectedNode": "\\README.md",
+  "SelectedNode": "\\ASSD-TP2\\ASSD-TP2\\fft.cpp",
   "PreviewInSolutionExplorer": false
 }
