@@ -6,12 +6,13 @@
 void FFTCalculator::FFT(complex<double>* in, complex<double>* out, size_t n)
 {
 	// Calculating Wn.
-	vector<complex<double>> Wn;
-	for (size_t i = 0; i < n/2; i++)
-	{
-		complex<double> newWn = exp(complex<double>(0.0, 1.0) * 2.0 * complex<double>(i) * PI / complex<double>(n));
-	}
-	
+	calculateWn(n);
+	// Calculating FFT
+	recursiveFFT(out, Wn, n, n, 0, 0);
+}
+
+void FFTCalculator::repeatFFT(complex<double>* in, complex<double>* out, size_t n)
+{
 	recursiveFFT(out, Wn, n, n, 0, 0);
 }
 
@@ -47,4 +48,12 @@ unsigned int FFTCalculator::bitReverse(size_t numberOfBits, unsigned int num)
 		}
 	}
 	return reversed;
+}
+
+void FFTCalculator::calculateWn(size_t n)
+{
+	for (size_t i = 0; i < n / 2; i++)
+	{
+		complex<double> newWn = exp(complex<double>(0.0, 1.0) * 2.0 * complex<double>(i) * PI / complex<double>(n));
+	}
 }
