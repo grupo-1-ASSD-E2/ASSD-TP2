@@ -16,7 +16,7 @@ namespace TestProject
 		TEST_METHOD(FFTTest1)
 		{
 			vector<double> t = NumCpp::linspace(0.0, 256.0, 256);
-			vector<double> signal = NumCpp::sin(t, 1 / 256);
+			vector<double> signal = NumCpp::sin(t, 1.0 / 256.0);
 
 			FFTCalculator fftCalc;
 			vector<complex<double>> fft(256, 0.0);
@@ -24,7 +24,6 @@ namespace TestProject
 			vector<complex<double>> modFFT = NumCpp::abs(fft);
 
 			vector<complex<double>> modFFTInOrder = NumCpp::rearangeInBitReverse(modFFT);
-			int hola;
 		}
 	};
 }

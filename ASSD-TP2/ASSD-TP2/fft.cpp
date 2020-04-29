@@ -21,11 +21,15 @@ void FFTCalculator::repeatFFT(vector<double>& x, vector<complex<double>>& Xk, si
 	// Computing FFT for first group.
 	for (size_t i = 0; i < N / 2; i++)
 	{
-		complex<double> auxXk = x[offsetInXn + i];
-		Xk[offsetInXn + i] = x[offsetInXn + i] + Wn[currentWn] * x[offsetInXn + N / 2 + i];
-		Xk[offsetInXn + N / 2 + i] = auxXk - Wn[currentWn] * x[offsetInXn + N / 2 + i];
+		complex<double> auxXk = Wn[currentWn] * x[offsetInXn + N / 2 + i];
+		Xk[offsetInXn + N / 2 + i] = x[offsetInXn + i] - auxXk;
+		Xk[offsetInXn + i] = x[offsetInXn + i] + auxXk;
 	}
-	recursiveFFT(Xk, N, N, 0, 0);
+	if (N != 2)
+	{
+		recursiveFFT(Xk, N / 2, N, 0, 1);
+		recursiveFFT(Xk, N / 2, N, 1, 1);
+	}
 }
 
 void FFTCalculator::recursiveFFT(vector<complex<double>>& Xk, size_t N, size_t totalN, int groupNumber, int level)
@@ -36,9 +40,9 @@ void FFTCalculator::recursiveFFT(vector<complex<double>>& Xk, size_t N, size_t t
 	// Computing FFT for this group.
 	for (size_t i = 0; i < N/2; i++)
 	{
-		complex<double> auxXk = Xk[offsetInXn + i];
-		Xk[offsetInXn + i] = Xk[offsetInXn + i] + Wn[currentWn] * Xk[offsetInXn + N / 2 + i];
-		Xk[offsetInXn + N / 2 + i] = auxXk - Wn[currentWn] * Xk[offsetInXn + N / 2 + i];
+		complex<double> auxXk = Wn[currentWn] * Xk[offsetInXn + N / 2 + i];
+		Xk[offsetInXn + N / 2 + i] = Xk[offsetInXn + i] - auxXk;
+		Xk[offsetInXn + i] = Xk[offsetInXn + i] + auxXk;
 	}
 
 	// Recursive case

@@ -57,7 +57,7 @@ inline vector<double> NumCpp::linspace(T start_in, T end_in, int num_in)
 template<typename T>
 inline vector<T> NumCpp::abs(vector<T> in)
 {
-    vector<T> ret(in.size());
+    vector<T> ret;
     for (T item : in)
     {
         ret.push_back(std::abs(item));
