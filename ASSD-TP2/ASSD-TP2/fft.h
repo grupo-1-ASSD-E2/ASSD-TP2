@@ -2,6 +2,8 @@
 #include <complex>
 #include <vector>
 
+#include "NumCpp.h"
+
 using namespace std;
 
 class FFTCalculator
@@ -14,8 +16,6 @@ public:
 
 private:
 	void recursiveFFT(vector<complex<double>>& Xk, size_t N, size_t totalN, int groupNumber, int level);
-	unsigned int bitReverse(size_t numberOfBits, unsigned int num);
-	unsigned int shift(unsigned int num, size_t level, size_t totalN);
 	void calculateWn(size_t n);
 
 	vector<complex<double>> Wn;
