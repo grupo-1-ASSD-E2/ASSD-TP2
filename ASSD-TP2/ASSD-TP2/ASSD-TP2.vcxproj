@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="fft.h" />
+    <ClInclude Include="NumCpp.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ASSD-TP2.rc" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="fft.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NumCpp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

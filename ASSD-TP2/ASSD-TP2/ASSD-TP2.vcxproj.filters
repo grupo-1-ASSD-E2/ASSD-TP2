@@ -23,12 +23,18 @@
     <ClInclude Include="fft.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NumCpp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fft.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NumCpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
