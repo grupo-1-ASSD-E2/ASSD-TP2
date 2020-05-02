@@ -41,11 +41,15 @@ def reproduce_midi_file(midi_file):
     for msg in midi_file.play():
         port.send(msg)
 
-
-def get_sine_wave(volume, f):
-
-    y = np.sin(f * 2 * np.pi * t)  # Has frequency of 440Hz
-    # Ensure that highest value is in 16-bit range
+# volume range [0.0, 1.0]
+# f sine frequency, Hz, may be float
+# phase in radians
+def get_sine_wave(volume, f, phase=0, cos=False):
+    if cos == False:
+        y = np.sin(f * 2 * np.pi * t +phase)  # Has frequency of 440Hz
+    else:
+        y = np.cos(f * 2 * np.pi * t + phase)
+        # Ensure that highest value is in 16-bit range
     audio = volume * y * (2 ** 15 - 1) / np.max(np.abs(y))
     # Convert to 16-bit data
     audio = audio.astype(np.int16)
@@ -54,8 +58,7 @@ def get_sine_wave(volume, f):
 
 
 # To reproduce sine waves
-# volume range [0.0, 1.0]
-# f sine frequency, Hz, may be float
+
 def play_sine_wave(audio):
 
     # Start playback
@@ -93,7 +96,17 @@ def midi_note_to_frequency(note):
 
 
 
-sine = get_sine_wave(0.5,440)
+
+freqs = [261,523,785,1050,1310,1575]
+amplitudes = [0.19,0.22,0.065,0.02,0.03,0.01]
+phases = [0.09,0.1685,0.184,2.6,0.9042,1.738]
+
+i = 0
+sine = get_sine_wave(0,440)
+for i in range(0,len(freqs)):
+    sine += get_sine_wave(amplitudes[i], freqs[i], phase= phases[i], cos=True)
+
+#sine = get_sine_wave(0.5,440)
 #sine += get_sine_wave(0.2,440)
 #sine += get_sine_wave(0.2,550)
 
