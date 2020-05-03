@@ -6,13 +6,15 @@ import rtmidi
 import simpleaudio as sa
 from scipy.io import wavfile
 
+from ProgramaPrincipal.BackEnd.AditiveSynthesis.ADSR import ADSR
+
 midiout = rtmidi.MidiOut()
 mid = MidiFile('Resources/Rodrigo_-_2do_movimiento_Concierto_de_Aranjuez__Adagio.mid', clip=True)
 mid1 = MidiFile('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid', clip=True)
 mid2 = MidiFile('Resources/Movie_Themes_-_Toy_Story.mid', clip=True)
 
 fs = 44100
-duration = 3.0
+duration = 40
 t = np.linspace(0, duration, int(fs * duration))  # Produces a 1 second Audio-File
 
 
@@ -50,6 +52,9 @@ def get_sine_wave(volume, f, phase=0, cos=False):
     else:
         y = np.cos(f * 2 * np.pi * t + phase)
         # Ensure that highest value is in 16-bit range
+
+
+
     audio = volume * y * (2 ** 15 - 1) / np.max(np.abs(y))
     # Convert to 16-bit data
     audio = audio.astype(np.int16)
@@ -101,14 +106,24 @@ freqs = [261,523,785,1050,1310,1575]
 amplitudes = [0.19,0.22,0.065,0.02,0.03,0.01]
 phases = [0.09,0.1685,0.184,2.6,0.9042,1.738]
 
-i = 0
-sine = get_sine_wave(0,440)
-for i in range(0,len(freqs)):
-    sine += get_sine_wave(amplitudes[i], freqs[i], phase= phases[i], cos=True)
+
+sine = get_sine_wave(1,440)
+
+
+
+#for i in range(0,len(freqs)):
+#    sine += get_sine_wave(amplitudes[i], freqs[i], phase= phases[i], cos=True)
 
 #sine = get_sine_wave(0.5,440)
 #sine += get_sine_wave(0.2,440)
 #sine += get_sine_wave(0.2,550)
+
+adsr = ADSR()
+adsr.note_on(0)
+adsr.note_off(1.0001)
+adsrAmplitude = adsr.get_amplitude(t)
+
+sine*=adsrAmplitude
 
 
 play_sine_wave(sine)
