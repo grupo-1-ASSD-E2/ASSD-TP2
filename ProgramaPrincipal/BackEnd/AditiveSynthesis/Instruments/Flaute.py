@@ -15,14 +15,14 @@ class Flaute(Instrument):
 
         last_zero_values = [0] *  len(last_zero_values)
 
-        middle_values = np.cos(note.frequency * 2 * np.pi * (middle_values - note.note_on_time))
+        middle_values = np.sin(note.frequency * 2 * np.pi * (middle_values - note.note_on_time))
 
         signal = np.concatenate([first_zero_values, middle_values, last_zero_values])
 
         note.y_values = signal
 
     def __add_adsr__(self):
-        raise NotImplementedError('setup adsr not implemented')
+        raise NotImplementedError('add adsr not implemented')
 
     def setup_adsr(self):
         raise NotImplementedError('setup adsr not implemented')

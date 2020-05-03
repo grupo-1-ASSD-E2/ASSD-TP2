@@ -24,7 +24,7 @@ class Song:
 
     def play_song(self, fs):
         # Start playback
-        audio = 0.5 * self.out_signal * (2 ** 15 - 1) / np.max(np.abs(self.out_signal))
+        audio = self.out_signal * (2 ** 15 - 1) / np.max(np.abs(self.out_signal))
         audio = audio.astype(np.int16)
 
 

@@ -12,10 +12,12 @@ midiout = rtmidi.MidiOut()
 mid = MidiFile('Resources/Rodrigo_-_2do_movimiento_Concierto_de_Aranjuez__Adagio.mid', clip=True)
 mid1 = MidiFile('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid', clip=True)
 mid2 = MidiFile('Resources/Movie_Themes_-_Toy_Story.mid', clip=True)
+mid3 = MidiFile('Resources/Disney_Themes_-_Under_The_Sea.mid')
 
 fs = 44100
 duration = 40
 t = np.linspace(0, duration, int(fs * duration))  # Produces a 1 second Audio-File
+
 
 
 
@@ -27,10 +29,10 @@ def print_midi_info():
     # type 1 (synchronous): all tracks start at the same time
     # type 2 (asynchronous): each track is independent of the others
     print(mid)
-    for track in mid.tracks:
+    for track in mid3.tracks:
         print(track)
 
-    for track in mid.tracks:
+    for track in mid3.tracks:
         print(track)
         for msg in track:
             print(msg)
@@ -118,16 +120,7 @@ sine = get_sine_wave(1,440)
 #sine += get_sine_wave(0.2,440)
 #sine += get_sine_wave(0.2,550)
 
-adsr = ADSR()
-adsr.note_on(0)
-adsr.note_off(1.0001)
-adsrAmplitude = adsr.get_amplitude(t)
-
-sine*=adsrAmplitude
 
 
-play_sine_wave(sine)
-
-plot_sine_wave(sine,  5/440)
-
-plot_spectrum(sine)
+print_midi_info()
+reproduce_midi_file(mid3)
