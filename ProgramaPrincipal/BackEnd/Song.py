@@ -1,49 +1,105 @@
-import simpleaudio as sa
 import numpy as np
+
+from ProgramaPrincipal.BackEnd.Instruments.Saxo import Saxo
+from ProgramaPrincipal.BackEnd.Instruments.Trumpet import Trumpet
+from ProgramaPrincipal.BackEnd.Instruments.Violin import Violin
+from ProgramaPrincipal.BackEnd.MidiNote import MidiNote
+from ProgramaPrincipal.BackEnd.MidiTrack import MidiTrack
+from ProgramaPrincipal.BackEnd.TimeBase.Tempo import Tempo
+from ProgramaPrincipal.BackEnd.TimeBase.TimeBase import TimeBase
+from ProgramaPrincipal.BackEnd.Track import Track
+import simpleaudio as sa
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 
+
 class Song:
-    def __init__(self, time_array):
-        self.tracks = []
-        self.time_array = time_array
-        self.out_signal = []
+    def __init__(self):
+        self.song_tracks = []
+        self.time_base = None
+        self.output_signal = []
+        self.output_time_signal = []
+
+    def set_time_base(self, time_base):
+        self.time_base = time_base
+        self.output_time_signal = time_base.get_time_array()
+        self.output_signal = [0] * self.output_time_signal
+
+        for track in self.song_tracks:
+            track.initialize_output_signal_array(time_base)
 
     def add_track(self, track):
-        track.time_array = self.time_array
-        self.tracks.append(track)
+        self.song_tracks.append(track)
 
-    def create_out_signal(self):
+    def get_output_signal(self):
+        for track in self.song_tracks:
+            track.synthesize()
+            self.output_signal += track.get_output_signal()
 
-        for i in range(0, len(self.tracks)):
-            self.tracks[i].create_out_signal()
-            if i == 0:
-                self.out_signal = self.tracks[i].out_signal
-            else:
-                self.out_signal += self.tracks[i].out_signal
+        return self.output_signal
 
-    def play_song(self, fs):
+    def load_from_midi_file(self, midi_file, instruments):
+
+        number_of_samples = 0  # get from midi file
+        time_base = TimeBase(number_of_samples)
+        time_base.add_new_tempo(Tempo(1 / 1000000, 0, 1))
+
+        # add tracks
+        # add notes
+
+        self.set_time_base(time_base)
+
+    def test_without_midi(self):
+
+        time_base = TimeBase(1000, 44100)
+        time_base.add_new_tempo(Tempo(0.005, 0, 499))
+        time_base.add_new_tempo(Tempo(0.015, 500, 999))
+
+        track1 = Track()
+        track1.assign_instrument(Violin())
+        track1.initialize_output_signal_array(time_base)
+
+        midi_track = MidiTrack()
+        track1.associate_midi_track(midi_track)
+
+        note1 = MidiNote(60, 0, 1, note_off_tick=400)
+        note2 = MidiNote(64, 400, 0.5, note_off_tick=600)
+        note3 = MidiNote(72, 600, 1, note_off_tick=800)
+        note4 = MidiNote(76, 800, 0.7, note_off_tick=1000)
+
+        midi_track.add_note(note1)
+        midi_track.add_note(note2)
+        midi_track.add_note(note3)
+        midi_track.add_note(note4)
+        track1.initialize_output_signal_array(time_base)
+        self.add_track(track1)
+        self.set_time_base(time_base)
+
+        self.output_signal = self.get_output_signal()
+        self.play_song()
+        self.plot_wave(10)
+
+    def play_song(self):
+
         # Start playback
-        audio = self.out_signal * (2 ** 15 - 1) / np.max(np.abs(self.out_signal))
+        audio = self.output_signal * (2 ** 15 - 1) / np.max(np.abs(self.output_signal))
         audio = audio.astype(np.int16)
 
-
-        play_obj = sa.play_buffer(audio, 1, 2, fs)
+        play_obj = sa.play_buffer(audio, 1, 2, self.time_base.fs)
 
         # Wait for playback to finish before exiting
         play_obj.wait_done()
 
-
     def plot_wave(self, final_time):
-        plt.plot(self.time_array, self.out_signal)
+        plt.plot(self.output_time_signal, self.output_signal)
         plt.xlabel('time(s)')
         plt.ylabel('amplitude(A)')
 
         plt.xlim(0, final_time)
         plt.show()
 
-    def create_wav_file(self, file_name, fs):
+    def create_wav_file(self, file_name):
         # Start playback
-        audio = 0.5 * self.out_signal * (2 ** 15 - 1) / np.max(np.abs(self.out_signal))
+        audio = self.output_signal * (2 ** 15 - 1) / np.max(np.abs(self.output_signal))
         audio = audio.astype(np.int16)
-        wavfile.write(file_name, fs, audio)
+        wavfile.write(file_name, self.time_base.fs, audio)

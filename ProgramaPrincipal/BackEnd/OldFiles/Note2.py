@@ -1,9 +1,9 @@
-from ProgramaPrincipal.BackEnd.AditiveSynthesis.Instruments.Instrument import Instrument
+from ProgramaPrincipal.BackEnd.AdditiveSynthesis.Instruments.AdditiveSynthesisInstrument import Instrument
 
 import numpy as np
 
 
-class Note:
+class Note2:
 
     @staticmethod
     def __midi_note_to_frequency__(midi_note_code):

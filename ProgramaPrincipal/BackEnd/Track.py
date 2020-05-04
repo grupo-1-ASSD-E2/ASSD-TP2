@@ -1,24 +1,25 @@
-class Track:
-    def __init__(self, time_array):
-        self.notes = []
-        self.instrument_assigned = None
-        self.time_array = time_array
-        self.out_signal = []
+from ProgramaPrincipal.BackEnd.TimeBase.TimeBase import TimeBase
 
-    def add_note(self, note):
-        if self.instrument_assigned is not None:
-            note.assing_instrument(self.instrument_assigned)
-        self.notes.append(note)
+
+class Track:
+    def __init__(self):
+        self.midi_track = None
+        self.instrument = None
+        self.output_signal = None
+        self.time_base = None
 
     def assign_instrument(self, instrument):
-        self.instrument_assigned = instrument
-        for note in self.notes:
-            note.assing_instrument(instrument)
+        self.instrument = instrument
 
-    def create_out_signal(self):
-        for i in range(0, len(self.notes)):
-            if i == 0:
-                self.out_signal = self.notes[i].y_values
-            else:
-                self.out_signal += self.notes[i].y_values
+    def associate_midi_track(self, midi_track):
+        self.midi_track = midi_track
 
+    def initialize_output_signal_array(self, time_base):
+        self.time_base = time_base
+        self.output_signal = [0] * self.time_base.get_time_array()
+
+    def synthesize(self):
+        self.instrument.synthesizer.synthesize_track(self)
+
+    def get_output_signal(self):
+        return self.output_signal
