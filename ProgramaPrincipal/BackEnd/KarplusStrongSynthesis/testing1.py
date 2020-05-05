@@ -1,4 +1,5 @@
 #INFO: https://flothesof.github.io/Karplus-Strong-algorithm-Python.html
+# https://x37v.com/x37v/writing/simple-karplus-strong-synthesis-and-note-length/
 import pyaudio
 import numpy as np
 
@@ -11,7 +12,7 @@ def synthesize(sampling_speed, wavetable, n_samples):
     """Synthesizes a new waveform from an existing wavetable."""
     samples = []
     current_sample = 0
-    while len(samples) < n_samples:
+    while len(samples) < n_samples: #n_samples is the discrete length of the returned sound
         current_sample += sampling_speed
         current_sample = current_sample % wavetable.size
         samples.append(wavetable[current_sample])
@@ -33,16 +34,26 @@ stream = p.open(format=pyaudio.paFloat32,
 wavetable = np.sin(np.sin(2 * np.pi * t)) #sinusoidal
 sample1 = synthesize(220, wavetable, 2 * fs)
 sample2 = synthesize(440, wavetable, 2 * fs)
-stream.write(sample1.astype(np.float32).tostring())
-stream.write(sample2.astype(np.float32).tostring())
+print('wavetable size:')
+print(wavetable.size)
+print('sample1 seize:')
+print(sample1.size)
+print('sample2 seize:')
+print(sample2.size)
+#stream.write(sample1.astype(np.float32).tostring())
+#stream.write(sample2.astype(np.float32).tostring())
 #stream.close()
 
 #------------------------------
 wavetable = t * (t < 0.5) + (-(t - 1)) * (t>= 0.5) #triangular
 sample1 = synthesize(220, wavetable, 2 * fs)
 sample2 = synthesize(440, wavetable, 2 * fs)
+print('wavetable size:')
+print(wavetable.size)
+print('sample1 seize:')
+print(sample1.size)
 stream.write(sample1.astype(np.float32).tostring())
-stream.write(sample2.astype(np.float32).tostring())
+#stream.write(sample2.astype(np.float32).tostring())
 #stream.close()
 
 #------------------------------
@@ -63,8 +74,8 @@ wavetable = make_sine_wavetable(t.size, [0.1, 0.5, 0.8, 0.3], #the more complex 
 
 sample1 = synthesize(220, wavetable, 2 * fs)
 sample2 = synthesize(440, wavetable, 2 * fs)
-stream.write(sample1.astype(np.float32).tostring())
-stream.write(sample2.astype(np.float32).tostring())
+#stream.write(sample1.astype(np.float32).tostring())
+#stream.write(sample2.astype(np.float32).tostring())
 #stream.close()
 
 #------------------------------
@@ -121,7 +132,7 @@ for freq in freqs:
     wavetable_size = fs // int(freq)
     wavetable = (2 * np.random.randint(0, 2, wavetable_size) - 1).astype(np.float)
     sample = karplus_strong(wavetable, 1 * fs)
-    stream.write(sample.astype(np.float32).tostring())
+    #stream.write(sample.astype(np.float32).tostring())
 
 waveforms = []
 for ind, freq in enumerate(freqs):
@@ -129,7 +140,7 @@ for ind, freq in enumerate(freqs):
     wavetable = (2 * np.random.randint(0, 2, wavetable_size) - 1).astype(np.float)
     sample = karplus_strong(wavetable, 2 * fs)
     waveforms.append(sample)
-    stream.write(sample.astype(np.float32).tostring())
+    #stream.write(sample.astype(np.float32).tostring())
 
 #-------------------------
 #KARPLUS-STRONG (EXTENSION) FOR DRUM 
@@ -151,14 +162,14 @@ def karplus_strong_drum(wavetable, n_samples, prob):
 wavetable_size = fs // 40 
 wavetable = np.ones(wavetable_size)
 sample1 = karplus_strong_drum(wavetable, 1 * fs, 0.3)
-stream.write(sample1.astype(np.float32).tostring())
+#stream.write(sample1.astype(np.float32).tostring())
 
 #Changing b parameter
 bs = np.arange(0, 1.1, 0.1)
 for b in bs:
     wavetable = np.ones(wavetable_size)
     sample = karplus_strong_drum(wavetable, 1 * fs, b)
-    stream.write(sample.astype(np.float32).tostring())
+    #stream.write(sample.astype(np.float32).tostring())
 
 #For b=0
 fs = 20000
@@ -166,7 +177,7 @@ for freq in [20, 55, 110, 220, 440, 880, 1288]:
     wavetable_size = fs // freq 
     wavetable = np.ones(wavetable_size)
     sample = karplus_strong_drum(wavetable, 2 * fs, 0)
-    stream.write(sample.astype(np.float32).tostring())
+    #stream.write(sample.astype(np.float32).tostring())
 
 #To get longer delays:
 # def karplus_strong_decay(wavetable, n_samples, stretch_factor):
@@ -204,4 +215,16 @@ for freq in [20, 55, 110, 220, 440, 880, 1288]:
 # sample = karplus_strong_decay(wavetable, 5 * fs, stretch_factor=20)
 #stream.write(sample.astype(np.float32).tostring())
 
+# print('L')
+# fs = 44100
+# note_freq = 293.66
+# L = fs / note_freq
+# L = 150.5
+# print('L = ', np.rint(L))
+# L = 150.6
+# print('L = ', np.rint(L))
+# L = 150.7
+# print('L = ', np.rint(L))
+# L = 150.4
+# print('L = ', np.rint(L))
 stream.close()

@@ -7,7 +7,7 @@ class Note:
 
     @staticmethod
     def __midi_note_to_frequency__(midi_note_code):
-        a = 440  # frequency of A (coomon value is 440Hz)
+        a = 440  # frequency of A (common value is 440Hz)
         return (a / 32) * (2 ** ((midi_note_code - 9) / 12))
 
     def __init__(self, time_array, midi_number, note_on_time):
