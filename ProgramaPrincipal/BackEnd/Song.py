@@ -1,16 +1,38 @@
 import numpy as np
 
-from ProgramaPrincipal.BackEnd.Instruments.Saxo import Saxo
-from ProgramaPrincipal.BackEnd.Instruments.Trumpet import Trumpet
-from ProgramaPrincipal.BackEnd.Instruments.Violin import Violin
-from ProgramaPrincipal.BackEnd.MidiNote import MidiNote
-from ProgramaPrincipal.BackEnd.MidiTrack import MidiTrack
-from ProgramaPrincipal.BackEnd.TimeBase.Tempo import Tempo
-from ProgramaPrincipal.BackEnd.TimeBase.TimeBase import TimeBase
-from ProgramaPrincipal.BackEnd.Track import Track
+
+from BackEnd.Instruments.Saxo import Saxo
+from BackEnd.Instruments.Trumpet import Trumpet
+from BackEnd.Instruments.Violin import Violin
+from BackEnd.MidiNote import MidiNote
+from BackEnd.MidiTrack import MidiTrack
+from BackEnd.TimeBase.Tempo import Tempo
+from BackEnd.TimeBase.TimeBase import TimeBase
+from BackEnd.Track import Track
+
+# from ProgramaPrincipal.BackEnd.Instruments.Saxo import Saxo
+# from ProgramaPrincipal.BackEnd.Instruments.Trumpet import Trumpet
+# from ProgramaPrincipal.BackEnd.Instruments.Violin import Violin
+# from ProgramaPrincipal.BackEnd.MidiNote import MidiNote
+# from ProgramaPrincipal.BackEnd.MidiTrack import MidiTrack
+# from ProgramaPrincipal.BackEnd.TimeBase.Tempo import Tempo
+# from ProgramaPrincipal.BackEnd.TimeBase.TimeBase import TimeBase
+# from ProgramaPrincipal.BackEnd.Track import Track
+
+#from Instruments.Saxo import Saxo
+#from Instruments.Trumpet import Trumpet
+#from Instruments.Violin import Violin
+#from MidiNote import MidiNote
+#from MidiTrack import MidiTrack
+#from TimeBase.Tempo import Tempo
+#from TimeBase.TimeBase import TimeBase
+#from Track import Track
+
 import simpleaudio as sa
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
+import mido
+from mido import MidiFile
 
 
 class Song:
@@ -19,6 +41,7 @@ class Song:
         self.time_base = None
         self.output_signal = []
         self.output_time_signal = []
+        self.midi_file = None
 
     def set_time_base(self, time_base):
         self.time_base = time_base
@@ -38,12 +61,13 @@ class Song:
 
         return self.output_signal
 
-    def load_from_midi_file(self, midi_file, instruments):
-
-        number_of_samples = 0  # get from midi file
-        time_base = TimeBase(number_of_samples)
-        time_base.add_new_tempo(Tempo(1 / 1000000, 0, 1))
-
+    #def load_from_midi_file(self, midi_file_path, instruments): #instruments para mi no iria
+    def load_from_midi_file(self, midi_file_path):
+        self.midi_file = MidiFile(midi_file_path, clip=True)
+        print('hello from load from midi file')
+        #number_of_samples = 0  # get from midi file
+        #time_base = TimeBase(number_of_samples)
+        #time_base.add_new_tempo(Tempo(1 / 1000000, 0, 1))
         # add tracks
         # add notes
 
@@ -130,3 +154,6 @@ class Song:
         audio = self.output_signal * (2 ** 15 - 1) / np.max(np.abs(self.output_signal))
         audio = audio.astype(np.int16)
         wavfile.write(file_name, self.time_base.fs, audio)
+
+
+

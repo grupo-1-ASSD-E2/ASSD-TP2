@@ -1,4 +1,9 @@
-from ProgramaPrincipal.BackEnd.TimeBase.TimeBase import TimeBase
+
+from BackEnd.TimeBase.TimeBase import TimeBase
+
+#from ProgramaPrincipal.BackEnd.TimeBase.TimeBase import TimeBase
+from BackEnd.TimeBase.TimeBase import TimeBase
+
 
 
 class Track:

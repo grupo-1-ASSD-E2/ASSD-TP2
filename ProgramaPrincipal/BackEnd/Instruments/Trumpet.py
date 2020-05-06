@@ -1,7 +1,7 @@
-from ProgramaPrincipal.BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
+from BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 import numpy as np
 
-from ProgramaPrincipal.BackEnd.AdditiveSynthesis.PartialNote import PartialNote
+from BackEnd.AdditiveSynthesis.PartialNote import PartialNote
 
 
 class Trumpet:
