@@ -56,16 +56,16 @@ class Song:
         time_base.add_new_tempo(Tempo(0.015, 500, 999))
 
         track1 = Track()
-        track1.assign_instrument(Violin())
+        track1.assign_instrument(Trumpet())
         track1.initialize_output_signal_array(time_base)
 
         midi_track = MidiTrack()
         track1.associate_midi_track(midi_track)
 
-        note1 = MidiNote(60, 0, 1, note_off_tick=400)
+        note1 = MidiNote(60, 0, 1, note_off_tick=500)
         note2 = MidiNote(64, 400, 0.5, note_off_tick=600)
-        note3 = MidiNote(72, 600, 1, note_off_tick=800)
-        note4 = MidiNote(76, 800, 0.7, note_off_tick=1000)
+        note3 = MidiNote(61, 600, 1, note_off_tick=850)
+        note4 = MidiNote(55, 800, 1, note_off_tick=1000)
 
         midi_track.add_note(note1)
         midi_track.add_note(note2)
@@ -78,6 +78,8 @@ class Song:
         self.output_signal = self.get_output_signal()
         self.play_song()
         self.plot_wave(10)
+        self.plot_spectrum(10000)
+        self.plot_phase(10000)
 
     def play_song(self):
 
@@ -96,6 +98,31 @@ class Song:
         plt.ylabel('amplitude(A)')
 
         plt.xlim(0, final_time)
+        plt.show()
+
+
+    def plot_spectrum(self, finalfreq):
+
+        # plot different spectrum types:
+
+        plt.magnitude_spectrum(self.output_signal, Fs=self.time_base.fs, color='C1')
+
+        plt.xlabel('f(Hz)')
+        plt.ylabel('amplitude(A)')
+
+        plt.xlim(0, finalfreq)
+        plt.show()
+
+    def plot_phase(self, finalfreq):
+
+        # plot different spectrum types:
+
+        plt.phase_spectrum(self.output_signal, Fs=self.time_base.fs, color='C1')
+
+        plt.xlabel('f(Hz)')
+        plt.ylabel('rad')
+
+        plt.xlim(0, finalfreq)
         plt.show()
 
     def create_wav_file(self, file_name):

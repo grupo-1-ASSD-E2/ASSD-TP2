@@ -1,4 +1,3 @@
-from ProgramaPrincipal.BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 from ProgramaPrincipal.BackEnd.Instruments.Trumpet import Trumpet
 from ProgramaPrincipal.BackEnd.Instruments.Violin import Violin
 from ProgramaPrincipal.BackEnd.Song import Song
