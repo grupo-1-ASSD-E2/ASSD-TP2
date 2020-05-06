@@ -1,9 +1,13 @@
+from ProgramaPrincipal.BackEnd.SynthesizerAbstract import SynthesizerAbstract
+import numpy as np
 
 
-
-class SB_Synthesis:
+class SB_Synthesis(SynthesizerAbstract):
 
     def __init__ (self):
+
+    def synthesize_track(self, track):
+        
 
     def parabolic_interpolation(self, input_vector, vector_index):
         '''
