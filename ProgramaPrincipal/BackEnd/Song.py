@@ -22,11 +22,11 @@ from BackEnd.Track import Track
 #from Instruments.Saxo import Saxo
 #from Instruments.Trumpet import Trumpet
 #from Instruments.Violin import Violin
-from MidiNote import MidiNote
-from MidiTrack import MidiTrack
-from TimeBase.Tempo import Tempo
-from TimeBase.TimeBase import TimeBase
-from Track import Track
+#from MidiNote import MidiNote
+#from MidiTrack import MidiTrack
+#from TimeBase.Tempo import Tempo
+#from TimeBase.TimeBase import TimeBase
+#from Track import Track
 
 import simpleaudio as sa
 import matplotlib.pyplot as plt

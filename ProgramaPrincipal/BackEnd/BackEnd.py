@@ -9,7 +9,7 @@ from BackEnd.Song import Song
 
 #from Instruments.Trumpet import Trumpet
 #from Instruments.Violin import Violin
-from Song import Song
+from BackEnd.Song import Song
 import mido
 from mido import MidiFile
 

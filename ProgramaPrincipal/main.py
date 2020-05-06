@@ -7,9 +7,6 @@ import simpleaudio as sa
 from scipy.io import wavfile
 from BackEnd.BackEnd import BackEnd
 
-from BackEnd.AditiveSynthesis.ADSR import ADSR
-
-from BackEnd.AditiveSynthesis.ADSR import ADSR
 
 midiout = rtmidi.MidiOut()
 
