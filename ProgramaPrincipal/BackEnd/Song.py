@@ -28,7 +28,6 @@ from TimeBase.Tempo import Tempo
 from TimeBase.TimeBase import TimeBase
 from Track import Track
 
-
 import simpleaudio as sa
 import matplotlib.pyplot as plt
 from scipy.io import wavfile

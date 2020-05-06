@@ -9,6 +9,8 @@ from BackEnd.BackEnd import BackEnd
 
 from BackEnd.AditiveSynthesis.ADSR import ADSR
 
+from BackEnd.AditiveSynthesis.ADSR import ADSR
+
 midiout = rtmidi.MidiOut()
 
 mid = MidiFile('ProgramaPrincipal\Resources\Rodrigo_-_2do_movimiento_Concierto_de_Aranjuez__Adagio.mid', clip=True)

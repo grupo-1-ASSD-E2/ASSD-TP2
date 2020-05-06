@@ -14,7 +14,6 @@ import mido
 from mido import MidiFile
 
 
-
 class BackEnd:
     def __init__(self):
         #self.instruments = [Trumpet(), Violin()]
