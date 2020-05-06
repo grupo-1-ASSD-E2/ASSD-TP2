@@ -1,4 +1,4 @@
-from ProgramaPrincipal.BackEnd.SynthesizerAbstract import SynthesizerAbstract
+from BackEnd.SynthesizerAbstract import SynthesizerAbstract
 import numpy as np
 
 class AdditiveSynthesizer(SynthesizerAbstract):

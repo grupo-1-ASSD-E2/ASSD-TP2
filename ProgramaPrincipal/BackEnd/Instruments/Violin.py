@@ -1,4 +1,4 @@
-from ProgramaPrincipal.BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
+from BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 import numpy as np
 
 

@@ -1,7 +1,7 @@
-from ProgramaPrincipal.BackEnd.AdditiveSynthesis.Instruments.Trumpet import Trumpet
-from ProgramaPrincipal.BackEnd.OldFiles.Note2 import Note
-from ProgramaPrincipal.BackEnd.OldFiles.Song2 import Song
-from ProgramaPrincipal.BackEnd.OldFiles.Track import Track
+from BackEnd.AdditiveSynthesis.Instruments.Trumpet import Trumpet
+from BackEnd.OldFiles.Note2 import Note
+from BackEnd.OldFiles.Song2 import Song
+from BackEnd.OldFiles.Track import Track
 import numpy as np
 
 fs = 44100

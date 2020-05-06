@@ -1,6 +1,6 @@
-from ProgramaPrincipal.BackEnd.Instruments.Trumpet import Trumpet
-from ProgramaPrincipal.BackEnd.Instruments.Violin import Violin
-from ProgramaPrincipal.BackEnd.Song import Song
+from BackEnd.Instruments.Trumpet import Trumpet
+from BackEnd.Instruments.Violin import Violin
+from BackEnd.Song import Song
 
 
 class BackEnd:
@@ -11,7 +11,6 @@ class BackEnd:
         song.test_without_midi()
 
 
-backend = BackEnd()
 
 
 
