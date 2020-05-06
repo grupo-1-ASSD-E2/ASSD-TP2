@@ -71,7 +71,7 @@ class Song:
         # add tracks
         # add notes
 
-        self.set_time_base(time_base)
+        #self.set_time_base(time_base)
 
     def test_without_midi(self):
 
@@ -86,10 +86,10 @@ class Song:
         midi_track = MidiTrack()
         track1.associate_midi_track(midi_track)
 
-        note1 = MidiNote(60, 0, 1, note_off_tick=500)
+        note1 = MidiNote(60, 100, 1, note_off_tick=600)
         note2 = MidiNote(64, 400, 0.5, note_off_tick=600)
         note3 = MidiNote(61, 600, 1, note_off_tick=850)
-        note4 = MidiNote(55, 800, 1, note_off_tick=1000)
+        note4 = MidiNote(55, 800, 0.9, note_off_tick=1000)
 
         midi_track.add_note(note1)
         midi_track.add_note(note2)

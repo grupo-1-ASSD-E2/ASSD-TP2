@@ -18,8 +18,8 @@ class BackEnd:
     def __init__(self):
         #self.instruments = [Trumpet(), Violin()]
         song = Song()
-        #song.test_without_midi()
-        song.load_from_midi_file('Resources/Movie_Themes_-_Toy_Story.mid')
+        song.test_without_midi()
+        #song.load_from_midi_file('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
 
 
 
