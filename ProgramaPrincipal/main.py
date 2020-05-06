@@ -7,11 +7,15 @@ import simpleaudio as sa
 from scipy.io import wavfile
 from BackEnd.BackEnd import BackEnd
 
+from BackEnd.AditiveSynthesis.ADSR import ADSR
+
 midiout = rtmidi.MidiOut()
+
 mid = MidiFile('ProgramaPrincipal\Resources\Rodrigo_-_2do_movimiento_Concierto_de_Aranjuez__Adagio.mid', clip=True)
 mid1 = MidiFile('ProgramaPrincipal\Resources\Movie_Themes_-_Star_Wars_-_by_John_Willams.mid', clip=True)
 mid2 = MidiFile('ProgramaPrincipal\Resources\Movie_Themes_-_Toy_Story.mid', clip=True)
 mid3 = MidiFile('ProgramaPrincipal\Resources\Disney_Themes_-_Under_The_Sea.mid')
+
 
 fs = 44100
 duration = 40
