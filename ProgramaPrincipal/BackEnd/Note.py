@@ -1,4 +1,5 @@
-from ProgramaPrincipal.BackEnd.AditiveSynthesis.Instruments.Instrument import Instrument
+#from ProgramaPrincipal.BackEnd.AditiveSynthesis.Instruments.Instrument import Instrument
+from AditiveSynthesis.Instruments.Instrument import Instrument
 
 import numpy as np
 

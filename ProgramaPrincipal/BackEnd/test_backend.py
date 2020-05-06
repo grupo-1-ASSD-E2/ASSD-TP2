@@ -1,8 +1,13 @@
-from ProgramaPrincipal.BackEnd.AditiveSynthesis.Instruments.Flaute import Flaute
-from ProgramaPrincipal.BackEnd.AditiveSynthesis.Instruments.Trumpet import Trumpet
-from ProgramaPrincipal.BackEnd.Note import Note
-from ProgramaPrincipal.BackEnd.Song import Song
-from ProgramaPrincipal.BackEnd.Track import Track
+# from ProgramaPrincipal.BackEnd.AditiveSynthesis.Instruments.Flaute import Flaute
+# from ProgramaPrincipal.BackEnd.AditiveSynthesis.Instruments.Trumpet import Trumpet
+# from ProgramaPrincipal.BackEnd.Note import Note
+# from ProgramaPrincipal.BackEnd.Song import Song
+# from ProgramaPrincipal.BackEnd.Track import Track
+from AditiveSynthesis.Instruments.Flaute import Flaute
+from AditiveSynthesis.Instruments.Trumpet import Trumpet
+from Note import Note
+from Song import Song
+from Track import Track
 import numpy as np
 
 fs = 44100
