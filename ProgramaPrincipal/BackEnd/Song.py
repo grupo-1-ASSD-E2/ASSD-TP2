@@ -4,6 +4,7 @@ import numpy as np
 from BackEnd.Instruments.Saxo import Saxo
 from BackEnd.Instruments.Trumpet import Trumpet
 from BackEnd.Instruments.Violin import Violin
+from BackEnd.Instruments.Piano import Piano
 from BackEnd.MidiNote import MidiNote
 from BackEnd.MidiTrack import MidiTrack
 from BackEnd.TimeBase.Tempo import Tempo
@@ -80,7 +81,7 @@ class Song:
         time_base.add_new_tempo(Tempo(0.015, 500, 999))
 
         track1 = Track()
-        track1.assign_instrument(Trumpet())
+        track1.assign_instrument(Piano())
         track1.initialize_output_signal_array(time_base)
 
         midi_track = MidiTrack()
