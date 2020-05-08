@@ -3,7 +3,7 @@ import numpy as np
 from BackEnd.Instruments.Trumpet import Trumpet
 from BackEnd.Instruments.Oboe import Oboe
 from BackEnd.Instruments.Violin import Violin
-from BackEnd.Instruments.Piano import Piano
+#from BackEnd.Instruments.Piano import Piano
 from BackEnd.MidiNote import MidiNote
 from BackEnd.MidiTrack import MidiTrack
 from BackEnd.TimeBase.Tempo import Tempo
@@ -18,12 +18,13 @@ from BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 
 
 class Song:
-    def __init__(self):
+    def __init__(self, backend):
         self.song_tracks = []
         self.time_base = None
         self.output_signal = []
         self.output_time_signal = []
         self.midi_file = None
+        self.backend = backend
 
     def set_time_base(self, time_base):
         self.time_base = time_base
@@ -57,13 +58,12 @@ class Song:
 
     def test_without_midi(self):
 
-        additive_synt = AdditiveSynthesizer()
         time_base = TimeBase(1000, 44100)
         time_base.add_new_tempo(Tempo(0.005, 0, 499))
         time_base.add_new_tempo(Tempo(0.015, 500, 999))
 
         track1 = Track()
-        track1.assign_instrument(Piano())
+        track1.assign_instrument(self.backend.instruments["trumpet"])
         track1.initialize_output_signal_array(time_base)
 
         midi_track = MidiTrack()
