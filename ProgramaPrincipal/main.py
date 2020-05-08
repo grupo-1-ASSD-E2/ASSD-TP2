@@ -18,21 +18,12 @@ mid3 = MidiFile('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
 
 fs = 44100
 duration = 40
-t = np.linspace(0, duration, int(fs * duration))  # Produces a 1 second Audio-File
+t = np.linspace(0, duration, int(round(fs * duration))) # Produces a 1 second Audio-File
 
-
-def print_midi_info():
     # type 0 (single track): all messages are saved in one track
     # type 1 (synchronous): all tracks start at the same time
     # type 2 (asynchronous): each track is independent of the others
-    print(mid)
-    for track in mid3.tracks:
-        print(track)
 
-    for track in mid3.tracks:
-        print(track)
-        for msg in track:
-            print(msg)
 
 
 # To reproduce midi file
