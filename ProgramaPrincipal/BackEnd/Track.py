@@ -1,5 +1,5 @@
 #from ProgramaPrincipal.BackEnd.TimeBase.TimeBase import TimeBase
-import Note
+from BackEnd.Note import Note
 from BackEnd.TimeBase.TimeBase import TimeBase
 
 
@@ -23,8 +23,9 @@ class Track:
         self.time_base = time_base
         self.output_signal = [0] * self.time_base.get_time_array()
 
-    def synthesize(self): #esto yo lo sacaria de aca
-        self.instrument.synthesizer.synthesize_track(self)
+    def synthesize(self): 
+        for note in self.notes:
+            self.instrument.synthesizer.create_note_signal(note, self.time_base, self.instrument)
 
     def get_output_signal(self):
         return self.output_signal

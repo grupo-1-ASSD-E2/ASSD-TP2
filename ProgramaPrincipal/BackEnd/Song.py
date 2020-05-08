@@ -4,8 +4,6 @@ from BackEnd.Instruments.Trumpet import Trumpet
 from BackEnd.Instruments.Oboe import Oboe
 from BackEnd.Instruments.Violin import Violin
 #from BackEnd.Instruments.Piano import Piano
-from BackEnd.MidiNote import MidiNote
-from BackEnd.MidiTrack import MidiTrack
 from BackEnd.TimeBase.Tempo import Tempo
 from BackEnd.TimeBase.TimeBase import TimeBase
 from BackEnd.Track import Track
@@ -15,6 +13,7 @@ from scipy.io import wavfile
 import mido
 from mido import MidiFile
 import operator
+from BackEnd.Note import Note
 
 
 class Song:

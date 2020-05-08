@@ -32,20 +32,20 @@ class PartialNote:
         return self.freq
 
     def __get_last_time_value__(self,note):
-        note_off_time = note.initial_time + note.duration
+        
         if (note.duration > self.s_time):
-            return note_off_time  -((note.duration - self.s_time) * self.stageSslope + self.s_amp) / self.stageRslope
+            return note.ending_time  -((note.duration - self.s_time) * self.stageSslope + self.s_amp) / self.stageRslope
         else: #Si no se completan todas las etapas...
             if note.duration < self.d_time:
-                return note_off_time  -((note.duration ) * self.stageAslope ) / self.stageRslope
+                return note.ending_time  -((note.duration ) * self.stageAslope ) / self.stageRslope
                 
             elif note.duration < self.s_time:
-                return note_off_time  -((note.duration - self.d_time) * self.stageDslope + self.d_amp) / self.stageRslope
+                return note.ending_time  -((note.duration - self.d_time) * self.stageDslope + self.d_amp) / self.stageRslope
 
     def get_amplitude_array(self, note, time_base):
-        note_off_time = note.initial_time + note.duration
+  
         note_on_index = time_base.get_time_index_in_time_array(note.initial_time)
-        note_off_index = time_base.get_time_index_in_time_array(note_off_time)
+        note_off_index = time_base.get_time_index_in_time_array(note.ending_time)
 
         last_time_value = self.__get_last_time_value__(note)
 
@@ -67,12 +67,12 @@ class PartialNote:
     
     def get_adsr(self, time_array, note, time_base):
         
-        note_off_time = note.duration + note.initial_time
+    
                
-        if (note_off_time > max(time_array)):
+        if (note.ending_time > max(time_array)):
             r_time_index = len(time_array)-1
         else:
-             r_time_index =time_base.get_time_index_in_time_subarray(time_array, note_off_time)
+             r_time_index =time_base.get_time_index_in_time_subarray(time_array, note.ending_time)
        
         if (note.duration > self.s_time):
             
@@ -82,7 +82,7 @@ class PartialNote:
             stageA =  (stageA - note.initial_time) * self.stageAslope
             stageD = (stageD - note.initial_time - self.d_time) * self.stageDslope + self.d_amp
             stageS = (stageS - note.initial_time - self.s_time) * self.stageSslope + self.s_amp
-            stageR = (stageR - note_off_time) * self.stageRslope + (
+            stageR = (stageR - note.ending_time) * self.stageRslope + (
                            note.duration - self.s_time) * self.stageSslope + self.s_amp
             
             data = np.concatenate([stageA, stageD, stageS, stageR])
@@ -91,7 +91,7 @@ class PartialNote:
             if note.duration < self.d_time:
                 stageA, stageR = np.split(time_array, [r_time_index])
                 stageA =  (stageA - note.initial_time) * self.stageAslope
-                stageR = (stageR  - note_off_time) * self.stageRslope +note.duration * self.stageAslope
+                stageR = (stageR  - note.ending_time) * self.stageRslope +note.duration * self.stageAslope
                 
                 data = np.concatenate([stageA, stageR])
                 # ETAPA A y etapa R
@@ -103,7 +103,7 @@ class PartialNote:
                 stageA,stageD, stageR = np.split(time_array, [d_time_index, r_time_index])
                 stageA =  (stageA - note.initial_time) * self.stageAslope
                 stageD = self.d_amp + self.stageDslope * (stageD - note.initial_time - self.d_time)
-                stageR = (stageR - note_off_time) * self.stageRslope + self.d_amp + (
+                stageR = (stageR - note.ending_time) * self.stageRslope + self.d_amp + (
                        note.duration - self.d_time) * self.stageDslope
                 
                 data = np.concatenate([stageA, stageD, stageR])
