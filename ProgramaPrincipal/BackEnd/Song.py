@@ -69,10 +69,10 @@ class Song:
         midi_track = MidiTrack()
         track1.associate_midi_track(midi_track)
 
-        note1 = MidiNote(60, 100, 1, note_off_tick=400)
-        note2 = MidiNote(55, 300, 0.5, note_off_tick=400)
-        note3 = MidiNote(59, 400, 1, note_off_tick=600)
-        note4 = MidiNote(62, 600, 0.9, note_off_tick=800)
+        note1 = MidiNote(60, 1, 1, duration=2)
+        note2 = MidiNote(55, 3, 0.5, duration=2)
+        note3 = MidiNote(59, 4, 1, duration=1)
+        note4 = MidiNote(62, 6, 0.9, duration=2)
         '''
         note5 = MidiNote(62, 500, 1, note_off_tick=700)
         note6 = MidiNote(66, 600, 0.5, note_off_tick=700)

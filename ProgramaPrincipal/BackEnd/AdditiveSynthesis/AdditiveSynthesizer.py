@@ -23,11 +23,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
         partials = instrument.__get_partials__(note.frequency)
 
         for i in range(0, len(partials)):
-            amplitude_array = partials[i].get_amplitude_array(time_values,
-                                                              note.initial_time,
-                                                              note.initial_time + note.duration, time_base.get_time_index_in_time_array(note.initial_time),
-                                                              time_base.get_time_index_in_time_array(note.initial_time + note.duration)
-                                                              )
+            amplitude_array = partials[i].get_amplitude_array(note, time_base)
             freq = partials[i].get_freq()
             phase = partials[i].get_phase()
             if i == 0:

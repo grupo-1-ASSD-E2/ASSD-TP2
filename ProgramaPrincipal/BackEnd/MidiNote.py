@@ -1,10 +1,12 @@
 class MidiNote:
-    def __init__(self, midi_number, note_on_tick, velocity, note_off_tick=-1):
+    def __init__(self, midi_number, initial_time, velocity, duration=-1):
         self.midi_note_number = midi_number
         self.frequency = self.__midi_note_to_frequency__(midi_number)
 
-        self.note_on_tick = note_on_tick  # in seconds
-        self.note_off_tick = note_off_tick  # in seconds
+      
+
+        self.initial_time = initial_time #seconds
+        self.duration = duration #seconds
 
         self.velocity = velocity
 

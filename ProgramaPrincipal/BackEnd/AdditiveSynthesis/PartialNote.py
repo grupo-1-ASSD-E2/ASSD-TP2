@@ -33,13 +33,13 @@ class PartialNote:
 
     def __get_last_time_value__(self,note):
         note_off_time = note.initial_time + note.duration
-        if (duration > self.s_time):
+        if (note.duration > self.s_time):
             return note_off_time  -((note.duration - self.s_time) * self.stageSslope + self.s_amp) / self.stageRslope
         else: #Si no se completan todas las etapas...
-            if duration < self.d_time:
+            if note.duration < self.d_time:
                 return note_off_time  -((note.duration ) * self.stageAslope ) / self.stageRslope
                 
-            elif duration < self.s_time:
+            elif note.duration < self.s_time:
                 return note_off_time  -((note.duration - self.d_time) * self.stageDslope + self.d_amp) / self.stageRslope
 
     def get_amplitude_array(self, note, time_base):
@@ -49,18 +49,16 @@ class PartialNote:
 
         last_time_value = self.__get_last_time_value__(note)
 
-        time_array_aux = time_array.copy()
+        time_array_aux = time_base.get_time_array().copy()
         last_time_index = time_base.get_time_index_in_time_array(last_time_value)
         if (last_time_index == -1): #error
             last_time_index = note_off_index #corta al final
-        else:
-            last_time_index = last_time_index[len(last_time_index)-1] #corta en last_time_value
 
         zeros, time_val, zeros2 = np.split(time_array_aux, [note_on_index, last_time_index]) #se obtiene solo el arreglo que necesita
 
         zeros = [0] * len(zeros)
         zeros2 = [0] * len(zeros2)
-        data = self.get_adsr(time_val, note.note_on_time, note.duration, time_base.fs)
+        data = self.get_adsr(time_val, note.initial_time, note.duration, time_base.fs)
         
         amp = np.concatenate([zeros, data, zeros2])
         return amp
@@ -69,7 +67,7 @@ class PartialNote:
         note_off_time = duration + note_on_time
                
         
-        r_time_index = np.where(np.isclose(time_array, note_off_time, atol=1/fs))[0]
+        r_time_index = np.nonzero(np.isclose(time_array, note_off_time, atol=1/(2*fs)))[0]
         
         
         if (note_off_time > max(time_array)):
@@ -80,8 +78,8 @@ class PartialNote:
         
         if (duration > self.s_time):
         
-            d_time_index = np.where(np.isclose(time_array, self.d_time + note_on_time, atol=1/fs))[0][0]
-            s_time_index = np.where(np.isclose(time_array, self.s_time + note_on_time, atol=1/fs))[0][0]
+            d_time_index = np.nonzero(np.isclose(time_array, self.d_time + note_on_time, atol=1/(2*fs)))[0][0]
+            s_time_index = np.nonzero(np.isclose(time_array, self.s_time + note_on_time, atol=1/(2*fs)))[0][0]
             stageA, stageD, stageS, stageR = np.split(time_array, [d_time_index, s_time_index, r_time_index])
             stageA =  (stageA - note_on_time) * self.stageAslope
             stageD = (stageD - note_on_time - self.d_time) * self.stageDslope + self.d_amp
@@ -102,7 +100,7 @@ class PartialNote:
                 
             elif duration < self.s_time:
                 # ETAPA A, ETAPA D Y ETAPA R
-                d_time_index = np.where(np.isclose(time_array, self.d_time + note_on_time, atol=1/fs))[0][0]
+                d_time_index = np.where(np.isclose(time_array, self.d_time + note_on_time, atol=1/(2*fs)))[0][0]
         
                 stageA,stageD, stageR = np.split(time_array, [d_time_index, r_time_index])
                 stageA =  (stageA - note_on_time) * self.stageAslope
