@@ -19,7 +19,7 @@ class BackEnd:
                             "oboe": Oboe(self.additive_synthesizer)}
         song = Song(self)
         song.test_without_midi()
-        #song.load_from_midi_file('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
+        #song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
 
 
 
