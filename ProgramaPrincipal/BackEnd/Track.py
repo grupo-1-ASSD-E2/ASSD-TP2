@@ -25,7 +25,7 @@ class Track:
 
     def synthesize(self): 
         for note in self.notes:
-            self.instrument.synthesizer.create_note_signal(note, self.time_base, self.instrument)
+            self.instrument.synthesizer.create_note_signal(note, self.instrument)
 
     def get_output_signal(self):
         return self.output_signal
