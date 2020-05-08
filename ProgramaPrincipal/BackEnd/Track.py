@@ -1,14 +1,17 @@
 #from ProgramaPrincipal.BackEnd.TimeBase.TimeBase import TimeBase
 from TimeBase.TimeBase import TimeBase
+import Note
 
+#ARMAR OUTPUT SIGNAL CON EL SIZE CORRESPONDIENTE SEGUN EL TEMPO DE LA CANCION Y RELLENARO CON CEROS INICIALMENTE
 
 class Track:
     def __init__(self):
-        self.midi_track = None
+        #self.midi_track = None
+        self.notes = []
         self.instrument = None
         self.output_signal = None
-        self.time_base = None
-
+        self.time_base = None #ver si esto se necesita aca o no...
+        
     def assign_instrument(self, instrument):
         self.instrument = instrument
 
@@ -19,8 +22,11 @@ class Track:
         self.time_base = time_base
         self.output_signal = [0] * self.time_base.get_time_array()
 
-    def synthesize(self):
+    def synthesize(self): #esto yo lo sacaria de aca
         self.instrument.synthesizer.synthesize_track(self)
 
     def get_output_signal(self):
         return self.output_signal
+
+    def add_note(self, note):
+        self.notes.append(note)

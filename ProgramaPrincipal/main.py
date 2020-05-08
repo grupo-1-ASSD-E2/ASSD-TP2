@@ -6,11 +6,8 @@ import rtmidi
 import simpleaudio as sa
 from scipy.io import wavfile
 
-<<<<<<< HEAD
-from BackEnd.AditiveSynthesis.ADSR import ADSR
+#from BackEnd.AditiveSynthesis.ADSR import ADSR
 
-=======
->>>>>>> ff8c467dbbb349475852912ebd2a57d8c61f3664
 midiout = rtmidi.MidiOut()
 mid = MidiFile('ProgramaPrincipal/Resources/Rodrigo_-_2do_movimiento_Concierto_de_Aranjuez__Adagio.mid', clip=True)
 mid1 = MidiFile('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid', clip=True)

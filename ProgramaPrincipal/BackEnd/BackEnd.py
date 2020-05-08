@@ -14,7 +14,9 @@ class BackEnd:
         #self.instruments = [Trumpet(), Violin()]
         song = Song()
         #song.test_without_midi()
-        song.load_from_midi_file('Resources/Movie_Themes_-_Toy_Story.mid')
+ 
+        #song.load_midi_file_info('Resources/Rodrigo_-_2do_movimiento_Concierto_de_Aranjuez__Adagio.mid')
+        song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
 
 
 backend = BackEnd()
