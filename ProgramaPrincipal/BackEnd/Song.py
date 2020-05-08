@@ -159,7 +159,7 @@ class Song:
         # Start playback
         audio = self.output_signal * (2 ** 15 - 1) / np.max(np.abs(self.output_signal))
         audio = audio.astype(np.int16)
-        play_obj = sa.play_buffer(audio, 1, 2, self.time_base.fs)
+        play_obj = sa.play_buffer(audio, 1, 2, self.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done()
 
@@ -173,7 +173,7 @@ class Song:
 
     def plot_spectrum(self, finalfreq): #MOVER
         # plot different spectrum types:
-        plt.magnitude_spectrum(self.output_signal, Fs=self.time_base.fs, color='C1')
+        plt.magnitude_spectrum(self.output_signal, Fs=self.fs, color='C1')
         plt.xlabel('f(Hz)')
         plt.ylabel('amplitude(A)')
         plt.xlim(0, finalfreq)
@@ -181,7 +181,7 @@ class Song:
 
     def plot_phase(self, finalfreq): #MOVER
         # plot different spectrum types:
-        plt.phase_spectrum(self.output_signal, Fs=self.time_base.fs, color='C1')
+        plt.phase_spectrum(self.output_signal, Fs=self.fs, color='C1')
         plt.xlabel('f(Hz)')
         plt.ylabel('rad')
         plt.xlim(0, finalfreq)
@@ -191,7 +191,21 @@ class Song:
         # Start playback
         audio = self.output_signal * (2 ** 15 - 1) / np.max(np.abs(self.output_signal))
         audio = audio.astype(np.int16)
-        wavfile.write(file_name, self.time_base.fs, audio)
+        wavfile.write(file_name, self.fs, audio)
 
+    def generate_output_signal(self, N, arrays_to_add):#usar len(note.note_signal)
+        output = np.array([])
+        for i in arrays_to_add:
+            subarray = i.output_signal
+            init_time_index = int(round(i.initial_time * self.fs))
+            index_difference = np.zeros(init_time_index - len(output))
+            if init_time_index > len(output):
+                output = np.concatenate((output, index_difference))
+                output = np.concatenate((output, subarray))
+            else:
+                superpose , add = np.split(subarray, abs(index_difference))
+                output[init_time_index:] += superpose
+                output = np.concatenate((output, add))
+        return output[0:N]
 
 
