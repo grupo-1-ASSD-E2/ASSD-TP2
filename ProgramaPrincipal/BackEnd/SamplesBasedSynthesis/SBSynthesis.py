@@ -28,11 +28,11 @@ class SB_Synthesizer(SynthesizerAbstract):
         note_length = len(np.linspace(0, note.duration, num=(time_base.fs * note.duration)))
         time_stretched_note = time_stretch(pitched_note, len(pitched_note) / (note_length - 2**11)) #Creates array of specified length
 
+        initial_index = time_base.get_tick_index_in_time_array(note.initial_time)
+
         amp_values = np.array(time_base.get_time_array())
         amp_values = [0] * len(amp_values)
         return time_stretched_note
-        #zeros = [0]*(440118 - len(end))
-        #return np.concatenate((end,zeros))
         
 
     def midi_code_from_frec(self, frec):
