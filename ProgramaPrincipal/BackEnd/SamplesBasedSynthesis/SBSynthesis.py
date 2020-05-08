@@ -1,5 +1,6 @@
 from BackEnd.SynthesizerAbstract import SynthesizerAbstract
 from BackEnd.SamplesBasedSynthesis.SampleAdapting import *
+from BackEnd.Instruments import Instruments
 import numpy as np
 import soundfile as sf
 import os
@@ -11,10 +12,9 @@ class SB_Synthesizer(SynthesizerAbstract):
     def __init__ (self):
         self.existing_frec_dict()
 
-    def create_note_signal(self, note, time_base, instrument):
-        self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + instrument.instrument_name + '/'
+    def create_note_signal(self, note, instrument):
+        self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + instrument + '/'
         self.my_samples_frecuencies()
-        elif instrument.instrument_name == '':
 
         closest_note = self.closest_note_search(note.frequency)
         midi_code_note = self.midi_code_from_frec(note.frequency)
@@ -23,7 +23,7 @@ class SB_Synthesizer(SynthesizerAbstract):
         data, samplerate = sf.read(self.samples_directory + closest_note)
         pitched_note = note_scaling(data, samplerate, shift)
 
-        note_length = len(np.linspace(0, note.duration, num=(int(round(time_base.fs * note.duration)))))
+        note_length = len(np.linspace(0, note.duration, num=(int(round(note.fs * note.duration)))))
         time_stretched_note = time_stretch(pitched_note, len(pitched_note) / (note_length - 2**11)) #Creates array of specified length
 
         note.output_signal = time_stretched_note
