@@ -5,7 +5,7 @@ class Note:
         self.velocity = velocity
         self.initial_time = initial_time
         self.ending_time = initial_time + duration
-        self.note_signal = [] #SINTETIZADOR TIENE QUE DEVOLVER ESTO
+        self.output_signal = [] #SINTETIZADOR TIENE QUE DEVOLVER ESTO
 
 
     @staticmethod
@@ -13,5 +13,5 @@ class Note:
         a = 440  # frequency of A (coomon value is 440Hz)
         return (a / 32) * (2 ** ((midi_note_code - 9) / 12))
     
-    def get_note_signal(self):
-        return self.note_signal
+    def get_output_signal(self):
+        return self.output_signal
