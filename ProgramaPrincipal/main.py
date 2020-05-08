@@ -76,23 +76,6 @@ def create_wav_file(file_name, fs, audio):
     wavfile.write(file_name, fs, audio)
 
 
-'''
-
-freqs = [261,523,785,1050,1310,1575]
-amplitudes = [0.19,0.22,0.065,0.02,0.03,0.01]
-phases = [0.09,0.1685,0.184,2.6,0.9042,1.738]
-
-
-sine = get_sine_wave(1,440)
-
-
-
-#for i in range(0,len(freqs)):
-#    sine += get_sine_wave(amplitudes[i], freqs[i], phase= phases[i], cos=True)
-
-#sine = get_sine_wave(0.5,440)
-#sine += get_sine_wave(0.2,440)
-#sine += get_sine_wave(0.2,550)'''
 
 
 

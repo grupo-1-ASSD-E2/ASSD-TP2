@@ -4,9 +4,13 @@ class TimeBase:
         self.number_of_samples = number_of_samples#N samples
         self.fs = fs
         self.tempos = [] #Tempo instances
+        self.duration = None
+        self.time_array =  None
 
     def add_new_tempo(self, tempo):
         self.tempos.append(tempo)
+        self.duration = self.get_total_duration()
+        self.time_array =  np.linspace(0, self.duration, self.fs*self.duration)
 
     def convert_tick_to_time(self, tick):
         partial_time = 0
@@ -44,7 +48,10 @@ class TimeBase:
         return total_duration
 
     def get_time_array(self):
-        return np.linspace(0, self.get_total_duration(), self.fs*self.get_total_duration())
+        if self.time_array is not None:
+            return self.time_array
+        
+        
 
 
 
