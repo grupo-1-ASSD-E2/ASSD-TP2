@@ -12,7 +12,7 @@ class TimeBase:
     def add_new_tempo(self, tempo):
         self.tempos.append(tempo)
         self.total_duration += tempo.get_total_duration_of_tempo()
-        new_tempo_length = np.linspace(0, tempo.get_total_duration_of_tempo(), num=(self.fs * tempo.get_total_duration_of_tempo()))
+        new_tempo_length = np.linspace(0, tempo.get_total_duration_of_tempo(), int(round(self.fs * tempo.get_total_duration_of_tempo())))
         self.timeline_length += new_tempo_length 
     
     def get_total_duration(self):
