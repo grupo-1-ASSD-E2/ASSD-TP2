@@ -60,6 +60,7 @@ class Song:
         track_counter = 1
         for track in self.midi_file.tracks[1::]: #saving tracks and notes info
             new_track = Track()
+            new_track.time_base = self.time_base
             ticks_counter = 0
             print('TRACK NUMBER:', track_counter)
             same_time_counter = 0
@@ -137,19 +138,5 @@ class Song:
         audio = audio.astype(np.int16)
         wavfile.write(file_name, self.fs, audio)
 
-    def generate_output_signal(self, N, arrays_to_add):#usar len(note.note_signal)
-        output = np.array([])
-        for i in arrays_to_add:
-            subarray = i.output_signal
-            init_time_index = int(round(i.initial_time * self.fs))
-            index_difference = np.zeros(init_time_index - len(output))
-            if init_time_index > len(output):
-                output = np.concatenate((output, index_difference))
-                output = np.concatenate((output, subarray))
-            else:
-                superpose , add = np.split(subarray, abs(index_difference))
-                output[init_time_index:] += superpose
-                output = np.concatenate((output, add))
-        return output[0:N]
 
 
