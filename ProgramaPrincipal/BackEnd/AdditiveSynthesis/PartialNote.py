@@ -1,5 +1,5 @@
 import numpy as np
-
+import time
 
 class PartialNote:
     def __init__(self, freq, phase, start_time, d_time, d_amp, s_time, s_amp, r_time, r_amp, off_time):
@@ -66,6 +66,7 @@ class PartialNote:
         return amp
     
     def get_adsr(self, time_array, note, time_base):
+        
         note_off_time = note.duration + note.initial_time
                
         if (note_off_time > max(time_array)):
@@ -106,6 +107,6 @@ class PartialNote:
                        note.duration - self.d_time) * self.stageDslope
                 
                 data = np.concatenate([stageA, stageD, stageR])
-                
+        
         return data
 

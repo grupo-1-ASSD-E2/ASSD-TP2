@@ -1,19 +1,15 @@
 from BackEnd.SynthesizerAbstract import SynthesizerAbstract
 import numpy as np
+import time
 
 class AdditiveSynthesizer(SynthesizerAbstract):
     def __init__(self):
         i = 0
 
-    def synthesize_track(self, track):
-        i = 1
-        for note in track.midi_track.midi_notes:
-            track.output_signal += self.create_note_sig(note, track.time_base, track.instrument)
-            print(str(i))
-            i+=1
+    
 
-    def create_note_sig(self, note, time_base, instrument):
-
+    def create_note_signal(self, note, time_base, instrument):
+        start_time = time.time()
         amp_values = np.array(time_base.get_time_array())
 
         time_values = amp_values.copy()
@@ -34,4 +30,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
                     freq * 2 * np.pi * (time_values - note.initial_time) +phase*(180/np.pi))
 
         note_signal = amp_values * note.velocity
-        return note_signal
+        endtime = time.time()
+
+        print(str(endtime - start_time))
+        note.output_signal = note_signal
