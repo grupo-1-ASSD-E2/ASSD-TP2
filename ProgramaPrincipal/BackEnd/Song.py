@@ -1,9 +1,4 @@
 import numpy as np
-
-from BackEnd.Instruments.Trumpet import Trumpet
-from BackEnd.Instruments.Oboe import Oboe
-from BackEnd.Instruments.Violin import Violin
-#from BackEnd.Instruments.Piano import Piano
 from BackEnd.TimeBase.Tempo import Tempo
 from BackEnd.TimeBase.TimeBase import TimeBase
 from BackEnd.Note import Note

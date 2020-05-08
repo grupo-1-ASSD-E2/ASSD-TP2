@@ -1,5 +1,5 @@
 import numpy as np
-from TimeBase.Tempo import Tempo
+from BackEnd.TimeBase.Tempo import Tempo
 
 class TimeBase:
     def __init__(self, fs):

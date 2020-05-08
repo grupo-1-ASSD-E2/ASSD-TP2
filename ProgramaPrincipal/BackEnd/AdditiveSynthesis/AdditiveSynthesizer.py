@@ -2,6 +2,7 @@ from BackEnd.SynthesizerAbstract import SynthesizerAbstract
 import numpy as np
 import time
 from BackEnd.AdditiveSynthesis.PartialNote import PartialNote
+from BackEnd.Instruments import Instruments
 
 class AdditiveSynthesizer(SynthesizerAbstract):
     def __init__(self):
@@ -10,7 +11,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
     def create_note_signal(self, note, instrument):
         start_time = time.time()
         amplitude_array = None
-        partials = self.__get_partials__(note.frequency, instrument)
+        partials = self.__get_partials__(instrument, note.frequency)
         for i in range(0, len(partials)):
             if i == 0:
                 amplitude_array = partials[i].output_signal
@@ -64,7 +65,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
         freq_of_samples = 261.63
 
         multiplier = frequency / freq_of_samples
-        if (instrument == Instruments.Trumpet.value[0]):
+        if (instrument == Instruments.TRUMPET.value[0]):
             partial1 = PartialNote(261.65532 * multiplier, 0.76483, 0.37, 0.627, 0.039, 0.89, 0.0297, 7.4, 0.028, 7.61)
         
             partial2 = PartialNote(523.310642 * multiplier, 0.1167782, 0.37, 0.487, 0.065, 0.627, 0.069, 7.4, 0.05, 7.60)
@@ -101,7 +102,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
             #partials = [partial1]
             return partials
 
-        elif(instrument == Instruments.Oboe.value[0]):
+        elif(instrument == Instruments.OBOE.value[0]):
             partial1 = PartialNote(260.9281 * multiplier,-1.83709, 0, 0.1168, 0.132, 0.296, 0.128, 6.36, 0.124, 6.75)
 
             partial2 = PartialNote(521.712996 * multiplier,-1.43441, 0, 0.07, 0.07, 0.442, 0.07, 6.36, 0.07, 6.75)
@@ -125,7 +126,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
             #partials = [partial1]
             return partials
 
-        elif (instrument == Instruments.Violin.value[0]):
+        elif (instrument == Instruments.VIOLIN.value[0]):
             partial1 = PartialNote(261.58854 * multiplier, -2.93465, 0.47, 0.558, 0.16, 0.9566, 0.36457, 3.55, 0.3236, 3.942)
 
             partial2 = PartialNote(522.94078 * multiplier, 2.7098, 0.47, 0.558, 0.0365, 1, 0.16, 3.55, 0.153, 3.7)
