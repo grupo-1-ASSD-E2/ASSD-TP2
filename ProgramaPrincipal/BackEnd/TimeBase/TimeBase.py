@@ -31,8 +31,16 @@ class TimeBase:
     def get_tick_index_in_time_array(self, tick):
         time_array = self.get_time_array()
         tick_time = self.convert_tick_to_time(tick)
-        time_array_index = np.where(np.isclose(time_array, tick_time))[0][0]
-        return time_array_index
+        return self.get_time_index_in_time_array(tick_time)
+
+    def get_time_index_in_time_array(self, time):
+        time_array = self.get_time_array()
+        time_array_index_array = np.where(np.isclose(time_array, time, atol=1/self.fs))[0]
+        if (len(time_array_index_array) == 0):
+            return -1 #ERROR
+        else:
+            return time_array_index_array[0]
+
 
     def get_min_time_between_tick(self):
         min_time_between_tick = 10000

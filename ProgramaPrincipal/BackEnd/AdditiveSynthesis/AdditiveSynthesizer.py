@@ -24,18 +24,18 @@ class AdditiveSynthesizer(SynthesizerAbstract):
 
         for i in range(0, len(partials)):
             amplitude_array = partials[i].get_amplitude_array(time_values,
-                                                              time_base.convert_tick_to_time(note.note_on_tick),
-                                                              time_base.convert_tick_to_time(note.note_off_tick), time_base.get_tick_index_in_time_array(note.note_on_tick),
-                                                              time_base.get_tick_index_in_time_array(note.note_off_tick)
+                                                              note.initial_time,
+                                                              note.initial_time + note.duration, time_base.get_time_index_in_time_array(note.initial_time),
+                                                              time_base.get_time_index_in_time_array(note.initial_time + note.duration)
                                                               )
             freq = partials[i].get_freq()
             phase = partials[i].get_phase()
             if i == 0:
                 amp_values = amplitude_array * np.sin(
-                    freq * 2 * np.pi * (time_values - time_base.convert_tick_to_time(note.note_on_tick)) +phase*(180/np.pi))
+                    freq * 2 * np.pi * (time_values - note.initial_time) +phase*(180/np.pi))
             else:
                 amp_values += amplitude_array * np.sin(
-                    freq * 2 * np.pi * (time_values - time_base.convert_tick_to_time(note.note_on_tick)) +phase*(180/np.pi))
+                    freq * 2 * np.pi * (time_values - note.initial_time) +phase*(180/np.pi))
 
         note_signal = amp_values * note.velocity
         return note_signal
