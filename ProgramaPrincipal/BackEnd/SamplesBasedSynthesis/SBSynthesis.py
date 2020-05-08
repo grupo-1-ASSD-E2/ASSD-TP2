@@ -14,10 +14,14 @@ class SB_Synthesizer(SynthesizerAbstract):
         self.my_samples_frecuencies()
 
     def synthesize_track(self, track):
-        for note in track.midi_track.midi_notes:
-            track.output_signal += self.create_note_sig(note, track.time_base, track.instrument)
+        track.output_signal = self.generate_output_signal(track)
 
-    def create_note_sig(self, note, time_base, instrument):
+    def generate_output_signal(self, track):#usar len(note.note_signal)
+        for note in track.notes:
+            note_to_add = self.create_note_signal(note, track.time_base, track.instrument)
+            otuput_track = note_to_add
+
+    def create_note_signal(self, note, time_base, instrument):
         closest_note = self.closest_note_search(note.frequency)
         midi_code_note = self.midi_code_from_frec(note.frequency)
         midi_code_closest_note = self.midi_code_from_frec(self.samples_frec_dic[closest_note])
@@ -32,7 +36,8 @@ class SB_Synthesizer(SynthesizerAbstract):
 
         amp_values = np.array(time_base.get_time_array())
         amp_values = [0] * len(amp_values)
-        return time_stretched_note
+        
+        note.output_signal = time_stretched_note
         
 
     def midi_code_from_frec(self, frec):

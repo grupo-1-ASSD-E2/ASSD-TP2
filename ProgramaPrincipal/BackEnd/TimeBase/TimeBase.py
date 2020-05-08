@@ -13,7 +13,7 @@ class TimeBase:
         self.time_array =  np.linspace(0, self.duration, self.fs*self.duration)
 
     def convert_tick_to_time(self, tick):
-        partial_time = 0
+        partial_time = 0<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         found_corresponding_tempo = False
 
