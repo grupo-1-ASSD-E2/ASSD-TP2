@@ -6,7 +6,7 @@ class Note:
         self.initial_time = initial_time
         self.ending_time = initial_time + duration
         self.fs = fs
-        self.note_signal = [] #SINTETIZADOR TIENE QUE DEVOLVER ESTO
+        self.output_signal = [] #SINTETIZADOR TIENE QUE DEVOLVER ESTO
 
 
 
