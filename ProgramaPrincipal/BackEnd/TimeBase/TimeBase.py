@@ -35,6 +35,9 @@ class TimeBase:
 
     def get_time_index_in_time_array(self, time):
         time_array = self.get_time_array()
+        return self.get_time_index_in_time_subarray(time_array, time)
+
+    def get_time_index_in_time_subarray(self, time_array, time):
         time_array_index_array = np.nonzero(np.isclose(time_array, time, atol=1/(2*self.fs)))[0]
         if (len(time_array_index_array) == 0):
             return -1 #ERROR

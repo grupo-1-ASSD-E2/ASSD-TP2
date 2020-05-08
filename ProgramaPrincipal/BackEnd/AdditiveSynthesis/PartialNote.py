@@ -49,64 +49,61 @@ class PartialNote:
 
         last_time_value = self.__get_last_time_value__(note)
 
-        time_array_aux = time_base.get_time_array().copy()
+        time_array_aux = time_base.get_time_array()
         last_time_index = time_base.get_time_index_in_time_array(last_time_value)
         if (last_time_index == -1): #error
             last_time_index = note_off_index #corta al final
+
+
 
         zeros, time_val, zeros2 = np.split(time_array_aux, [note_on_index, last_time_index]) #se obtiene solo el arreglo que necesita
 
         zeros = [0] * len(zeros)
         zeros2 = [0] * len(zeros2)
-        data = self.get_adsr(time_val, note.initial_time, note.duration, time_base.fs)
+        data = self.get_adsr(time_val, note, time_base)
         
         amp = np.concatenate([zeros, data, zeros2])
         return amp
     
-    def get_adsr(self, time_array, note_on_time, duration, fs):
-        note_off_time = duration + note_on_time
+    def get_adsr(self, time_array, note, time_base):
+        note_off_time = note.duration + note.initial_time
                
-        
-        r_time_index = np.nonzero(np.isclose(time_array, note_off_time, atol=1/(2*fs)))[0]
-        
-        
         if (note_off_time > max(time_array)):
             r_time_index = len(time_array)-1
         else:
-            r_time_index = r_time_index[0]
-        
-        
-        if (duration > self.s_time):
-        
-            d_time_index = np.nonzero(np.isclose(time_array, self.d_time + note_on_time, atol=1/(2*fs)))[0][0]
-            s_time_index = np.nonzero(np.isclose(time_array, self.s_time + note_on_time, atol=1/(2*fs)))[0][0]
+             r_time_index =time_base.get_time_index_in_time_subarray(time_array, note_off_time)
+       
+        if (note.duration > self.s_time):
+            
+            d_time_index = time_base.get_time_index_in_time_subarray(time_array,  self.d_time + note.initial_time)
+            s_time_index = time_base.get_time_index_in_time_subarray(time_array,  self.s_time + note.initial_time)
             stageA, stageD, stageS, stageR = np.split(time_array, [d_time_index, s_time_index, r_time_index])
-            stageA =  (stageA - note_on_time) * self.stageAslope
-            stageD = (stageD - note_on_time - self.d_time) * self.stageDslope + self.d_amp
-            stageS = (stageS - note_on_time - self.s_time) * self.stageSslope + self.s_amp
+            stageA =  (stageA - note.initial_time) * self.stageAslope
+            stageD = (stageD - note.initial_time - self.d_time) * self.stageDslope + self.d_amp
+            stageS = (stageS - note.initial_time - self.s_time) * self.stageSslope + self.s_amp
             stageR = (stageR - note_off_time) * self.stageRslope + (
-                            duration - self.s_time) * self.stageSslope + self.s_amp
+                           note.duration - self.s_time) * self.stageSslope + self.s_amp
             
             data = np.concatenate([stageA, stageD, stageS, stageR])
             
         else: #Si no se completan todas las etapas...
-            if duration < self.d_time:
+            if note.duration < self.d_time:
                 stageA, stageR = np.split(time_array, [r_time_index])
-                stageA =  (stageA - note_on_time) * self.stageAslope
-                stageR = (stageR  - note_off_time) * self.stageRslope + duration * self.stageAslope
+                stageA =  (stageA - note.initial_time) * self.stageAslope
+                stageR = (stageR  - note_off_time) * self.stageRslope +note.duration * self.stageAslope
                 
                 data = np.concatenate([stageA, stageR])
                 # ETAPA A y etapa R
                 
-            elif duration < self.s_time:
+            elif note.duration < self.s_time:
                 # ETAPA A, ETAPA D Y ETAPA R
-                d_time_index = np.where(np.isclose(time_array, self.d_time + note_on_time, atol=1/(2*fs)))[0][0]
+                d_time_index = time_base.get_time_index_in_time_subarray(time_array,  self.d_time + note.initial_time)
         
                 stageA,stageD, stageR = np.split(time_array, [d_time_index, r_time_index])
-                stageA =  (stageA - note_on_time) * self.stageAslope
-                stageD = self.d_amp + self.stageDslope * (stageD - note_on_time - self.d_time)
+                stageA =  (stageA - note.initial_time) * self.stageAslope
+                stageD = self.d_amp + self.stageDslope * (stageD - note.initial_time - self.d_time)
                 stageR = (stageR - note_off_time) * self.stageRslope + self.d_amp + (
-                        duration - self.d_time) * self.stageDslope
+                       note.duration - self.d_time) * self.stageDslope
                 
                 data = np.concatenate([stageA, stageD, stageR])
                 
