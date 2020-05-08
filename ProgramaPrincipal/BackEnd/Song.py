@@ -4,10 +4,9 @@ from BackEnd.Instruments.Trumpet import Trumpet
 from BackEnd.Instruments.Oboe import Oboe
 from BackEnd.Instruments.Violin import Violin
 #from BackEnd.Instruments.Piano import Piano
-from BackEnd.MidiNote import MidiNote
-from BackEnd.MidiTrack import MidiTrack
 from BackEnd.TimeBase.Tempo import Tempo
 from BackEnd.TimeBase.TimeBase import TimeBase
+from BackEnd.Note import Note
 from BackEnd.Track import Track
 import simpleaudio as sa
 import matplotlib.pyplot as plt
@@ -80,7 +79,7 @@ class Song:
                                         t_on = self.time_base.convert_tick_to_time(ticks_counter)
                                         t_off = self.time_base.convert_tick_to_time(ticks_counter1)
                                         note_duration = t_off - t_on
-                                        new_note = Note(msg.note, note_duration, msg.velocity, t_on) #Si descartamos las que empiezan y terminan al mismo tiempo, meter esto adentro del if
+                                        new_note = Note(msg.note, note_duration, msg.velocity, t_on, self.fs) #Si descartamos las que empiezan y terminan al mismo tiempo, meter esto adentro del if
                                         new_track.add_note(new_note)
                                         if msg1.time == 0:    #CLAVE ESTO CORREGIRLOOOOOOOOO HAY QUE COMPARAR TIEMPOS ABSOLUTOS DE INI Y FIN
                                             good_notes_counter += 1

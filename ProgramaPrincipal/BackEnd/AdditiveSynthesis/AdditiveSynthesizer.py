@@ -6,9 +6,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
     def __init__(self):
         i = 0
 
-    
-
-    def create_note_signal(self, note, time_base, instrument):
+    def create_note_signal(self, note, instrument):
         start_time = time.time()
         amp_values = np.array(time_base.get_time_array())
 

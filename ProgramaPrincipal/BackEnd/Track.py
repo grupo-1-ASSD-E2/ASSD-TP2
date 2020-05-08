@@ -23,8 +23,8 @@ class Track:
         self.time_base = time_base
         self.output_signal = [0] * self.time_base.get_time_array()
 
-    def synthesize(self): #esto yo lo sacaria de aca
-        self.instrument.synthesizer.synthesize_track(self)
+    def synthesize(self): 
+        self.instrument.synthesizer(self)
 
     def get_output_signal(self):
         return self.output_signal
