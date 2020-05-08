@@ -23,37 +23,7 @@ class PartialNote:
 
         self.stageRslope = (- self.r_amp) / (self.off_time - self.r_time)
 
-    def get_amplitude(self, time, note_on_time, note_off_time):
-        last_value = note_off_time  -((note_off_time - note_on_time - self.s_time) * self.stageSslope + self.s_amp) / self.stageRslope
-        if note_on_time < time < last_value:
-            time_aux = time - note_on_time
-            duration = note_off_time - note_on_time
-            if duration < self.d_time and (time_aux > duration):
-                # ETAPA R
-                return (time_aux - duration) * self.stageRslope + duration * self.stageAslope
-            elif duration < self.s_time and time_aux > duration:
-                # ETAPA R
-                return (time_aux - duration) * self.stageRslope + self.d_amp + (
-                        duration - self.d_time) * self.stageDslope
-
-            elif time_aux < self.d_time:
-                # ETAPA A
-                return time_aux * self.stageAslope
-
-            elif self.d_time <= time_aux < self.s_time:
-                # ETAPA D
-                return (time_aux - self.d_time) * self.stageDslope + self.d_amp
-            elif self.s_time <= time_aux < duration:
-                # ETAPA S
-                return (time_aux - self.s_time) * self.stageSslope + self.s_amp
-            elif duration <= time_aux < last_value:
-                # ETAPA R
-                return (time_aux - duration) * self.stageRslope + (
-                        duration - self.s_time) * self.stageSslope + self.s_amp
-            elif time_aux >= last_value:
-                return 0
-        else:
-            return 0
+    
 
     def get_phase(self):
         return self.phase
@@ -61,21 +31,81 @@ class PartialNote:
     def get_freq(self):
         return self.freq
 
-    def get_amplitude_array(self, time_array, note_on_time, note_off_time, note_on_index, note_off_index):
-        '''
-        if len(time_array) > note_off_index + note_off_index * 0.4:
-            zeros, time_val, zeros2 = np.split(time_array, [note_on_index, int(note_off_index * 1.4)])
+    def __get_last_time_value__(self,note):
+        note_off_time = note.initial_time + note.duration
+        if (note.duration > self.s_time):
+            return note_off_time  -((note.duration - self.s_time) * self.stageSslope + self.s_amp) / self.stageRslope
+        else: #Si no se completan todas las etapas...
+            if note.duration < self.d_time:
+                return note_off_time  -((note.duration ) * self.stageAslope ) / self.stageRslope
+                
+            elif note.duration < self.s_time:
+                return note_off_time  -((note.duration - self.d_time) * self.stageDslope + self.d_amp) / self.stageRslope
 
-        else:'''
-        zeros, time_val, zeros2 = np.split(time_array, [note_on_index, len(time_array) - 1])
+    def get_amplitude_array(self, note, time_base):
+        note_off_time = note.initial_time + note.duration
+        note_on_index = time_base.get_time_index_in_time_array(note.initial_time)
+        note_off_index = time_base.get_time_index_in_time_array(note_off_time)
+
+        last_time_value = self.__get_last_time_value__(note)
+
+        time_array_aux = time_base.get_time_array()
+        last_time_index = time_base.get_time_index_in_time_array(last_time_value)
+        if (last_time_index == -1): #error
+            last_time_index = note_off_index #corta al final
+
+
+
+        zeros, time_val, zeros2 = np.split(time_array_aux, [note_on_index, last_time_index]) #se obtiene solo el arreglo que necesita
 
         zeros = [0] * len(zeros)
         zeros2 = [0] * len(zeros2)
-        data = []
-
-        for time in time_val:
-            data.append(self.get_amplitude(time, note_on_time, note_off_time))
-
+        data = self.get_adsr(time_val, note, time_base)
+        
         amp = np.concatenate([zeros, data, zeros2])
-
         return amp
+    
+    def get_adsr(self, time_array, note, time_base):
+        note_off_time = note.duration + note.initial_time
+               
+        if (note_off_time > max(time_array)):
+            r_time_index = len(time_array)-1
+        else:
+             r_time_index =time_base.get_time_index_in_time_subarray(time_array, note_off_time)
+       
+        if (note.duration > self.s_time):
+            
+            d_time_index = time_base.get_time_index_in_time_subarray(time_array,  self.d_time + note.initial_time)
+            s_time_index = time_base.get_time_index_in_time_subarray(time_array,  self.s_time + note.initial_time)
+            stageA, stageD, stageS, stageR = np.split(time_array, [d_time_index, s_time_index, r_time_index])
+            stageA =  (stageA - note.initial_time) * self.stageAslope
+            stageD = (stageD - note.initial_time - self.d_time) * self.stageDslope + self.d_amp
+            stageS = (stageS - note.initial_time - self.s_time) * self.stageSslope + self.s_amp
+            stageR = (stageR - note_off_time) * self.stageRslope + (
+                           note.duration - self.s_time) * self.stageSslope + self.s_amp
+            
+            data = np.concatenate([stageA, stageD, stageS, stageR])
+            
+        else: #Si no se completan todas las etapas...
+            if note.duration < self.d_time:
+                stageA, stageR = np.split(time_array, [r_time_index])
+                stageA =  (stageA - note.initial_time) * self.stageAslope
+                stageR = (stageR  - note_off_time) * self.stageRslope +note.duration * self.stageAslope
+                
+                data = np.concatenate([stageA, stageR])
+                # ETAPA A y etapa R
+                
+            elif note.duration < self.s_time:
+                # ETAPA A, ETAPA D Y ETAPA R
+                d_time_index = time_base.get_time_index_in_time_subarray(time_array,  self.d_time + note.initial_time)
+        
+                stageA,stageD, stageR = np.split(time_array, [d_time_index, r_time_index])
+                stageA =  (stageA - note.initial_time) * self.stageAslope
+                stageD = self.d_amp + self.stageDslope * (stageD - note.initial_time - self.d_time)
+                stageR = (stageR - note_off_time) * self.stageRslope + self.d_amp + (
+                       note.duration - self.d_time) * self.stageDslope
+                
+                data = np.concatenate([stageA, stageD, stageR])
+                
+        return data
+

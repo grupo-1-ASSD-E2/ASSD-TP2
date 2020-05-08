@@ -1,21 +1,22 @@
-from ProgramaPrincipal.BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
+from BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 import numpy as np
 
-from ProgramaPrincipal.BackEnd.AdditiveSynthesis.PartialNote import PartialNote
+from BackEnd.AdditiveSynthesis.PartialNote import PartialNote
 
 
 class Trumpet:
-    def __init__(self):
-        self.synthesizer = AdditiveSynthesizer()
+    def __init__(self, synthesizer):
+        self.synthesizer = synthesizer
         self.instrument_name = "Trumpet"
 
     def __get_partials__(self, frequency):
         freq_of_samples = 261.63
 
         multiplier = frequency / freq_of_samples
+        
 
         partial1 = PartialNote(261.65532 * multiplier, 0.76483, 0.37, 0.627, 0.039, 0.89, 0.0297, 7.4, 0.028, 7.61)
-
+        
         partial2 = PartialNote(523.310642 * multiplier, 0.1167782, 0.37, 0.487, 0.065, 0.627, 0.069, 7.4, 0.05, 7.60)
 
         partial3 = PartialNote(784.837889 * multiplier, -1.5167848, 0.37, 0.474, 0.0976, 0.627, 0.1175, 7.4, 0.084,
@@ -47,5 +48,5 @@ class Trumpet:
 
         partials = [partial1, partial2, partial3, partial4, partial5, partial6, partial7, partial8, partial9, partial10,
                     partial11, partial12, partial13, partial14]
-        # partials = [partial1]
+        #partials = [partial1]
         return partials

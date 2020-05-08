@@ -1,20 +1,14 @@
 import numpy as np
-# from ProgramaPrincipal.BackEnd.Instruments.Saxo import Saxo
-# from ProgramaPrincipal.BackEnd.Instruments.Trumpet import Trumpet
-# from ProgramaPrincipal.BackEnd.Instruments.Violin import Violin
-# from ProgramaPrincipal.BackEnd.MidiNote import MidiNote
-# from ProgramaPrincipal.BackEnd.MidiTrack import MidiTrack
-# from ProgramaPrincipal.BackEnd.TimeBase.Tempo import Tempo
-# from ProgramaPrincipal.BackEnd.TimeBase.TimeBase import TimeBase
-# from ProgramaPrincipal.BackEnd.Track import Track
-#from Instruments.Saxo import Saxo
-#from Instruments.Trumpet import Trumpet
-#from Instruments.Violin import Violin
-from TimeBase.Tempo import Tempo
-from TimeBase.TimeBase import TimeBase
-from Track import Track
-from Note import Note
 
+from BackEnd.Instruments.Trumpet import Trumpet
+from BackEnd.Instruments.Oboe import Oboe
+from BackEnd.Instruments.Violin import Violin
+#from BackEnd.Instruments.Piano import Piano
+from BackEnd.MidiNote import MidiNote
+from BackEnd.MidiTrack import MidiTrack
+from BackEnd.TimeBase.Tempo import Tempo
+from BackEnd.TimeBase.TimeBase import TimeBase
+from BackEnd.Track import Track
 import simpleaudio as sa
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
@@ -31,6 +25,7 @@ class Song:
         self.output_time_signal = []
         self.midi_file = None
         self.fs = 44100
+        #self.backend = backend
 
     def set_time_base(self, time_base):
         self.time_base = time_base
@@ -107,19 +102,51 @@ class Song:
         time_base.add_new_tempo(Tempo(0.005, 0, 499)) #entre ticks 0 y 499 el tiempo entre dos ticks es 0.005s
         time_base.add_new_tempo(Tempo(0.015, 500, 999))
         track1 = Track()
-        track1.assign_instrument(Trumpet())
+        track1.assign_instrument(self.backend.instruments["trumpet"])
         track1.initialize_output_signal_array(time_base)
         midi_track = MidiTrack()
         track1.associate_midi_track(midi_track)
-        note1 = MidiNote(60, 0, 1, note_off_tick=500)
-        note2 = MidiNote(64, 400, 0.5, note_off_tick=600)
-        note3 = MidiNote(61, 600, 1, note_off_tick=850)
-        note4 = MidiNote(55, 800, 1, note_off_tick=1000)
+
+        note1 = MidiNote(60, 1, 1, duration=2)
+        note2 = MidiNote(55, 3, 0.5, duration=2)
+        note3 = MidiNote(59, 4, 1, duration=1)
+        note4 = MidiNote(62, 6, 0.9, duration=2)
+        '''
+        note5 = MidiNote(62, 500, 1, note_off_tick=700)
+        note6 = MidiNote(66, 600, 0.5, note_off_tick=700)
+        note7 = MidiNote(51, 700, 1, note_off_tick=850)
+        note8 = MidiNote(55, 800, 0.9, note_off_tick=860)
+        note9 = MidiNote(63, 900, 1, note_off_tick=990)
+        note10 = MidiNote(67, 100, 0.5, note_off_tick=500)
+        note11= MidiNote(52, 200, 1, note_off_tick=450)
+        note12 = MidiNote(56, 300, 0.9, note_off_tick=950)
+        note13 = MidiNote(60, 400, 1, note_off_tick=650)
+        note14 = MidiNote(68, 500, 0.5, note_off_tick=620)
+        note15= MidiNote(71, 600, 1, note_off_tick=750)
+        note16= MidiNote(50, 800, 0.9, note_off_tick=1000)'''
+
+        
         midi_track.add_note(note1)
+        
         midi_track.add_note(note2)
         midi_track.add_note(note3)
         midi_track.add_note(note4)
-        track1.initialize_output_signal_array(time_base)
+        '''
+        midi_track.add_note(note5)
+
+        midi_track.add_note(note6)
+        midi_track.add_note(note7)
+        midi_track.add_note(note8)
+        midi_track.add_note(note9)
+        midi_track.add_note(note10)
+        midi_track.add_note(note11)
+        midi_track.add_note(note12)
+        midi_track.add_note(note13)
+        midi_track.add_note(note14)
+        midi_track.add_note(note15)
+        midi_track.add_note(note16)'''
+
+        
         self.add_track(track1)
         self.set_time_base(time_base)
         self.output_signal = self.get_output_signal()

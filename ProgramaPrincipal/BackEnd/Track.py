@@ -1,6 +1,7 @@
 #from ProgramaPrincipal.BackEnd.TimeBase.TimeBase import TimeBase
-from TimeBase.TimeBase import TimeBase
 import Note
+from BackEnd.TimeBase.TimeBase import TimeBase
+
 
 #ARMAR OUTPUT SIGNAL CON EL SIZE CORRESPONDIENTE SEGUN EL TEMPO DE LA CANCION Y RELLENARO CON CEROS INICIALMENTE
 
