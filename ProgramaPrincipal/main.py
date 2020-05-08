@@ -24,8 +24,6 @@ t = np.linspace(0, duration, int(round(fs * duration))) # Produces a 1 second Au
     # type 1 (synchronous): all tracks start at the same time
     # type 2 (asynchronous): each track is independent of the others
 
-
-
 # To reproduce midi file
 def reproduce_midi_file(midi_file):
     out = mido.get_output_names()[0]
@@ -65,10 +63,6 @@ def play_sine_wave(audio):
 
 def create_wav_file(file_name, fs, audio):
     wavfile.write(file_name, fs, audio)
-
-
-
-
 
 #print_midi_info()
 #reproduce_midi_file(mid3)

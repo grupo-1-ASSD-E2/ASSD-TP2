@@ -18,12 +18,12 @@ class BackEnd:
         self.song = Song()
         self.song.test_without_midi()
         #song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
-        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-
+        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
+        self.midi_path = 'ProgramaPrincipal/Resources/'
     #song.generate_output_signal(self, N, arrays_to_add)
 
     def assign_midi_path(self, midi_file_name):
-        self.song.load_midi_file_info(midi_file_name) #SEGUIIIIIIIIIIIIIIR
+        self.song.load_midi_file_info(self.midi_path + midi_file_name)
 
     def synthesize_note(self, note, instrument):
         if (instrument == Instruments.TRUMPET.value[0] or instrument == Instruments.VIOLIN.value[0] or instrument == Instruments.OBOE.value[0]):
