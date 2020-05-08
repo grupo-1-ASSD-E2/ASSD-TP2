@@ -1,11 +1,13 @@
 class Note:
-    def __init__(self, note_number, duration, velocity, initial_time):
+    def __init__(self, note_number, duration, velocity, initial_time, fs): #AGREGAR fs DESDE DONDE CREO NOTAS!!
         self.frequency = self.__note_to_frequency__(note_number)
         self.duration = duration
         self.velocity = velocity
         self.initial_time = initial_time
         self.ending_time = initial_time + duration
-        self.output_signal = [] #SINTETIZADOR TIENE QUE DEVOLVER ESTO
+        self.fs = fs
+        self.note_signal = [] #SINTETIZADOR TIENE QUE DEVOLVER ESTO
+
 
 
     @staticmethod
