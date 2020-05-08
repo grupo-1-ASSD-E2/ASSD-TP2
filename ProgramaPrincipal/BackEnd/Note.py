@@ -15,5 +15,5 @@ class Note:
         a = 440  # frequency of A (coomon value is 440Hz)
         return (a / 32) * (2 ** ((midi_note_code - 9) / 12))
     
-    def get_note_signal(self):
-        return self.note_signal
+    def get_output_signal(self):
+        return self.output_signal

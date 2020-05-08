@@ -8,6 +8,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
 
     def create_note_signal(self, note, instrument):
         start_time = time.time()
+        '''
         amp_values = np.array(time_base.get_time_array())
 
         time_values = amp_values.copy()
@@ -28,6 +29,11 @@ class AdditiveSynthesizer(SynthesizerAbstract):
                     freq * 2 * np.pi * (time_values - note.initial_time) +phase*(180/np.pi))
 
         note_signal = amp_values * note.velocity
+        '''
+        
+
+
+
         endtime = time.time()
 
         print(str(endtime - start_time))

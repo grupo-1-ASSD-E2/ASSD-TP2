@@ -14,6 +14,7 @@ from scipy.io import wavfile
 import mido
 from mido import MidiFile
 import operator
+from BackEnd.Note import Note
 
 
 class Song:
@@ -103,26 +104,26 @@ class Song:
         track1 = Track()
         track1.assign_instrument(self.backend.instruments["trumpet"])
         track1.initialize_output_signal_array(time_base)
-        midi_track = MidiTrack()
+        midi_track = Track()
         track1.associate_midi_track(midi_track)
 
-        note1 = MidiNote(60, 1, 1, duration=2)
-        note2 = MidiNote(55, 3, 0.5, duration=2)
-        note3 = MidiNote(59, 4, 1, duration=1)
-        note4 = MidiNote(62, 6, 0.9, duration=2)
+        note1 = Note(60, 1, 1, duration=2)
+        note2 = Note(55, 3, 0.5, duration=2)
+        note3 = Note(59, 4, 1, duration=1)
+        note4 = Note(62, 6, 0.9, duration=2)
         '''
-        note5 = MidiNote(62, 500, 1, note_off_tick=700)
-        note6 = MidiNote(66, 600, 0.5, note_off_tick=700)
-        note7 = MidiNote(51, 700, 1, note_off_tick=850)
-        note8 = MidiNote(55, 800, 0.9, note_off_tick=860)
-        note9 = MidiNote(63, 900, 1, note_off_tick=990)
-        note10 = MidiNote(67, 100, 0.5, note_off_tick=500)
-        note11= MidiNote(52, 200, 1, note_off_tick=450)
-        note12 = MidiNote(56, 300, 0.9, note_off_tick=950)
-        note13 = MidiNote(60, 400, 1, note_off_tick=650)
-        note14 = MidiNote(68, 500, 0.5, note_off_tick=620)
-        note15= MidiNote(71, 600, 1, note_off_tick=750)
-        note16= MidiNote(50, 800, 0.9, note_off_tick=1000)'''
+        note5 = Note(62, 500, 1, note_off_tick=700)
+        note6 = Note(66, 600, 0.5, note_off_tick=700)
+        note7 = Note(51, 700, 1, note_off_tick=850)
+        note8 = Note(55, 800, 0.9, note_off_tick=860)
+        note9 = Note(63, 900, 1, note_off_tick=990)
+        note10 = Note(67, 100, 0.5, note_off_tick=500)
+        note11= Note(52, 200, 1, note_off_tick=450)
+        note12 = Note(56, 300, 0.9, note_off_tick=950)
+        note13 = Note(60, 400, 1, note_off_tick=650)
+        note14 = Note(68, 500, 0.5, note_off_tick=620)
+        note15= Note(71, 600, 1, note_off_tick=750)
+        note16= Note(50, 800, 0.9, note_off_tick=1000)'''
 
         
         midi_track.add_note(note1)
@@ -158,7 +159,7 @@ class Song:
         # Start playback
         audio = self.output_signal * (2 ** 15 - 1) / np.max(np.abs(self.output_signal))
         audio = audio.astype(np.int16)
-        play_obj = sa.play_buffer(audio, 1, 2, self.time_base.fs)
+        play_obj = sa.play_buffer(audio, 1, 2, self.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done()
 
@@ -172,7 +173,7 @@ class Song:
 
     def plot_spectrum(self, finalfreq): #MOVER
         # plot different spectrum types:
-        plt.magnitude_spectrum(self.output_signal, Fs=self.time_base.fs, color='C1')
+        plt.magnitude_spectrum(self.output_signal, Fs=self.fs, color='C1')
         plt.xlabel('f(Hz)')
         plt.ylabel('amplitude(A)')
         plt.xlim(0, finalfreq)
@@ -180,7 +181,7 @@ class Song:
 
     def plot_phase(self, finalfreq): #MOVER
         # plot different spectrum types:
-        plt.phase_spectrum(self.output_signal, Fs=self.time_base.fs, color='C1')
+        plt.phase_spectrum(self.output_signal, Fs=self.fs, color='C1')
         plt.xlabel('f(Hz)')
         plt.ylabel('rad')
         plt.xlim(0, finalfreq)
@@ -190,7 +191,21 @@ class Song:
         # Start playback
         audio = self.output_signal * (2 ** 15 - 1) / np.max(np.abs(self.output_signal))
         audio = audio.astype(np.int16)
-        wavfile.write(file_name, self.time_base.fs, audio)
+        wavfile.write(file_name, self.fs, audio)
 
+    def generate_output_signal(self, N, arrays_to_add):#usar len(note.note_signal)
+        output = np.array([])
+        for i in arrays_to_add:
+            subarray = i.output_signal
+            init_time_index = int(round(i.initial_time * self.fs))
+            index_difference = np.zeros(init_time_index - len(output))
+            if init_time_index > len(output):
+                output = np.concatenate((output, index_difference))
+                output = np.concatenate((output, subarray))
+            else:
+                superpose , add = np.split(subarray, abs(index_difference))
+                output[init_time_index:] += superpose
+                output = np.concatenate((output, add))
+        return output[0:N]
 
 

@@ -13,14 +13,6 @@ class SB_Synthesizer(SynthesizerAbstract):
         self.existing_frec_dict()
         self.my_samples_frecuencies()
 
-    def synthesize_track(self, track):
-        track.output_signal = self.generate_output_signal(track)
-
-    def generate_output_signal(self, track):#usar len(note.note_signal)
-        for note in track.notes:
-            note_to_add = self.create_note_signal(note, track.time_base, track.instrument)
-            otuput_track = note_to_add
-
     def create_note_signal(self, note, time_base, instrument):
         closest_note = self.closest_note_search(note.frequency)
         midi_code_note = self.midi_code_from_frec(note.frequency)
@@ -32,11 +24,6 @@ class SB_Synthesizer(SynthesizerAbstract):
         note_length = len(np.linspace(0, note.duration, num=(time_base.fs * note.duration)))
         time_stretched_note = time_stretch(pitched_note, len(pitched_note) / (note_length - 2**11)) #Creates array of specified length
 
-        initial_index = time_base.get_tick_index_in_time_array(note.initial_time)
-
-        amp_values = np.array(time_base.get_time_array())
-        amp_values = [0] * len(amp_values)
-        
         note.output_signal = time_stretched_note
         
 
