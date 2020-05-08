@@ -5,8 +5,8 @@ from BackEnd.AdditiveSynthesis.PartialNote import PartialNote
 
 
 class Trumpet:
-    def __init__(self):
-        self.synthesizer = AdditiveSynthesizer()
+    def __init__(self, synthesizer):
+        self.synthesizer = synthesizer
         self.instrument_name = "Trumpet"
 
     def __get_partials__(self, frequency):

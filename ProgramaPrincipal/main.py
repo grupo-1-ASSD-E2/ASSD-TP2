@@ -92,11 +92,11 @@ sine = get_sine_wave(1,440)
 
 #sine = get_sine_wave(0.5,440)
 #sine += get_sine_wave(0.2,440)
-#sine += get_sine_wave(0.2,550)
+#sine += get_sine_wave(0.2,550)'''
 
 
 
-print_midi_info()
-reproduce_midi_file(mid3)'''
+#print_midi_info()
+#reproduce_midi_file(mid3)
 
 backend = BackEnd()

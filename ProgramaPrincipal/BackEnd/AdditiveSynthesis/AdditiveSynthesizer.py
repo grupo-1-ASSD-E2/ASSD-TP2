@@ -6,8 +6,11 @@ class AdditiveSynthesizer(SynthesizerAbstract):
         i = 0
 
     def synthesize_track(self, track):
+        i = 1
         for note in track.midi_track.midi_notes:
             track.output_signal += self.create_note_sig(note, track.time_base, track.instrument)
+            print(str(i))
+            i+=1
 
     def create_note_sig(self, note, time_base, instrument):
 
