@@ -5,8 +5,8 @@ from BackEnd.Song import Song
 from BackEnd.Track import Track
 from BackEnd.Note import Note
 from BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
-from BackEnd.KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
-from BackEnd.SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
+#from BackEnd.KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
+#from BackEnd.SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
 from BackEnd.Instruments import Instruments
 
 import simpleaudio as sa
@@ -15,16 +15,16 @@ import simpleaudio as sa
 class BackEnd:
     def __init__(self):
         self.additive_synthesizer = AdditiveSynthesizer()
-        self.ks_synthesizer = KS_Synthesizer()
-        self.sb_synthesizer = SB_Synthesizer()
+       # self.ks_synthesizer = KS_Synthesizer()
+        #self.sb_synthesizer = SB_Synthesizer()
         self.song = Song()
         #song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
         self.midi_path = 'ProgramaPrincipal/Resources/'
         #PARA PROBAR
-        self.song.tracks[0].assign_instrument('Trumpet')
-        self.synthesize_track(self.song.tracks[0])
-        self.play_song(self.song.tracks[0].output_signal)
+        self.song.tracks[12].assign_instrument('Trumpet')
+        self.synthesize_track(self.song.tracks[12])
+        self.play_song(self.song.tracks[12].output_signal)
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
