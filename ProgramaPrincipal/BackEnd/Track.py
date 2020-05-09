@@ -10,8 +10,9 @@ class Track:
         #self.midi_track = None
         self.notes = []
         self.instrument = None
-        self.output_signal = None
+        self.output_signal = []
         self.time_base = None #ver si esto se necesita aca o no...
+        self.initial_time = 0
         
     def assign_instrument(self, instrument):
         self.instrument = instrument

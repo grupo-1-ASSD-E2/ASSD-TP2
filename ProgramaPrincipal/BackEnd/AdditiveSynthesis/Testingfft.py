@@ -4,10 +4,8 @@ import numpy as np
 import scipy
 from scipy import fftpack
 
-from PartialNote import PartialNote
 
-
-fs_rate, signal = wavfile.read("ProgramaPrincipal/BackEnd/AdditiveSynthesis/ob-c4.wav")
+fs_rate, signal = wavfile.read("ProgramaPrincipal/BackEnd/AdditiveSynthesis/acc-c4.wav")
 
 
 N = signal.shape[0]
@@ -62,23 +60,25 @@ def plot_once():
     # plot time signal:
     #axes[0].set_title("Signal")
     axes[0].plot( t,signal, color='C0')
-
+    
+    axes[0].set_title("Time signal")
     axes[0].set_ylabel("Amplitude")
-    axes[0].set_ylabel("Time")
+    axes[0].set_xlabel("Time (s)")
 
     # plot different spectrum types:
     axes[1].set_title("Freq Spectrum")
     axes[1].magnitude_spectrum(signal, Fs=fs_rate, color='C1')
-
+    axes[1].set_xlabel("Freq (f)")
 
     axes[2].set_title("Phase Spectrum ")
     axes[2].phase_spectrum(signal, Fs=fs_rate, color='C2')
-
+    axes[2].set_xlabel("Freq (f)")
 
     fig.tight_layout()
     plt.show()
 
 
 plot_once()
-iterate(1)
-iterate(6)
+#iterate(1)
+#iterate(6)
+iterate(16)

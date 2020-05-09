@@ -42,7 +42,7 @@ class Song:
 
     def load_midi_file_info(self, midi_file_path):
         self.midi_file = MidiFile(midi_file_path, clip=True)
-        print(self.midi_file)
+        #print(self.midi_file)
         self.time_base = TimeBase(self.fs)
         ticks_counter = 0
         prev_tempo = 0.5

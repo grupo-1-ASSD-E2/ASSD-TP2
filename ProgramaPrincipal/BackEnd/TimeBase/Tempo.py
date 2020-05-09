@@ -1,6 +1,6 @@
 class Tempo:
     def __init__(self, tempo, ticks_per_beat, delta_ticks, start_tick):
-       # print('New tempo!')
+        #print('New tempo!')
         self.tempo = tempo
         self.ticks_per_beat = ticks_per_beat
         self.delta_ticks = delta_ticks

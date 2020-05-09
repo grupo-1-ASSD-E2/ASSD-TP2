@@ -5,28 +5,76 @@ import numpy as np
 import soundfile as sf
 import os
 from scipy.io.wavfile import write
+import librosa
+import time
+
 
 
 class SB_Synthesizer(SynthesizerAbstract):
 
     def __init__ (self):
         self.existing_frec_dict()
-
-    def create_note_signal(self, note, instrument):
-        self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + instrument + '/'
+        self.instrument = 'Piano'
+        self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
         self.my_samples_frecuencies()
 
+    def create_note_signal(self, note, instrument):
+        #If the instrument changes, search new samples
+        self.init_instrument_samples(instrument)
+
+        #Look for the closest note in the samples and calculate the shifts required
         closest_note = self.closest_note_search(note.frequency)
         midi_code_note = self.midi_code_from_frec(note.frequency)
         midi_code_closest_note = self.midi_code_from_frec(self.samples_frec_dic[closest_note])
         shift = midi_code_note - round(midi_code_closest_note)
         data, samplerate = sf.read(self.samples_directory + closest_note)
-        pitched_note = note_scaling(data, samplerate, shift)
+        
+        #Pitch the sample to create the required note
+        if int(shift) != 0:
+            pitched_note = note_scaling(data, samplerate, shift)
+        else:
+            pitched_note = data
+        
+       
+        note_length = int(round(note.fs * note.duration))
 
-        note_length = len(np.linspace(0, note.duration, num=(int(round(note.fs * note.duration)))))
-        time_stretched_note = time_stretch(pitched_note, len(pitched_note) / (note_length - 2**11)) #Creates array of specified length
+        #First method: hecho por gonza
+        
+        if note.duration == 0.0:
+            note.output_signal = []
+        else:
+            time_stretched_note = time_stretch(pitched_note, len(pitched_note) / (note_length - 2**11), 2**11,2**11//4) #Creates array of specified length
+            note.output_signal = time_stretched_note
+        
 
-        note.output_signal = time_stretched_note
+        #second method: adapting librosa
+        '''
+        if note.duration == 0.0:
+            note.output_signal = []
+        else:
+            stft = librosa.stft(pitched_note)
+            scaling_factor = len(pitched_note) / note_length
+            stft_stretch = phase_vocoder(stft,scaling_factor)
+            time_stretched_note = librosa.istft(stft_stretch, dtype=pitched_note.dtype, length=note_length)
+            note.output_signal = time_stretched_note
+        '''
+
+        #Third method: Using librosa
+        '''
+        if note.duration == 0.0:
+            note.output_signal = []
+        else:
+            scaling_factor = len(pitched_note)/note_length
+            time_stretched_note = librosa.effects.time_stretch(pitched_note,scaling_factor)
+            note.output_signal = time_stretched_note
+        '''
+
+    def init_instrument_samples(self, instrument):
+        if self.instrument != instrument:
+            self.instrument = instrument
+            self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
+            self.my_samples_frecuencies()            
+
 
     def midi_code_from_frec(self, frec):
         '''
