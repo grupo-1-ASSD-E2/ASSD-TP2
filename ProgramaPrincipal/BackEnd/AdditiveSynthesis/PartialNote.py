@@ -25,6 +25,8 @@ class PartialNote:
 
         self.output_signal = np.array([])
 
+        self.last_time_value = -1
+
     
 
     def get_phase(self):
@@ -50,6 +52,7 @@ class PartialNote:
     
 
         last_time_value = self.__get_last_time_value__(note)
+        self.last_time_value = last_time_value
 
 
         data = self.get_adsr(note, last_time_value)

@@ -13,18 +13,28 @@ class AdditiveSynthesizer(SynthesizerAbstract):
         amplitude_array = None
         partials = self.__get_partials__(instrument, note.frequency)
         for i in range(0, len(partials)):
+            freq = partials[i].get_freq()
+            phase = partials[i].get_phase()
+           
             partials[i].get_amplitude_array(note)
+            time_vals = np.linspace(0, partials[i].last_time_value, note.fs*partials[i].last_time_value)
+
+            output_sine = partials[i].output_signal * np.sin(
+                    freq * 2 * np.pi * (time_vals) +phase*(180/np.pi))
+
             if i == 0:
-                amplitude_array = partials[i].output_signal
+                amplitude_array = output_sine
             else:
-                difference = len(amplitude_array) - len(partials[i].output_signal)
+                difference = len(amplitude_array) - len(output_sine)
                 zeros = np.zeros(abs(difference))
                 if (difference > 0):
-                    amplitude_array += np.concatenate([partials[i].output_signal, zeros])
+
+
+                    amplitude_array += np.concatenate([output_sine, zeros])
                 elif (difference <0):
-                    amplitude_array = np.concatenate([amplitude_array, zeros]) + partials[i].output_signal
+                    amplitude_array = np.concatenate([amplitude_array, zeros]) +output_sine
                 else:
-                    amplitude_array += partials[i].output_signal
+                    amplitude_array += output_sine
 
 
         note.output_signal = amplitude_array
