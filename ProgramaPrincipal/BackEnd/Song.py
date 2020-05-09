@@ -45,22 +45,42 @@ class Song:
         print(self.midi_file)
         self.time_base = TimeBase(self.fs)
         ticks_counter = 0
-        prev_tempo = 0
+        prev_tempo = 0.5
+        first_set_tempo = True
+        prev_ending = 0
+        for msg in self.midi_file.tracks[0]:
+            print(msg)
+        print('--------------------')
         for msg in self.midi_file.tracks[0]: #saving tempos and time info
             ticks_counter += msg.time
-            if msg.type == 'set_tempo':
+            if msg.type == 'set_tempo' and ticks_counter != 0: # and msg.time != 0:
                 print(msg)
-                new_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, msg.time, ticks_counter - msg.time)
-                prev_tempo = msg.tempo
+                print('tick_counter', ticks_counter)
+                if first_set_tempo == True:
+                    new_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, ticks_counter - prev_ending, 0)
+                    first_set_tempo = False
+                    print('tempo', prev_tempo)
+                    prev_tempo = msg.tempo
+                else:
+                    print('prev ending', prev_ending)
+                    new_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, ticks_counter - (prev_ending + 1), prev_ending + 1)
+                    print('tempo', prev_tempo)
+                    # print(msg)
+                    # new_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, msg.time, ticks_counter - msg.time) #agrego -1
+                    prev_tempo = msg.tempo
                 self.time_base.add_new_tempo(new_tempo)
+                prev_ending = new_tempo.end_tick
                 #print(msg.tempo)
-                #print(msg.time)   
+                #print(msg.time) 
+            elif msg.type == 'set_tempo' and ticks_counter == 0:
+                print(msg)
+                prev_tempo = msg.tempo 
         track_counter = 1
         for track in self.midi_file.tracks[1:]: #saving tracks and notes info
             new_track = Track()
             new_track.time_base = self.time_base
             ticks_counter = 0
-            #print('TRACK NUMBER:', track_counter)
+            print('TRACK NUMBER:', track_counter)
             same_time_counter = 0
             notes_still_on_counter = 0
             good_notes_counter = 0
@@ -78,7 +98,14 @@ class Song:
                                         note_still_on = False
                                         t_on = self.time_base.convert_tick_to_time(ticks_counter)
                                         t_off = self.time_base.convert_tick_to_time(ticks_counter1)
+                                        if t_off < t_on:
+                                            print('ticks_counter', ticks_counter)
+                                            print('t_on', t_on)
+                                            print('ticks_counter1', ticks_counter1)
+                                            print('t off:',t_off)
                                         note_duration = t_off - t_on
+                                        #if track_counter == 9:
+                                            #print('note duration:', note_duration)
                                         new_note = Note(msg.note, note_duration, msg.velocity, t_on, self.fs) #Si descartamos las que empiezan y terminan al mismo tiempo, meter esto adentro del if
                                         new_track.add_note(new_note)
                                         if msg1.time == 0:    #CLAVE ESTO CORREGIRLOOOOOOOOO HAY QUE COMPARAR TIEMPOS ABSOLUTOS DE INI Y FIN
@@ -91,9 +118,9 @@ class Song:
                             notes_still_on_counter += 1
             self.tracks.append(new_track)
             track_counter += 1
-            print('good_notes_counter', good_notes_counter)
-            print('same_time_counter:', same_time_counter)
-            print('notes_Still_on_counter:', notes_still_on_counter)
+            # print('good_notes_counter', good_notes_counter)
+            # print('same_time_counter:', same_time_counter)
+            # print('notes_Still_on_counter:', notes_still_on_counter)
 
 
     

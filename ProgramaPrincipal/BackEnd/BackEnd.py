@@ -25,9 +25,10 @@ class BackEnd:
         self.midi_path = 'ProgramaPrincipal/Resources/'
         #PARA PROBAR
         
-        self.song.tracks[6].assign_instrument('Guitar')
-        self.synthesize_track(self.song.tracks[6])
-        self.play_signal(self.song.tracks[6].output_signal)
+        #self.song.tracks[6].assign_instrument('Guitar')
+        #self.synthesize_track(self.song.tracks[6])
+        #self.play_signal(self.song.tracks[6].output_signal)
+        
         #self.testing()
 
     def assign_midi_path(self, midi_file_name):
