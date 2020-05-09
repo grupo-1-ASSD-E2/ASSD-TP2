@@ -1,0 +1,18 @@
+# Audio effect base class
+import numpy as np
+
+
+class Effect(object):
+    def __init__(self, name):
+        self.name = name
+        self.properties = {}  # {"Prop. Name": ((data_type, (min, max)), default_value)} requested format
+
+    def get_attributes(self):
+        """ Provide basic attributes to adjust for gui implementation """
+        return self.properties.copy()
+
+    def get_impulse_response(self, buffer_length=44100) -> np.ndarray:
+        pass
+
+    def change_param(self, new_properties):
+        pass

@@ -1,15 +1,21 @@
 import numpy as np
+from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 
-class EcoSimple(object):
+class EcoSimple(Effect):
 
-    def __init__(self, buffer_len, gain, delay):
+    def __init__(self, buffer_len, sample_rate, gain, delay):
+        super(EcoSimple, self).__init__("Eco")
+        self.properties = {"Absorción": ((float, (0, 1)), gain),
+                           "Retardo (ms)": ((float, (0, buffer_len*1000.0/float(sample_rate))), delay)}
+
         self.old_input = np.zeros(int(buffer_len))
         self.buffer_len = buffer_len
+        self.sample_rate = sample_rate
         self.p2read = buffer_len - delay
         self.p2write = 0
         self.g = gain
-        self.m = delay
+        self.m = np.floor(delay*sample_rate/1000.0)
 
     def compute(self, sample: np.ndarray, sample_size: int) -> np.ndarray:
         out = np.zeros(sample_size)
@@ -36,9 +42,12 @@ class EcoSimple(object):
 
         return h
 
-    def change_param(self, new_gain, new_delay):
-        self.g = new_gain
-        self.m = new_delay
+    def change_param(self, new_properties):
+        new_gain = new_properties["Absorción"][1]
+        new_delay = np.floor(new_properties["Retardo (ms)"][1]*self.sample_rate/1000.0)
+
+        self.g = new_gain if new_gain > 1 else self.g  # Validate input
+        self.m = new_delay if 0 < new_delay < self.buffer_len else new_delay % self.buffer_len  # Validate input
         p2w = self.p2write
         self.p2read = p2w - new_delay if p2w >= new_delay else p2w - new_delay + self.buffer_len
 
