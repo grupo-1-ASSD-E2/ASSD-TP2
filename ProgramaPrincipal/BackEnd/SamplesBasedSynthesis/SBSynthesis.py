@@ -35,17 +35,20 @@ class SB_Synthesizer(SynthesizerAbstract):
         else:
             pitched_note = data
         
-        start_time = time.time()
+       
+        note_length = int(round(note.fs * note.duration))
 
         #First method: hecho por gonza
-        note_length = int(round(note.fs * note.duration))
+        
         if note.duration == 0.0:
             note.output_signal = []
         else:
-            time_stretched_note = time_stretch(pitched_note, len(pitched_note) / (note_length - DFT_size), DFT_size,DFT_size/8) #Creates array of specified length
+            time_stretched_note = time_stretch(pitched_note, len(pitched_note) / (note_length - 2**11), 2**11,2**11//4) #Creates array of specified length
             note.output_signal = time_stretched_note
-            
+        
+
         #second method: adapting librosa
+        '''
         if note.duration == 0.0:
             note.output_signal = []
         else:
@@ -54,16 +57,18 @@ class SB_Synthesizer(SynthesizerAbstract):
             stft_stretch = phase_vocoder(stft,scaling_factor)
             time_stretched_note = librosa.istft(stft_stretch, dtype=pitched_note.dtype, length=note_length)
             note.output_signal = time_stretched_note
+        '''
 
         #Third method: Using librosa
+        '''
         if note.duration == 0.0:
             note.output_signal = []
         else:
             scaling_factor = len(pitched_note)/note_length
             time_stretched_note = librosa.effects.time_stretch(pitched_note,scaling_factor)
-            print(time.time() - start_time)
             note.output_signal = time_stretched_note
-        
+        '''
+
     def init_instrument_samples(self, instrument):
         if self.instrument != instrument:
             self.instrument = instrument

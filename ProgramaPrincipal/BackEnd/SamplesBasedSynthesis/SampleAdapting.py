@@ -13,7 +13,7 @@ def note_scaling(input_data, input_samp, shift):
 	transposed = pitch_shift(input_data, shift)
 	return transposed.astype(input_data.dtype)
 
-def pitch_shift(input_data, n, DFT_size = 2**11, hop_size=2048/8):
+def pitch_shift(input_data, n, DFT_size = 2**11, hop_size=2048//4):
 	'''
 	This function begins to change the pitch of the sound by implementing the Phase Vocoder method. 
 	That is first time-stretching the sound, then speedh changing it all by a common factor.
@@ -32,7 +32,7 @@ def change_speed(input_data, factor):
 	indices = indices[indices < len(input_data)].astype(int) #Astype int takes the neghboring values to these, but then preserves the same vector length. 
 	return input_data[indices.astype(int)]
 
-def time_stretch(input_data, factor, DFT_size=2**11, hop_size=2**11/8):
+def time_stretch(input_data, factor, DFT_size=2**11, hop_size=2**11//4):
 	'''
 	This function stretches the input file by an input factor maintaining its pitch.
 	Returns: Array of the note shifted by factor.

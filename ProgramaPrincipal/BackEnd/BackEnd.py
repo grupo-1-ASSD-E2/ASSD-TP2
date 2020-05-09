@@ -35,11 +35,13 @@ class BackEnd:
         '''
 
         #Para probar notas
-        '''
-        note = Note(60,2,1,1,44100)
-        self.synthesize_note(note, 'Accordeon')
+        start_time = time.time()
+        note = Note(62,8,1,1,44100)
+        self.synthesize_note(note, 'Cello')
+        print(time.time() - start_time)
         self.play_signal(note.output_signal)
-        ''' 
+        
+        
         
         #Para probar un track
         '''
@@ -55,10 +57,10 @@ class BackEnd:
 #PARA PROBAR
     def play_signal(self, signal): 
         # Start playback
-        self.plot_wave(signal, 1000000)
+        #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        wavfile.write("aaaa.wav", self.song.fs, audio)
+        wavfile.write("metodo3.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
@@ -90,14 +92,11 @@ class BackEnd:
             print(str(i))
             i+=1
             self.synthesize_track(track)
-        print('chau tracks')
         song.output_signal = self.generate_output_signal(song.time_base.timeline_length, song.tracks, song.time_base.fs)
-        print('finalll')
 
     #N: lango del array de salida (En caso de track, largo del track. En caso de song, largo de la song)
     def generate_output_signal(self, N, arrays_to_add, fs):#usar len(note.note_signal)
         output = np.array([])
-        print('a')
         for i in arrays_to_add:
             subarray = i.output_signal
             if len(subarray) != 0: 
@@ -114,7 +113,6 @@ class BackEnd:
                         superpose, add = np.split(subarray, [abs(index_difference)])
                         output[init_time_index:] += superpose
                         output = np.concatenate((output, add))
-        print('b')
         return output[0:N]
 
     
