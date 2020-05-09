@@ -19,36 +19,51 @@ class SB_Synthesizer(SynthesizerAbstract):
         self.my_samples_frecuencies()
 
     def create_note_signal(self, note, instrument):
-        
+        #If the instrument changes, search new samples
         self.init_instrument_samples(instrument)
 
+        #Look for the closest note in the samples and calculate the shifts required
         closest_note = self.closest_note_search(note.frequency)
         midi_code_note = self.midi_code_from_frec(note.frequency)
         midi_code_closest_note = self.midi_code_from_frec(self.samples_frec_dic[closest_note])
         shift = midi_code_note - round(midi_code_closest_note)
         data, samplerate = sf.read(self.samples_directory + closest_note)
         
+        #Pitch the sample to create the required note
         if int(shift) != 0:
             pitched_note = note_scaling(data, samplerate, shift)
         else:
             pitched_note = data
         
         start_time = time.time()
-        note_length = note.fs * note.duration
-        DFT_size = 2**11
-        i=1
-        while abs(note_length) < DFT_size:
-            DFT_size = 2** (11 - i)
-            i += 1
-        #time_stretched_note = time_stretch(pitched_note, len(pitched_note) / (note_length - DFT_size), DFT_size,DFT_size/8) #Creates array of specified length
-        if note.duration == 0.0 or note_length < 0:
+
+        #First method: hecho por gonza
+        note_length = int(round(note.fs * note.duration))
+        if note.duration == 0.0:
+            note.output_signal = []
+        else:
+            time_stretched_note = time_stretch(pitched_note, len(pitched_note) / (note_length - DFT_size), DFT_size,DFT_size/8) #Creates array of specified length
+            note.output_signal = time_stretched_note
+            
+        #second method: adapting librosa
+        if note.duration == 0.0:
+            note.output_signal = []
+        else:
+            stft = librosa.stft(pitched_note)
+            scaling_factor = len(pitched_note) / note_length
+            stft_stretch = phase_vocoder(stft,scaling_factor)
+            time_stretched_note = librosa.istft(stft_stretch, dtype=pitched_note.dtype, length=note_length)
+            note.output_signal = time_stretched_note
+
+        #Third method: Using librosa
+        if note.duration == 0.0:
             note.output_signal = []
         else:
             scaling_factor = len(pitched_note)/note_length
             time_stretched_note = librosa.effects.time_stretch(pitched_note,scaling_factor)
             print(time.time() - start_time)
             note.output_signal = time_stretched_note
-
+        
     def init_instrument_samples(self, instrument):
         if self.instrument != instrument:
             self.instrument = instrument

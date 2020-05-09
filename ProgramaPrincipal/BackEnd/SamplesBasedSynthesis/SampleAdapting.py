@@ -77,3 +77,68 @@ def time_stretch(input_data, factor, DFT_size=2**11, hop_size=2**11/8):
 
 	return signal_out.astype(input_data.dtype)
 
+def phase_vocoder(D, rate, hop_length=None):
+    """
+    Parameters
+    ----------
+    D : np.ndarray [shape=(d, t), dtype=complex]
+        STFT matrix
+
+    rate :  float > 0 [scalar]
+        Speed-up factor: `rate > 1` is faster, `rate < 1` is slower.
+
+    hop_length : int > 0 [scalar] or None
+        The number of samples between successive columns of `D`.
+
+        If None, defaults to `n_fft/4 = (D.shape[0]-1)/2`
+
+    Returns
+    -------
+    D_stretched : np.ndarray [shape=(d, t / rate), dtype=complex]
+        time-stretched STFT
+
+    """
+
+    n_fft = 2 * (D.shape[0] - 1)
+
+    if hop_length is None:
+        hop_length = int(n_fft // 4)
+
+    time_steps = np.arange(0, D.shape[1], rate, dtype=np.float)
+
+    # Create an empty output array
+    d_stretch = np.zeros((D.shape[0], len(time_steps)), D.dtype, order='F')
+
+    # Expected phase advance in each bin
+    phi_advance = np.linspace(0, np.pi * hop_length, D.shape[0])
+
+    # Phase accumulator; initialize to the first sample
+    phase_acc = np.angle(D[:, 0])
+
+    # Pad 0 columns to simplify boundary logic
+    D = np.pad(D, [(0, 0), (0, 2)], mode='constant')
+
+    for (t, step) in enumerate(time_steps):
+
+        columns = D[:, int(step):int(step + 2)]
+
+        # Weighting for linear magnitude interpolation
+        alpha = np.mod(step, 1.0)
+        mag = ((1.0 - alpha) * np.abs(columns[:, 0])
+               + alpha * np.abs(columns[:, 1]))
+
+        # Store to output array
+        d_stretch[:, t] = mag * np.exp(1.j * phase_acc)
+
+        # Compute phase advance
+        dphase = (np.angle(columns[:, 1])
+                  - np.angle(columns[:, 0])
+                  - phi_advance)
+
+        # Wrap to -pi:pi range
+        dphase = dphase - 2.0 * np.pi * np.round(dphase / (2.0 * np.pi))
+
+        # Accumulate phase
+        phase_acc += phi_advance + dphase
+
+    return d_stretch
