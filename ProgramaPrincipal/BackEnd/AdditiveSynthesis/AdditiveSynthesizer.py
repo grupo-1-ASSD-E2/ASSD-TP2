@@ -13,6 +13,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
         amplitude_array = None
         partials = self.__get_partials__(instrument, note.frequency)
         for i in range(0, len(partials)):
+            partials[i].get_amplitude_array(note)
             if i == 0:
                 amplitude_array = partials[i].output_signal
             else:
