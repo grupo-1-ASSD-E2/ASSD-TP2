@@ -5,7 +5,7 @@ from BackEnd.Song import Song
 from BackEnd.Track import Track
 from BackEnd.Note import Note
 from BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
-#from BackEnd.KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
+from BackEnd.KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
 #from BackEnd.SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
 from BackEnd.Instruments import Instruments
 import matplotlib.pyplot as plt
@@ -16,16 +16,16 @@ import simpleaudio as sa
 class BackEnd:
     def __init__(self):
         self.additive_synthesizer = AdditiveSynthesizer()
-       # self.ks_synthesizer = KS_Synthesizer()
+        self.ks_synthesizer = KS_Synthesizer()
         #self.sb_synthesizer = SB_Synthesizer()
         self.song = Song()
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
-        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         self.midi_path = 'ProgramaPrincipal/Resources/'
         #PARA PROBAR
         
-        self.song.tracks[6].assign_instrument('Violin')
+        self.song.tracks[6].assign_instrument('Guitar')
         self.synthesize_track(self.song.tracks[6])
         self.play_signal(self.song.tracks[6].output_signal)
         #self.testing()
@@ -36,7 +36,7 @@ class BackEnd:
 #PARA PROBAR
     def play_signal(self, signal): 
         # Start playback
-        self.plot_wave(signal, 10000000)
+        #self.plot_wave(signal, 10000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
         wavfile.write("aaaa.wav", self.song.fs, audio)
