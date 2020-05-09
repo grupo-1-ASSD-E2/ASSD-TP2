@@ -22,7 +22,7 @@ class BackEnd:
         self.song = Song()
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
-        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         self.midi_path = 'ProgramaPrincipal/Resources/'
         #PARA PROBAR
         for i in range(9):
@@ -43,7 +43,7 @@ class BackEnd:
         wavfile.write("aaaa.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
-        play_obj.wait_done()
+        play_obj.wait_done() 
 
     def plot_wave(self,signal, final_time):
         plt.plot( signal)
