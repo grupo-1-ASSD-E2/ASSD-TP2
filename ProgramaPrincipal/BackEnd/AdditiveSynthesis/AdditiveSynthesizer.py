@@ -59,7 +59,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
 
         endtime = time.time()
 
-        #print(str(endtime - start_time))
+        print(str(endtime - start_time))
         #note.output_signal = note_signal
 
     def __get_partials__(self, instrument, frequency):
