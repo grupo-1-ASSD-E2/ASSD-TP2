@@ -64,14 +64,17 @@ class BackEnd:
             subarray = i.output_signal
             init_time_index = int(round(i.initial_time * fs))
             index_difference = init_time_index - len(output)
-            zero_padd = np.zeros(index_difference)
             if init_time_index >= len(output):
+                zero_padd = np.zeros(index_difference)
                 output = np.concatenate((output, zero_padd))
                 output = np.concatenate((output, subarray))
             else:
-                superpose , add = np.split(subarray, abs(index_difference))[0],np.split(subarray, abs(index_difference))[1]
-                output[init_time_index:] += superpose
-                output = np.concatenate((output, add))
+                if abs(index_difference) >= len(subarray):
+                    output[init_time_index:len(subarray) + init_time_index] += subarray
+                else:
+                    superpose, add = np.split(subarray, [abs(index_difference)])
+                    output[init_time_index:] += superpose
+                    output = np.concatenate((output, add))
         return output[0:N]
 
     
