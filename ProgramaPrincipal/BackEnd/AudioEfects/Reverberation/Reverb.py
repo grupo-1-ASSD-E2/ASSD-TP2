@@ -6,7 +6,7 @@ from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 class Reverb(Effect):
 
-    def __init__(self, buffer_len: int,  sample_rate: int, t_60=1):
+    def __init__(self, buffer_len: int,  sample_rate: int = 44100, t_60=1):
         super(Reverb, self).__init__("Reverb")
         self.properties = {"Tiempo de Reverberacion (s)": ((float, (0, 10)), t_60)}
 
