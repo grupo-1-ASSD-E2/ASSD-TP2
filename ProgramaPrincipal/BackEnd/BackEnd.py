@@ -29,27 +29,28 @@ class BackEnd:
         '''
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         for i in range(9):
-            self.song.tracks[i].assign_instrument('Violin')
+            self.song.tracks[i].assign_instrument('Piano')
         self.syntesize_entire_song(self.song)
         self.play_signal(self.song.output_signal)
         '''
 
         #Para probar notas
+        '''
         start_time = time.time()
         note = Note(62,8,1,1,44100)
         self.synthesize_note(note, 'Cello')
         print(time.time() - start_time)
         self.play_signal(note.output_signal)
-        
+        '''
         
         
         #Para probar un track
-        '''
+ 
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        self.song.tracks[5].assign_instrument('Accordeon')
-        self.synthesize_track(self.song.tracks[5])
-        self.play_signal(self.song.tracks[5].output_signal)
-        '''
+        self.song.tracks[7].assign_instrument('Piano')
+        self.synthesize_track(self.song.tracks[7])
+        self.play_signal(self.song.tracks[7].output_signal)
+        
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
@@ -82,8 +83,10 @@ class BackEnd:
             self.sb_synthesizer.create_note_signal(note, instrument)
 
     def synthesize_track(self, track):
+        start_time = time.time()
         for note in track.notes:
             self.synthesize_note(note, track.instrument)
+        print(time.time() - start_time)
         track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs)
 
     def syntesize_entire_song(self, song):
@@ -96,6 +99,7 @@ class BackEnd:
 
     #N: lango del array de salida (En caso de track, largo del track. En caso de song, largo de la song)
     def generate_output_signal(self, N, arrays_to_add, fs):#usar len(note.note_signal)
+        start_time = time.time()
         output = np.array([])
         for i in arrays_to_add:
             subarray = i.output_signal
@@ -113,8 +117,8 @@ class BackEnd:
                         superpose, add = np.split(subarray, [abs(index_difference)])
                         output[init_time_index:] += superpose
                         output = np.concatenate((output, add))
+        print(time.time()-start_time)
         return output[0:N]
-
     
             
 

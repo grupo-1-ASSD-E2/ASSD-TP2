@@ -18,6 +18,7 @@ class SB_Synthesizer(SynthesizerAbstract):
         self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
         self.my_samples_frecuencies()
 
+
     def create_note_signal(self, note, instrument):
         #If the instrument changes, search new samples
         self.init_instrument_samples(instrument)
@@ -40,7 +41,7 @@ class SB_Synthesizer(SynthesizerAbstract):
 
         #First method: hecho por gonza
         
-        if note.duration == 0.0:
+        if note.duration == 0.0 or note_length < 2**11:
             note.output_signal = []
         else:
             time_stretched_note = time_stretch(pitched_note, len(pitched_note) / (note_length - 2**11), 2**11,2**11//4) #Creates array of specified length
@@ -75,13 +76,14 @@ class SB_Synthesizer(SynthesizerAbstract):
             self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
             self.my_samples_frecuencies()            
 
-
+    
     def midi_code_from_frec(self, frec):
         '''
         Returns de MIDI code corresponding to the frec
         '''
         return 12 * np.log2(frec * 32 / 440) + 9
 
+    
     def closest_note_search(self, note_frec):
         '''
         This method searches for the closest sample from the note required
@@ -90,7 +92,7 @@ class SB_Synthesizer(SynthesizerAbstract):
         closest_note = min(self.samples_frec_dic, key = lambda v: abs(self.samples_frec_dic[v] - note_frec))
         return closest_note
 
-
+    
     def my_samples_frecuencies(self):
         '''
         This method creates a dictionary with samples as key and frecuencies as value

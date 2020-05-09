@@ -2,6 +2,7 @@ import os
 import numpy as np
 import soundfile as sf 
 import sys
+from numba import jit
 
 
 def note_scaling(input_data, input_samp, shift):
@@ -32,6 +33,7 @@ def change_speed(input_data, factor):
 	indices = indices[indices < len(input_data)].astype(int) #Astype int takes the neghboring values to these, but then preserves the same vector length. 
 	return input_data[indices.astype(int)]
 
+
 def time_stretch(input_data, factor, DFT_size=2**11, hop_size=2**11//4):
 	'''
 	This function stretches the input file by an input factor maintaining its pitch.
@@ -41,8 +43,8 @@ def time_stretch(input_data, factor, DFT_size=2**11, hop_size=2**11//4):
 	L = len(input_data)
 	#set up our signal arrays to hold the processing output
 	phi = np.zeros(DFT_size) #create an array of zeros (float) of DFT_size
-	out = np.zeros(DFT_size, dtype = complex)
-	signal_out = np.zeros(int(round(L/factor)) + DFT_size, dtype = complex)
+	out = np.zeros(DFT_size, dtype = np.complex64)
+	signal_out = np.zeros(int(round(L/factor)) + DFT_size, dtype = np.complex64)
 
 	#Find out what the peak amplitude of input is (for scaling) and create a hanning window
 	amp = max(input_data)
