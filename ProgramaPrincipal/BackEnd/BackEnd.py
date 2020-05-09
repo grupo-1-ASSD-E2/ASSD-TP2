@@ -26,14 +26,14 @@ class BackEnd:
         self.midi_path = 'ProgramaPrincipal/Resources/'
 
         #Para probar cancion entera
-        
+        '''
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         for i in range(9):
             self.song.tracks[i].assign_instrument('Piano')
         self.syntesize_entire_song(self.song)
         self.play_signal(self.song.output_signal)
-        
         '''
+        
         #Para probar notas
         '''
         start_time = time.time()
