@@ -22,17 +22,17 @@ class TimeBase:
         return self.timeline_length
 
     def convert_tick_to_time(self, tick):
-        partial_time = 0
-        found_corresponding_tempo = False
-        it_number = 0
-        while not found_corresponding_tempo and  it_number<len(self.tempos):
-            if self.tempos[it_number].end_tick < tick:
-                partial_time += self.tempos[it_number].get_total_duration_of_tempo()
-            else:
-                found_corresponding_tempo = True
-                partial_time += self.tempos[it_number].get_duration_from_tempo_start(tick)
-            it_number += 1
-        return partial_time
+        partial_time = 0 #Tiempo desde le inicio hasta el tick
+        found_corresponding_tempo = False #Cuando se encuentra el tempo al que corresponde el tick
+        it_number = 0   #Iterador de tempos
+        while not found_corresponding_tempo and  it_number<len(self.tempos): #Hasta que se encuentre o hasta el ultimo tempo
+            if self.tempos[it_number].end_tick < tick:  #Si el tempo termina antes que el tick
+                partial_time += self.tempos[it_number].get_total_duration_of_tempo()    #Se suma toda la duracion del tempo
+            else:   #Si el tick termina antes que el tempo  
+                found_corresponding_tempo = True    #Se encontro el tempo al que corresponde
+                partial_time += self.tempos[it_number].get_duration_from_tempo_start(tick) #Se suma la duracion desde el inicio del tempo hasta el tick
+            it_number += 1 
+        return partial_time 
 
     def get_tick_index_in_time_array(self, tick):
         time_array = self.get_time_array()

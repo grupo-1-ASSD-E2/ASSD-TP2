@@ -22,14 +22,32 @@ class BackEnd:
         self.song = Song()
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
-        self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         self.midi_path = 'ProgramaPrincipal/Resources/'
-        #PARA PROBAR
-        for i in range(9):
-            self.song.tracks[i].assign_instrument('Piano')
 
+        #Para probar cancion entera
+        '''
+        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        for i in range(9):
+            self.song.tracks[i].assign_instrument('Violin')
         self.syntesize_entire_song(self.song)
         self.play_signal(self.song.output_signal)
+        '''
+
+        #Para probar notas
+        '''
+        note = Note(60,2,1,1,44100)
+        self.synthesize_note(note, 'Accordeon')
+        self.play_signal(note.output_signal)
+        ''' 
+        
+        #Para probar un track
+        '''
+        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        self.song.tracks[5].assign_instrument('Accordeon')
+        self.synthesize_track(self.song.tracks[5])
+        self.play_signal(self.song.tracks[5].output_signal)
+        '''
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
@@ -37,7 +55,7 @@ class BackEnd:
 #PARA PROBAR
     def play_signal(self, signal): 
         # Start playback
-        #self.plot_wave(signal, 1000000)
+        self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
         wavfile.write("aaaa.wav", self.song.fs, audio)
@@ -54,7 +72,7 @@ class BackEnd:
 
 
     def synthesize_note(self, note, instrument):
-        if (instrument == Instruments.TRUMPET.value[0] or instrument == Instruments.VIOLIN.value[0] or instrument == Instruments.OBOE.value[0]):
+        if (instrument == Instruments.TRUMPET.value[0] or instrument == Instruments.VIOLIN.value[0] or instrument == Instruments.OBOE.value[0]) or instrument == Instruments.ACCORDEON.value[0]:
             self.additive_synthesizer.create_note_signal(note, instrument)
         elif (instrument == Instruments.GUITAR.value[0] or instrument == Instruments.DRUM.value[0]):
             self.ks_synthesizer.create_note_signal(note, instrument)
@@ -67,7 +85,10 @@ class BackEnd:
         track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs)
 
     def syntesize_entire_song(self, song):
+        i = 0
         for track in song.tracks:
+            print(str(i))
+            i+=1
             self.synthesize_track(track)
         print('chau tracks')
         song.output_signal = self.generate_output_signal(song.time_base.timeline_length, song.tracks, song.time_base.fs)
