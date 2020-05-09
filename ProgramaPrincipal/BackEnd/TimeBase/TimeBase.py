@@ -22,7 +22,7 @@ class TimeBase:
         return self.timeline_length
 
     def convert_tick_to_time(self, tick):
-        partial_time = 0 #Tiempo desde le inicio hasta el tick
+        partial_time = 0 #Tiempo desde el inicio hasta el tick
         found_corresponding_tempo = False #Cuando se encuentra el tempo al que corresponde el tick
         it_number = 0   #Iterador de tempos
         while not found_corresponding_tempo and  it_number<len(self.tempos): #Hasta que se encuentre o hasta el ultimo tempo

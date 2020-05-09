@@ -26,14 +26,14 @@ class BackEnd:
         self.midi_path = 'ProgramaPrincipal/Resources/'
 
         #Para probar cancion entera
-        '''
+        
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         for i in range(9):
             self.song.tracks[i].assign_instrument('Piano')
         self.syntesize_entire_song(self.song)
         self.play_signal(self.song.output_signal)
+        
         '''
-
         #Para probar notas
         '''
         start_time = time.time()
@@ -90,10 +90,9 @@ class BackEnd:
         track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs)
 
     def syntesize_entire_song(self, song):
-        i = 0
+
         for track in song.tracks:
-            print(str(i))
-            i+=1
+            
             self.synthesize_track(track)
         song.output_signal = self.generate_output_signal(song.time_base.timeline_length, song.tracks, song.time_base.fs)
 
@@ -101,21 +100,28 @@ class BackEnd:
     def generate_output_signal(self, N, arrays_to_add, fs):#usar len(note.note_signal)
         start_time = time.time()
         output = np.array([])
+        it =0
+        
         for i in arrays_to_add:
-            subarray = i.output_signal
-            if len(subarray) != 0: 
+            print(str(it)) 
+            it+=1
+            if len(i.output_signal) != 0: 
                 init_time_index = int(round(i.initial_time * fs))
                 index_difference = init_time_index - len(output)
                 if init_time_index >= len(output):
                     zero_padd = np.zeros(index_difference)
-                    output = np.concatenate((output, zero_padd))
-                    output = np.concatenate((output, subarray))
+                    output = np.concatenate([output, zero_padd, i.output_signal])
+                    i.output_signal=np.array([])
+                    #output = np.concatenate((output, i.output_signal))
                 else:
-                    if abs(index_difference) >= len(subarray):
-                        output[init_time_index:len(subarray) + init_time_index] += subarray
+                    if abs(index_difference) >= len(i.output_signal):
+                        output[init_time_index:len(i.output_signal) + init_time_index] += i.output_signal
+                        i.output_signal=np.array([])
                     else:
-                        superpose, add = np.split(subarray, [abs(index_difference)])
+                        superpose, add = np.split(i.output_signal, [abs(index_difference)])
+                        i.output_signal=np.array([])
                         output[init_time_index:] += superpose
+                        superpose = None
                         output = np.concatenate((output, add))
         print(time.time()-start_time)
         return output[0:N]
