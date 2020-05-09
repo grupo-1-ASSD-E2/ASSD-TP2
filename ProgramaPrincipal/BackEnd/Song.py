@@ -42,14 +42,14 @@ class Song:
 
     def load_midi_file_info(self, midi_file_path):
         self.midi_file = MidiFile(midi_file_path, clip=True)
-        print(self.midi_file)
+        #print(self.midi_file)
         self.time_base = TimeBase(self.fs)
         ticks_counter = 0
         prev_tempo = 0
         for msg in self.midi_file.tracks[0]: #saving tempos and time info
             ticks_counter += msg.time
             if msg.type == 'set_tempo':
-                print(msg)
+                #print(msg)
                 new_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, msg.time, ticks_counter - msg.time)
                 prev_tempo = msg.tempo
                 self.time_base.add_new_tempo(new_tempo)
@@ -91,9 +91,9 @@ class Song:
                             notes_still_on_counter += 1
             self.tracks.append(new_track)
             track_counter += 1
-            print('good_notes_counter', good_notes_counter)
-            print('same_time_counter:', same_time_counter)
-            print('notes_Still_on_counter:', notes_still_on_counter)
+            #print('good_notes_counter', good_notes_counter)
+            #print('same_time_counter:', same_time_counter)
+            #print('notes_Still_on_counter:', notes_still_on_counter)
 
 
     

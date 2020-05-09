@@ -32,7 +32,7 @@ def change_speed(input_data, factor):
 	indices = indices[indices < len(input_data)].astype(int) #Astype int takes the neghboring values to these, but then preserves the same vector length. 
 	return input_data[indices.astype(int)]
 
-def time_stretch(input_data, factor, DFT_size=2**11, hop_size=2048/8):
+def time_stretch(input_data, factor, DFT_size=2**11, hop_size=2**11/8):
 	'''
 	This function stretches the input file by an input factor maintaining its pitch.
 	Returns: Array of the note shifted by factor.

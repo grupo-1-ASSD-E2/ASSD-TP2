@@ -3,7 +3,7 @@ from BackEnd.TimeBase.Tempo import Tempo
 
 class TimeBase:
     def __init__(self, fs):
-        print('Timebase created!')
+        #print('Timebase created!')
         self.fs = fs
         self.tempos = [] #Tempo instances
         self.total_duration = 0     #in seconds
