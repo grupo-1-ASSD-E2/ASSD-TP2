@@ -8,7 +8,8 @@ from BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 #from BackEnd.KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
 #from BackEnd.SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
 from BackEnd.Instruments import Instruments
-
+import matplotlib.pyplot as plt
+from scipy.io import wavfile
 import simpleaudio as sa
 
 
@@ -23,9 +24,9 @@ class BackEnd:
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         self.midi_path = 'ProgramaPrincipal/Resources/'
         #PARA PROBAR
-        self.song.tracks[0].assign_instrument('Trumpet')
-        self.synthesize_track(self.song.tracks[0])
-        self.play_signal(self.song.tracks[0].output_signal)
+        self.song.tracks[10].assign_instrument('Trumpet')
+        self.synthesize_track(self.song.tracks[10])
+        self.play_signal(self.song.tracks[10].output_signal)
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
@@ -33,11 +34,22 @@ class BackEnd:
 #PARA PROBAR
     def play_signal(self, signal): 
         # Start playback
+        self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
+        wavfile.write("aaaa.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done()
+
+    def plot_wave(self,signal, final_time):
+        plt.plot( signal)
+        plt.xlabel('time(s)')
+        plt.ylabel('amplitude(A)')
+        plt.xlim(0, final_time)
+        plt.show()
+
+    
 
     def synthesize_note(self, note, instrument):
         if (instrument == Instruments.TRUMPET.value[0] or instrument == Instruments.VIOLIN.value[0] or instrument == Instruments.OBOE.value[0]):
