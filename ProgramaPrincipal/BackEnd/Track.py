@@ -13,6 +13,7 @@ class Track:
         self.output_signal = []
         self.time_base = None #ver si esto se necesita aca o no...
         self.initial_time = 0
+        self.activated = True
         
     def assign_instrument(self, instrument):
         self.instrument = instrument
@@ -30,3 +31,9 @@ class Track:
 
     def add_note(self, note):
         self.notes.append(note)
+
+    def set_activated(self, activated):
+        self.activated = activated
+
+    def toggle_track(self):
+        self.activated = not self.activated

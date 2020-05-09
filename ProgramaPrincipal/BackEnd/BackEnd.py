@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import simpleaudio as sa
 import time
+from numba import njit
 
 
 class BackEnd:
@@ -61,7 +62,7 @@ class BackEnd:
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        wavfile.write("metodo3.wav", self.song.fs, audio)
+        wavfile.write("convelocity2.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
@@ -90,21 +91,19 @@ class BackEnd:
         track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs)
 
     def syntesize_entire_song(self, song):
-
+        song_activated_tracks = []
         for track in song.tracks:
-            
-            self.synthesize_track(track)
-        song.output_signal = self.generate_output_signal(song.time_base.timeline_length, song.tracks, song.time_base.fs)
+            if track.activated:
+                self.synthesize_track(track)
+                song_activated_tracks.append(track)
+        song.output_signal = self.generate_output_signal(song.time_base.timeline_length, song_activated_tracks, song.time_base.fs)
 
     #N: lango del array de salida (En caso de track, largo del track. En caso de song, largo de la song)
+    
     def generate_output_signal(self, N, arrays_to_add, fs):#usar len(note.note_signal)
         start_time = time.time()
         output = np.array([])
-        it =0
-        
         for i in arrays_to_add:
-            print(str(it)) 
-            it+=1
             if len(i.output_signal) != 0: 
                 init_time_index = int(round(i.initial_time * fs))
                 index_difference = init_time_index - len(output)

@@ -2,6 +2,7 @@ from BackEnd.SynthesizerAbstract import SynthesizerAbstract
 import numpy as np
 import time
 from BackEnd.AdditiveSynthesis.PartialNote import PartialNote
+from BackEnd.Note import Note
 from BackEnd.Instruments import Instruments
 
 class AdditiveSynthesizer(SynthesizerAbstract):
@@ -37,7 +38,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
                     amplitude_array += output_sine
 
 
-        note.output_signal = amplitude_array
+        note.output_signal = (note.velocity)  * amplitude_array
 
         
 
