@@ -45,19 +45,22 @@ class Song:
         print(self.midi_file)
         self.time_base = TimeBase(self.fs)
         ticks_counter = 0
+        prev_tempo = 0
         for msg in self.midi_file.tracks[0]: #saving tempos and time info
             ticks_counter += msg.time
             if msg.type == 'set_tempo':
-                new_tempo = Tempo(msg.tempo, self.midi_file.ticks_per_beat, msg.time, ticks_counter)
+                print(msg)
+                new_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, msg.time, ticks_counter - msg.time)
+                prev_tempo = msg.tempo
                 self.time_base.add_new_tempo(new_tempo)
                 #print(msg.tempo)
                 #print(msg.time)   
         track_counter = 1
-        for track in self.midi_file.tracks[1::]: #saving tracks and notes info
+        for track in self.midi_file.tracks[1:]: #saving tracks and notes info
             new_track = Track()
             new_track.time_base = self.time_base
             ticks_counter = 0
-            print('TRACK NUMBER:', track_counter)
+            #print('TRACK NUMBER:', track_counter)
             same_time_counter = 0
             notes_still_on_counter = 0
             good_notes_counter = 0
@@ -66,7 +69,7 @@ class Song:
                 if msg.type == 'note_on': #searching for a note_on
                     if msg.velocity != 0:
                         note_still_on = True
-                        ticks_counter1 = 0
+                        ticks_counter1 = ticks_counter
                         for msg1 in track[counter::]:
                             ticks_counter1 += msg1.time
                             if note_still_on == True:
