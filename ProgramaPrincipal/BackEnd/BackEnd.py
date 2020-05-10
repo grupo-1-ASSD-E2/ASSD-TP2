@@ -29,17 +29,28 @@ class BackEnd:
         #Para probar cancion entera
         '''
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        for i in range(9):
-            self.song.tracks[i].assign_instrument('Accordeon')
+        for i in range(2):
+            self.song.tracks[i].assign_instrument('Piano')
+        self.song.tracks[3].assign_instrument('Viola')
+        self.song.tracks[5].assign_instrument('Viola')
+        self.song.tracks[4].assign_instrument('Cello')
+        self.song.tracks[6].assign_instrument('Cello')
+        self.song.tracks[7].assign_instrument('Mandolin')
+        self.song.tracks[8].assign_instrument('Viola')
+        self.song.tracks[9].assign_instrument('Mandolin')
+        self.song.tracks[10].assign_instrument('Banjo')
+        self.song.tracks[11].assign_instrument('Banjo')
+        
+        
+
         self.syntesize_entire_song(self.song)
         self.play_signal(self.song.output_signal)
-        '''
-        '''
+        
+        
         #Para probar notas
-        start_time = time.time()
-        note = Note(62,8,1,1,44100)
-        self.synthesize_note(note, 'Cello')
-        print(time.time() - start_time)
+        '''
+        note = Note(62,1,100,1,44100)
+        self.synthesize_note(note, 'Viola')
         self.play_signal(note.output_signal)
         '''
         
@@ -47,10 +58,10 @@ class BackEnd:
         #Para probar un track
         
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        self.song.tracks[4].assign_instrument('Accordeon')
-        self.synthesize_track(self.song.tracks[4])
-        self.play_signal(self.song.tracks[4].output_signal)
-        
+        self.song.tracks[7].assign_instrument('Viola')
+        self.synthesize_track(self.song.tracks[7])
+        self.play_signal(self.song.tracks[7].output_signal)
+        '''
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
@@ -61,7 +72,7 @@ class BackEnd:
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        wavfile.write("accordeon.wav", self.song.fs, audio)
+        wavfile.write("convelocity.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
@@ -83,11 +94,11 @@ class BackEnd:
             self.sb_synthesizer.create_note_signal(note, instrument)
 
     def synthesize_track(self, track):
-        
+        start_time = time.time()
         for note in track.notes:
             self.synthesize_note(note, track.instrument)
-            
-        track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs, delete_subarrays_after_generation=True)
+        print('track synthesis:',time.time() - start_time)
+        track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs)
 
     def syntesize_entire_song(self, song):
         song_activated_tracks = []
@@ -100,6 +111,7 @@ class BackEnd:
     #N: lango del array de salida (En caso de track, largo del track. En caso de song, largo de la song)
     
     def generate_output_signal(self, N, arrays_to_add, fs, delete_subarrays_after_generation = False):#usar len(note.note_signal)
+        start_time = time.time()
         output = np.array([])
         for i in arrays_to_add:
             if len(i.output_signal) != 0: 
@@ -123,8 +135,8 @@ class BackEnd:
                         output[init_time_index:] += superpose
                         superpose = None
                         output = np.concatenate((output, add))
+        print(time.time()-start_time)
         return output[0:N]
-
     
             
 
