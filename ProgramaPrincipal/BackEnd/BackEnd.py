@@ -31,15 +31,15 @@ class BackEnd:
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/Michael Jackson - Billie Jean.mid')
         for i in range(len(self.song.tracks)):
             self.song.tracks[i].assign_instrument('Piano')
-        #self.song.tracks[3].assign_instrument('Viola')
-        #self.song.tracks[5].assign_instrument('Viola')
-        #self.song.tracks[4].assign_instrument('Cello')
-        #self.song.tracks[6].assign_instrument('Cello')
-        #self.song.tracks[7].assign_instrument('Mandolin')
-        #self.song.tracks[8].assign_instrument('Viola')
-        #self.song.tracks[9].assign_instrument('Mandolin')
-        #self.song.tracks[10].assign_instrument('Banjo')
-        #self.song.tracks[11].assign_instrument('Banjo')
+        self.song.tracks[3].assign_instrument('Accordeon')
+        self.song.tracks[5].assign_instrument('Viola')
+        self.song.tracks[4].assign_instrument('Cello')
+        self.song.tracks[6].assign_instrument('Cello')
+        self.song.tracks[7].assign_instrument('Mandolin')
+        self.song.tracks[8].assign_instrument('Violin')
+        self.song.tracks[9].assign_instrument('Mandolin')
+        self.song.tracks[10].assign_instrument('Trumpet')
+        self.song.tracks[11].assign_instrument('Oboe')
         
         
 
@@ -72,7 +72,7 @@ class BackEnd:
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        wavfile.write("Michael.wav", self.song.fs, audio)
+        #wavfile.write("convelocity.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
@@ -98,7 +98,7 @@ class BackEnd:
         for note in track.notes:
             self.synthesize_note(note, track.instrument)
         print('track synthesis:',time.time() - start_time)
-        track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs)
+        track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs, delete_subarrays_after_generation=True)
 
     def syntesize_entire_song(self, song):
         song_activated_tracks = []
@@ -110,7 +110,7 @@ class BackEnd:
 
     #N: lango del array de salida (En caso de track, largo del track. En caso de song, largo de la song)
     
-    def generate_output_signal(self, N, arrays_to_add, fs):#usar len(note.note_signal)
+    def generate_output_signal(self, N, arrays_to_add, fs, delete_subarrays_after_generation = False):#usar len(note.note_signal)
         start_time = time.time()
         output = np.array([])
         for i in arrays_to_add:
@@ -120,15 +120,18 @@ class BackEnd:
                 if init_time_index >= len(output):
                     zero_padd = np.zeros(index_difference)
                     output = np.concatenate([output, zero_padd, i.output_signal])
-                    i.output_signal=np.array([])
-                    #output = np.concatenate((output, i.output_signal))
+                    if delete_subarrays_after_generation:
+                        i.output_signal=np.array([])
+                    
                 else:
                     if abs(index_difference) >= len(i.output_signal):
                         output[init_time_index:len(i.output_signal) + init_time_index] += i.output_signal
-                        i.output_signal=np.array([])
+                        if delete_subarrays_after_generation:
+                            i.output_signal=np.array([])
                     else:
                         superpose, add = np.split(i.output_signal, [abs(index_difference)])
-                        i.output_signal=np.array([])
+                        if delete_subarrays_after_generation:
+                            i.output_signal=np.array([])
                         output[init_time_index:] += superpose
                         superpose = None
                         output = np.concatenate((output, add))
