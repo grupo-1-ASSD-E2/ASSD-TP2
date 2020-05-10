@@ -27,19 +27,19 @@ class BackEnd:
         self.midi_path = 'ProgramaPrincipal/Resources/'
 
         #Para probar cancion entera
-        '''
-        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        
+        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         for i in range(2):
             self.song.tracks[i].assign_instrument('Piano')
-        self.song.tracks[3].assign_instrument('Viola')
+        self.song.tracks[3].assign_instrument('Accordeon')
         self.song.tracks[5].assign_instrument('Viola')
         self.song.tracks[4].assign_instrument('Cello')
         self.song.tracks[6].assign_instrument('Cello')
         self.song.tracks[7].assign_instrument('Mandolin')
-        self.song.tracks[8].assign_instrument('Viola')
+        self.song.tracks[8].assign_instrument('Violin')
         self.song.tracks[9].assign_instrument('Mandolin')
-        self.song.tracks[10].assign_instrument('Banjo')
-        self.song.tracks[11].assign_instrument('Banjo')
+        self.song.tracks[10].assign_instrument('Trumpet')
+        self.song.tracks[11].assign_instrument('Oboe')
         
         
 
@@ -56,7 +56,7 @@ class BackEnd:
         
         
         #Para probar un track
-        
+        '''
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         self.song.tracks[7].assign_instrument('Viola')
         self.synthesize_track(self.song.tracks[7])
