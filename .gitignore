@@ -182,7 +182,7 @@ cython_debug/
 *.user
 *.userosscache
 *.sln.docstates
-*.json
+*.settings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
