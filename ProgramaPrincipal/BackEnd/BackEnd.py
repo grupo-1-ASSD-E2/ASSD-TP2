@@ -28,7 +28,7 @@ class BackEnd:
 
         #Para probar cancion entera
         
-        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         for i in range(2):
             self.song.tracks[i].assign_instrument('Piano')
         self.song.tracks[3].assign_instrument('Accordeon')
@@ -72,7 +72,7 @@ class BackEnd:
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        wavfile.write("convelocity.wav", self.song.fs, audio)
+        #wavfile.write("convelocity.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
@@ -98,7 +98,7 @@ class BackEnd:
         for note in track.notes:
             self.synthesize_note(note, track.instrument)
         print('track synthesis:',time.time() - start_time)
-        track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs)
+        track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs, delete_subarrays_after_generation=True)
 
     def syntesize_entire_song(self, song):
         song_activated_tracks = []
