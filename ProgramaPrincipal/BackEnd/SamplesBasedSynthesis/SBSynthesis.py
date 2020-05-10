@@ -13,10 +13,12 @@ import time
 class SB_Synthesizer(SynthesizerAbstract):
 
     def __init__ (self):
+        start_time = time.time()
         self.existing_frec_dict()
         self.instrument = 'Piano'
         self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
         self.my_samples_frecuencies()
+        print(time.time() - start_time)
 
     def create_note_signal(self, note, instrument):
         #If the instrument changes, search new samples
@@ -28,60 +30,40 @@ class SB_Synthesizer(SynthesizerAbstract):
         midi_code_closest_note = self.midi_code_from_frec(self.samples_frec_dic[closest_note])
         shift = midi_code_note - round(midi_code_closest_note)
         data, samplerate = sf.read(self.samples_directory + closest_note)
-        
-        #Pitch the sample to create the required note
-        if int(shift) != 0:
-            pitched_note = note_scaling(data, samplerate, shift)
-        else:
-            pitched_note = data
-        
-       
         note_length = int(round(note.fs * note.duration))
-
-        #First method: hecho por gonza
+        #Pitch the sample to create the required note
+        #start_time = time.time()
+        if int(shift) != 0:
+            if note.duration == 0.0:
+                note.output_signal = []
+            else:
+                time_factor = len(data)/note_length
+                pitched_note = note_scaling(data, samplerate, shift, time_factor)
+                note.output_signal = pitched_note * note.velocity / 127
+        else:
+            start_time = time.time()
+            if note.duration == 0.0:
+                note.output_signal = []
+            else:
+                scaling_factor = len(data)/note_length
+                time_stretched_note = stretch(data, scaling_factor)
+                note.output_signal = time_stretched_note * note.velocity / 127
+            print('metodo5:', time.time() - start_time)
         
-        if note.duration == 0.0:
-            note.output_signal = []
-        else:
-            time_stretched_note = time_stretch(pitched_note, len(pitched_note) / (note_length - 2**11), 2**11,2**11//4) #Creates array of specified length
-            note.output_signal = time_stretched_note
-        
-
-        #second method: adapting librosa
-        '''
-        if note.duration == 0.0:
-            note.output_signal = []
-        else:
-            stft = librosa.stft(pitched_note)
-            scaling_factor = len(pitched_note) / note_length
-            stft_stretch = phase_vocoder(stft,scaling_factor)
-            time_stretched_note = librosa.istft(stft_stretch, dtype=pitched_note.dtype, length=note_length)
-            note.output_signal = time_stretched_note
-        '''
-
-        #Third method: Using librosa
-        '''
-        if note.duration == 0.0:
-            note.output_signal = []
-        else:
-            scaling_factor = len(pitched_note)/note_length
-            time_stretched_note = librosa.effects.time_stretch(pitched_note,scaling_factor)
-            note.output_signal = time_stretched_note
-        '''
-
     def init_instrument_samples(self, instrument):
         if self.instrument != instrument:
             self.instrument = instrument
             self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
             self.my_samples_frecuencies()            
 
-
+    
     def midi_code_from_frec(self, frec):
         '''
         Returns de MIDI code corresponding to the frec
         '''
         return 12 * np.log2(frec * 32 / 440) + 9
 
+    
     def closest_note_search(self, note_frec):
         '''
         This method searches for the closest sample from the note required
@@ -90,7 +72,7 @@ class SB_Synthesizer(SynthesizerAbstract):
         closest_note = min(self.samples_frec_dic, key = lambda v: abs(self.samples_frec_dic[v] - note_frec))
         return closest_note
 
-
+    
     def my_samples_frecuencies(self):
         '''
         This method creates a dictionary with samples as key and frecuencies as value
