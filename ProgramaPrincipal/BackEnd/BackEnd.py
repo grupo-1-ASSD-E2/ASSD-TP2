@@ -28,8 +28,8 @@ class BackEnd:
 
         #Para probar cancion entera
         
-        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Queen - Bohemian Rhapsody.mid')
-        for i in range(len(self.song.tracks)-5):
+        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Michael Jackson - Billie Jean.mid')
+        for i in range(len(self.song.tracks)):
             self.song.tracks[i].assign_instrument('Piano')
         #self.song.tracks[3].assign_instrument('Viola')
         #self.song.tracks[5].assign_instrument('Viola')
@@ -72,7 +72,7 @@ class BackEnd:
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        wavfile.write("BOHEMIAN2.wav", self.song.fs, audio)
+        wavfile.write("Michael.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
