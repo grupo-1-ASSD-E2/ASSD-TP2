@@ -50,21 +50,21 @@ class Song:
         prev_ending = 0
         for msg in self.midi_file.tracks[0]:
             print(msg)
-        print('--------------------')
+        #print('--------------------')
         for msg in self.midi_file.tracks[0]: #saving tempos and time info
             ticks_counter += msg.time
             if msg.type == 'set_tempo' and ticks_counter != 0: # and msg.time != 0:
-                print(msg)
-                print('tick_counter', ticks_counter)
+                #print(msg)
+                #print('tick_counter', ticks_counter)
                 if first_set_tempo == True:
                     new_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, ticks_counter - prev_ending, 0)
                     first_set_tempo = False
-                    print('tempo', prev_tempo)
+                    #print('tempo', prev_tempo)
                     prev_tempo = msg.tempo
                 else:
-                    print('prev ending', prev_ending)
+                    #print('prev ending', prev_ending)
                     new_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, ticks_counter - (prev_ending + 1), prev_ending + 1)
-                    print('tempo', prev_tempo)
+                    #print('tempo', prev_tempo)
                     # print(msg)
                     # new_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, msg.time, ticks_counter - msg.time) #agrego -1
                     prev_tempo = msg.tempo
@@ -73,14 +73,14 @@ class Song:
                 #print(msg.tempo)
                 #print(msg.time) 
             elif msg.type == 'set_tempo' and ticks_counter == 0:
-                print(msg)
+                #print(msg)
                 prev_tempo = msg.tempo 
         track_counter = 1
         for track in self.midi_file.tracks[1:]: #saving tracks and notes info
             new_track = Track()
             new_track.time_base = self.time_base
             ticks_counter = 0
-            print('TRACK NUMBER:', track_counter)
+            #print('TRACK NUMBER:', track_counter)
             same_time_counter = 0
             notes_still_on_counter = 0
             good_notes_counter = 0
@@ -98,11 +98,11 @@ class Song:
                                         note_still_on = False
                                         t_on = self.time_base.convert_tick_to_time(ticks_counter)
                                         t_off = self.time_base.convert_tick_to_time(ticks_counter1)
-                                        if t_off < t_on:
-                                            print('ticks_counter', ticks_counter)
-                                            print('t_on', t_on)
-                                            print('ticks_counter1', ticks_counter1)
-                                            print('t off:',t_off)
+                                        #if t_off < t_on:
+                                            #print('ticks_counter', ticks_counter)
+                                            #print('t_on', t_on)
+                                            #print('ticks_counter1', ticks_counter1)
+                                            #print('t off:',t_off)
                                         note_duration = t_off - t_on
                                         #if track_counter == 9:
                                             #print('note duration:', note_duration)
