@@ -13,6 +13,7 @@ from scipy.io import wavfile
 import simpleaudio as sa
 import time
 from numba import njit
+import array
 
 
 class BackEnd:
@@ -23,7 +24,9 @@ class BackEnd:
         self.song = Song()
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
+        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/fragmento-rodrigo.mid')
+
         self.midi_path = 'ProgramaPrincipal/Resources/'
 
                 
@@ -152,5 +155,5 @@ class BackEnd:
                         add = None
         print('Generate function: ', time.time()-start_time)
         return output[0:N]
-
+    
 
