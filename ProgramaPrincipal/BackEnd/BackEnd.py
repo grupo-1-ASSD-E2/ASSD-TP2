@@ -23,15 +23,16 @@ class BackEnd:
         self.song = Song()
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
-        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         self.midi_path = 'ProgramaPrincipal/Resources/'
 
-        #Para probar cancion entera
-        
+                
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
         #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Queen - Bohemian Rhapsody.mid')
-        self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
+        #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
+
+        #Para probar cancion entera
         
         for i in range(len(self.song.tracks)):
             self.song.tracks[i].assign_instrument('Piano')
@@ -46,8 +47,6 @@ class BackEnd:
         self.song.tracks[10].assign_instrument('Trumpet')
         self.song.tracks[11].assign_instrument('Oboe')
         '''
-        
-        
         self.syntesize_entire_song(self.song)
         self.play_signal(self.song.output_signal)
         
@@ -68,7 +67,7 @@ class BackEnd:
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         '''
-        self.song.tracks[7].assign_instrument('Guitar')
+        self.song.tracks[7].assign_instrument('Piano')
         self.synthesize_track(self.song.tracks[7])
         self.play_signal(self.song.tracks[7].output_signal)
         '''
@@ -78,6 +77,7 @@ class BackEnd:
 
 #PARA PROBAR
     def play_signal(self, signal): 
+        
         # Start playback
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
@@ -145,7 +145,8 @@ class BackEnd:
                         output[init_time_index:] += superpose
                         superpose = None
                         output = np.concatenate((output, add))
-        print(time.time()-start_time)
+                        add = None
+        print('Generate function: ', time.time()-start_time)
         return output[0:N]
     
             
