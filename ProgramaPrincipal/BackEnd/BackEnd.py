@@ -19,7 +19,7 @@ class BackEnd:
     def __init__(self):
         self.additive_synthesizer = AdditiveSynthesizer()
         self.ks_synthesizer = KS_Synthesizer()
-        #self.sb_synthesizer = SB_Synthesizer()
+        self.sb_synthesizer = SB_Synthesizer()
         self.song = Song()
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
@@ -28,9 +28,14 @@ class BackEnd:
 
         #Para probar cancion entera
         
-        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Michael Jackson - Billie Jean.mid')
+        #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
+        #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        #self.song.load_midi_file_info('Resources/Queen - Bohemian Rhapsody.mid')
+        self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
+        
         for i in range(len(self.song.tracks)):
             self.song.tracks[i].assign_instrument('Piano')
+        '''
         self.song.tracks[3].assign_instrument('Accordeon')
         self.song.tracks[5].assign_instrument('Viola')
         self.song.tracks[4].assign_instrument('Cello')
@@ -40,9 +45,9 @@ class BackEnd:
         self.song.tracks[9].assign_instrument('Mandolin')
         self.song.tracks[10].assign_instrument('Trumpet')
         self.song.tracks[11].assign_instrument('Oboe')
+        '''
         
         
-
         self.syntesize_entire_song(self.song)
         self.play_signal(self.song.output_signal)
         
@@ -61,11 +66,12 @@ class BackEnd:
         #Para probar un track
         
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        '''
         self.song.tracks[7].assign_instrument('Guitar')
         self.synthesize_track(self.song.tracks[7])
         self.play_signal(self.song.tracks[7].output_signal)
-    
+        '''
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
@@ -76,7 +82,7 @@ class BackEnd:
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        #wavfile.write("convelocity.wav", self.song.fs, audio)
+        wavfile.write("under_the_sea.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 

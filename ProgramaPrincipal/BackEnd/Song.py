@@ -42,14 +42,16 @@ class Song:
 
     def load_midi_file_info(self, midi_file_path):
         self.midi_file = MidiFile(midi_file_path, clip=True)
-        #print(self.midi_file)
+        print(self.midi_file)
         self.time_base = TimeBase(self.fs)
         ticks_counter = 0
         prev_tempo = 0.5
         first_set_tempo = True
         prev_ending = 0
+        '''
         for msg in self.midi_file.tracks[0]:
             print(msg)
+        '''
         #print('--------------------')
         for msg in self.midi_file.tracks[0]: #saving tempos and time info
             ticks_counter += msg.time
@@ -75,6 +77,23 @@ class Song:
             elif msg.type == 'set_tempo' and ticks_counter == 0:
                 #print(msg)
                 prev_tempo = msg.tempo 
+        total_song_ticks = 0
+        for track in self.midi_file.tracks[1:]:
+            total_track_ticks = 0
+            for msg in track:
+                total_track_ticks += msg.time
+            if total_track_ticks > total_song_ticks:
+                total_song_ticks = total_track_ticks
+        if first_set_tempo == True:
+            last_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, total_song_ticks - prev_ending, 0)
+        else:
+            last_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, total_song_ticks - prev_ending, prev_ending + 1)
+        self.time_base.add_new_tempo(last_tempo)
+        print('total song ticks:', total_song_ticks)
+        print('last tempo:', last_tempo.tempo)
+        print('last tempo start', last_tempo.start_tick)
+        print('last tempo ending:', last_tempo.end_tick)
+        #------------------------------------
         track_counter = 1
         for track in self.midi_file.tracks[1:]: #saving tracks and notes info
             new_track = Track()

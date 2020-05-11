@@ -1,6 +1,12 @@
+'''
 from BackEnd.SynthesizerAbstract import SynthesizerAbstract
 from BackEnd.SamplesBasedSynthesis.SampleAdapting import *
 from BackEnd.Instruments import Instruments
+'''
+from BackEnd.SynthesizerAbstract import SynthesizerAbstract
+from BackEnd.SamplesBasedSynthesis.SampleAdapting import *
+from BackEnd.Instruments import Instruments
+
 import numpy as np
 import soundfile as sf
 import os
