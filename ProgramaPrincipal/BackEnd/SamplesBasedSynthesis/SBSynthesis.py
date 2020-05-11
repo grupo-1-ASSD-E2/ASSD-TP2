@@ -44,7 +44,7 @@ class SB_Synthesizer(SynthesizerAbstract):
                 time_factor = len(data)/note_length
                 pitched_note = note_scaling(data, samplerate, shift, time_factor)
                 volume_normalize = 1.0 / np.amax(pitched_note)
-                note.output_signal = pitched_note * note.velocity / 127  * volume_normalize
+                note.output_signal = pitched_note * note.velocity / 127 / 2  * volume_normalize
         else:
             
             if note.duration == 0.0:
@@ -53,7 +53,7 @@ class SB_Synthesizer(SynthesizerAbstract):
                 scaling_factor = len(data)/note_length
                 time_stretched_note = stretch(data, scaling_factor)
                 volume_normalize = 1.0 / np.amax(time_stretched_note)
-                note.output_signal = time_stretched_note * note.velocity / 127 * volume_normalize
+                note.output_signal = time_stretched_note * note.velocity / 127 / 2 * volume_normalize
             
         
     def init_instrument_samples(self, instrument):
