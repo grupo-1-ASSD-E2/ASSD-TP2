@@ -20,12 +20,12 @@ class BackEnd:
     def __init__(self):
         self.additive_synthesizer = AdditiveSynthesizer()
         self.ks_synthesizer = KS_Synthesizer()
-        self.sb_synthesizer = SB_Synthesizer()
+       # self.sb_synthesizer = SB_Synthesizer()
         self.song = Song()
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        self.song.load_midi_file_info('ProgramaPrincipal/Resources/fragmento-rodrigo.mid')
+        self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
 
         self.midi_path = 'ProgramaPrincipal/Resources/'
 
@@ -52,16 +52,16 @@ class BackEnd:
         
         self.syntesize_entire_song(self.song)
         self.play_signal(self.song.output_signal)
-        
+        '''
         
         #Para probar notas
-        '''
+       
         start_time = time.time()
         note = Note(62,8,1,1,44100)
-        self.synthesize_note(note, 'Cello')
+        self.synthesize_note(note, 'Drum')
         print(time.time() - start_time)
         self.play_signal(note.output_signal)
-        '''
+     
         
         
         
@@ -70,10 +70,10 @@ class BackEnd:
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         '''
-        self.song.tracks[7].assign_instrument('Piano')
-        self.synthesize_track(self.song.tracks[7])
-        self.play_signal(self.song.tracks[7].output_signal)'''
-
+        self.song.tracks[0].assign_instrument('Drum')
+        self.synthesize_track(self.song.tracks[0])
+        self.play_signal(self.song.tracks[0].output_signal)
+        '''
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
             

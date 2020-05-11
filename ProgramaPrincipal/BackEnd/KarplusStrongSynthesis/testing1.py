@@ -52,7 +52,7 @@ print('wavetable size:')
 print(wavetable.size)
 print('sample1 seize:')
 print(sample1.size)
-stream.write(sample1.astype(np.float32).tostring())
+#stream.write(sample1.astype(np.float32).tostring())
 #stream.write(sample2.astype(np.float32).tostring())
 #stream.close()
 
@@ -68,7 +68,7 @@ def make_sine_wavetable(n_samples, amps, phases, freqs): #to get a more complex 
                          amp / 2 * np.sin(np.sin(2 * np.pi * 2 * freq * t + phase))
     return wavetable
 
-wavetable = make_sine_wavetable(t.size, [0.1, 0.5, 0.8, 0.3], #the more complex sinusoidal
+wavetable_1 = make_sine_wavetable(t.size, [0.1, 0.5, 0.8, 0.3], #the more complex sinusoidal
                             [0, 0.3, 0.4, 0.7],
                             [1, 2.1, 3, 4.3])
 
@@ -97,7 +97,7 @@ def karplus_strong(wavetable, n_samples):
 #Para una frecuencia determinada
 wavetable_size = fs // 55 
 wavetable = (2 * np.random.randint(0, 2, wavetable_size) - 1).astype(np.float)
-sample1 = karplus_strong(wavetable, 2 * fs)
+sample1 = karplus_strong(wavetable_1, 2 * fs)
 #stream.write(sample1.astype(np.float32).tostring())
 
 
@@ -162,14 +162,14 @@ def karplus_strong_drum(wavetable, n_samples, prob):
 wavetable_size = fs // 40 
 wavetable = np.ones(wavetable_size)
 sample1 = karplus_strong_drum(wavetable, 1 * fs, 0.3)
-#stream.write(sample1.astype(np.float32).tostring())
+stream.write(sample1.astype(np.float32).tostring())
 
 #Changing b parameter
 bs = np.arange(0, 1.1, 0.1)
 for b in bs:
     wavetable = np.ones(wavetable_size)
     sample = karplus_strong_drum(wavetable, 1 * fs, b)
-    #stream.write(sample.astype(np.float32).tostring())
+    stream.write(sample.astype(np.float32).tostring())
 
 #For b=0
 fs = 20000
