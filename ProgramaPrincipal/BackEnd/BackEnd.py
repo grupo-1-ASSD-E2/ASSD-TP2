@@ -39,9 +39,9 @@ class BackEnd:
         
         for i in range(len(self.song.tracks)):
             self.song.tracks[i].assign_instrument('Piano')
-        
-        #self.song.tracks[2].assign_instrument('Saxophone')
-        #self.song.tracks[3].assign_instrument('Viola')
+        self.song.tracks[1].assign_instrument('Mandolin')
+        self.song.tracks[3].assign_instrument('Viola')
+        self.song.tracks[2].assign_instrument('Saxophone')
         #self.song.tracks[4].assign_instrument('Cello')
         #self.song.tracks[6].assign_instrument('Cello')
         #self.song.tracks[7].assign_instrument('Banjo')
