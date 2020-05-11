@@ -36,7 +36,7 @@ class BackEnd:
         #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
 
         #Para probar cancion entera
-        
+        '''
         for i in range(len(self.song.tracks)):
             self.song.tracks[i].assign_instrument('Piano')
         self.song.tracks[1].assign_instrument('Mandolin')
@@ -85,7 +85,7 @@ class BackEnd:
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        wavfile.write("rodrigo.wav", self.song.fs, audio)
+        wavfile.write("rodrigosynth.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
