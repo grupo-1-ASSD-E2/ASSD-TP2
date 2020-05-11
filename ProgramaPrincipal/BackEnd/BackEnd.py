@@ -13,6 +13,7 @@ from scipy.io import wavfile
 import simpleaudio as sa
 import time
 from numba import njit
+import array
 
 
 class BackEnd:
@@ -119,7 +120,7 @@ class BackEnd:
         song.output_signal = self.generate_output_signal(song.time_base.timeline_length, song_activated_tracks, song.time_base.fs, delete_subarrays_after_generation=True)
 
     #N: lango del array de salida (En caso de track, largo del track. En caso de song, largo de la song)
-    
+    '''
     def generate_output_signal(self, N, arrays_to_add, fs, delete_subarrays_after_generation = False):#usar len(note.note_signal)
         start_time = time.time()
         output = np.array([])
@@ -148,5 +149,35 @@ class BackEnd:
                         add = None
         print('Generate function: ', time.time()-start_time)
         return output[0:N]
+    '''
 
+    def generate_output_signal(self, N, arrays_to_add, fs, delete_subarrays_after_generation = False):#usar len(note.note_signal)
+        start_time = time.time()
+        output = array.array("f")
+        for i in arrays_to_add:
+            if len(i.output_signal) != 0: 
+                init_time_index = int(round(i.initial_time * fs))
+                index_difference = init_time_index - len(output)
+                if init_time_index >= len(output):
+                    zero_padd = [0]*index_difference
+                    output.extend(zero_padd)
+                    output.extend(i.output_signal)
+                    if delete_subarrays_after_generation:
+                        i.output_signal = np.array([])
+                    
+                else:
+                    if abs(index_difference) >= len(i.output_signal):
+                        output[init_time_index:len(i.output_signal) + init_time_index] += i.output_signal
+                        if delete_subarrays_after_generation:
+                            i.output_signal=np.array([])
+                    else:
+                        superpose, add = np.split(i.output_signal, [abs(index_difference)])
+                        if delete_subarrays_after_generation:
+                            i.output_signal=np.array([])
+                        output[init_time_index:] += superpose
+                        superpose = None
+                        output.extend(add)
+                        add = None
+        print('Generate function: ', time.time()-start_time)
+        return output[0:N]
 
