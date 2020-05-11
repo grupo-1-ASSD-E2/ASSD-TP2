@@ -38,7 +38,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
                     amplitude_array += output_sine
 
 
-        note.output_signal = (note.velocity/127)  * amplitude_array
+        note.output_signal = (note.velocity/(127/2))  * amplitude_array
 
         #endtime = time.time()
 

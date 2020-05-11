@@ -35,7 +35,7 @@ class BackEnd:
         #Para probar cancion entera
         
         for i in range(len(self.song.tracks)):
-            self.song.tracks[i].assign_instrument('Piano')
+            self.song.tracks[i].assign_instrument('Violin')
         '''
         self.song.tracks[3].assign_instrument('Accordeon')
         self.song.tracks[5].assign_instrument('Viola')
@@ -69,20 +69,20 @@ class BackEnd:
         '''
         self.song.tracks[7].assign_instrument('Piano')
         self.synthesize_track(self.song.tracks[7])
-        self.play_signal(self.song.tracks[7].output_signal)
-        '''
+        self.play_signal(self.song.tracks[7].output_signal)'''
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
-
-#PARA PROBAR
+            
+    
+    #PARA PROBAR
     def play_signal(self, signal): 
         
         # Start playback
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        wavfile.write("convelocity.wav", self.song.fs, audio)
+        #wavfile.write("convelocity.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
@@ -116,7 +116,7 @@ class BackEnd:
             if track.activated:
                 self.synthesize_track(track)
                 song_activated_tracks.append(track)
-        song.output_signal = self.generate_output_signal(song.time_base.timeline_length, song_activated_tracks, song.time_base.fs)
+        song.output_signal = self.generate_output_signal(song.time_base.timeline_length, song_activated_tracks, song.time_base.fs, delete_subarrays_after_generation=True)
 
     #N: lango del array de salida (En caso de track, largo del track. En caso de song, largo de la song)
     
@@ -148,16 +148,5 @@ class BackEnd:
                         add = None
         print('Generate function: ', time.time()-start_time)
         return output[0:N]
-    
-            
-
-
-    
-
-
-
-    
-
-
 
 
