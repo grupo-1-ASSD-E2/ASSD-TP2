@@ -13,6 +13,7 @@ from scipy.io import wavfile
 import simpleaudio as sa
 import time
 from numba import njit
+import array
 
 
 class BackEnd:
@@ -24,29 +25,30 @@ class BackEnd:
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        self.song.load_midi_file_info('ProgramaPrincipal/Resources/fragmento-rodrigo.mid')
+
         self.midi_path = 'ProgramaPrincipal/Resources/'
 
-        #Para probar cancion entera
-        
+                
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
         #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Queen - Bohemian Rhapsody.mid')
-        self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
-        
+        #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
+
+        #Para probar cancion entera
+        '''
         for i in range(len(self.song.tracks)):
             self.song.tracks[i].assign_instrument('Piano')
-        '''
-        self.song.tracks[3].assign_instrument('Accordeon')
-        self.song.tracks[5].assign_instrument('Viola')
-        self.song.tracks[4].assign_instrument('Cello')
-        self.song.tracks[6].assign_instrument('Cello')
-        self.song.tracks[7].assign_instrument('Mandolin')
-        self.song.tracks[8].assign_instrument('Violin')
-        self.song.tracks[9].assign_instrument('Mandolin')
-        self.song.tracks[10].assign_instrument('Trumpet')
-        self.song.tracks[11].assign_instrument('Oboe')
-        '''
-        
+        self.song.tracks[1].assign_instrument('Mandolin')
+        self.song.tracks[3].assign_instrument('Viola')
+        self.song.tracks[2].assign_instrument('Saxophone')
+        #self.song.tracks[4].assign_instrument('Cello')
+        #self.song.tracks[6].assign_instrument('Cello')
+        #self.song.tracks[7].assign_instrument('Banjo')
+        #self.song.tracks[8].assign_instrument('Violin')
+        #self.song.tracks[9].assign_instrument('Mandolin')
+        #self.song.tracks[10].assign_instrument('Trumpet')
+        #self.song.tracks[11].assign_instrument('Oboe')
         
         self.syntesize_entire_song(self.song)
         self.play_signal(self.song.output_signal)
@@ -68,21 +70,22 @@ class BackEnd:
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         '''
-        self.song.tracks[7].assign_instrument('Guitar')
+        self.song.tracks[7].assign_instrument('Piano')
         self.synthesize_track(self.song.tracks[7])
-        self.play_signal(self.song.tracks[7].output_signal)
-        '''
+        self.play_signal(self.song.tracks[7].output_signal)'''
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
-
-#PARA PROBAR
+            
+    
+    #PARA PROBAR
     def play_signal(self, signal): 
+        
         # Start playback
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        wavfile.write("convelocity.wav", self.song.fs, audio)
+        wavfile.write("rodrigosynth.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
@@ -100,7 +103,7 @@ class BackEnd:
             self.additive_synthesizer.create_note_signal(note, instrument)
         elif (instrument == Instruments.GUITAR.value[0] or instrument == Instruments.DRUM.value[0]):
             self.ks_synthesizer.create_note_signal(note, instrument)
-        elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0] or instrument == Instruments.DOG.value[0]):
+        elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0] or instrument == Instruments.BASSOON.value[0] or instrument == Instruments.SAXOPHONE.value[0]):
             self.sb_synthesizer.create_note_signal(note, instrument)
 
     def synthesize_track(self, track):
@@ -116,7 +119,7 @@ class BackEnd:
             if track.activated:
                 self.synthesize_track(track)
                 song_activated_tracks.append(track)
-        song.output_signal = self.generate_output_signal(song.time_base.timeline_length, song_activated_tracks, song.time_base.fs)
+        song.output_signal = self.generate_output_signal(song.time_base.timeline_length, song_activated_tracks, song.time_base.fs, delete_subarrays_after_generation=True)
 
     #N: lango del array de salida (En caso de track, largo del track. En caso de song, largo de la song)
     
@@ -145,18 +148,8 @@ class BackEnd:
                         output[init_time_index:] += superpose
                         superpose = None
                         output = np.concatenate((output, add))
-        print(time.time()-start_time)
+                        add = None
+        print('Generate function: ', time.time()-start_time)
         return output[0:N]
     
-            
-
-
-    
-
-
-
-    
-
-
-
 
