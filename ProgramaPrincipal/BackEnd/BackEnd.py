@@ -28,18 +28,18 @@ class BackEnd:
 
         #Para probar cancion entera
         
-        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Michael Jackson - Billie Jean.mid')
-        for i in range(len(self.song.tracks)):
-            self.song.tracks[i].assign_instrument('Piano')
-        self.song.tracks[3].assign_instrument('Accordeon')
-        self.song.tracks[5].assign_instrument('Viola')
-        self.song.tracks[4].assign_instrument('Cello')
-        self.song.tracks[6].assign_instrument('Cello')
-        self.song.tracks[7].assign_instrument('Mandolin')
-        self.song.tracks[8].assign_instrument('Violin')
-        self.song.tracks[9].assign_instrument('Mandolin')
-        self.song.tracks[10].assign_instrument('Trumpet')
-        self.song.tracks[11].assign_instrument('Oboe')
+        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        for i in range(10):
+            self.song.tracks[i].assign_instrument('Guitar')
+        #self.song.tracks[3].assign_instrument('Accordeon')
+        #self.song.tracks[5].assign_instrument('Viola')
+        #self.song.tracks[4].assign_instrument('Cello')
+        #self.song.tracks[6].assign_instrument('Cello')
+        #self.song.tracks[7].assign_instrument('Mandolin')
+        #self.song.tracks[8].assign_instrument('Violin')
+        #self.song.tracks[9].assign_instrument('Mandolin')
+        #self.song.tracks[10].assign_instrument('Trumpet')
+        #self.song.tracks[11].assign_instrument('Oboe')
         
         
 
@@ -72,7 +72,7 @@ class BackEnd:
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        #wavfile.write("convelocity.wav", self.song.fs, audio)
+        wavfile.write("convelocity.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
@@ -90,7 +90,7 @@ class BackEnd:
             self.additive_synthesizer.create_note_signal(note, instrument)
         elif (instrument == Instruments.GUITAR.value[0] or instrument == Instruments.DRUM.value[0]):
             self.ks_synthesizer.create_note_signal(note, instrument)
-        elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0]):
+        elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0] or instrument == Instruments.DOG.value[0]):
             self.sb_synthesizer.create_note_signal(note, instrument)
 
     def synthesize_track(self, track):

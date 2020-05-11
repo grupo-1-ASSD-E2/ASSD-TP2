@@ -4,8 +4,6 @@ from BackEnd.Instruments import Instruments
 import numpy as np
 import soundfile as sf
 import os
-from scipy.io.wavfile import write
-import librosa
 import time
 
 
@@ -41,14 +39,14 @@ class SB_Synthesizer(SynthesizerAbstract):
                 pitched_note = note_scaling(data, samplerate, shift, time_factor)
                 note.output_signal = pitched_note * note.velocity / 127
         else:
-            start_time = time.time()
+            
             if note.duration == 0.0:
                 note.output_signal = []
             else:
                 scaling_factor = len(data)/note_length
                 time_stretched_note = stretch(data, scaling_factor)
                 note.output_signal = time_stretched_note * note.velocity / 127
-            print('metodo5:', time.time() - start_time)
+            
         
     def init_instrument_samples(self, instrument):
         if self.instrument != instrument:
