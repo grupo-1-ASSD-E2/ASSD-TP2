@@ -22,7 +22,7 @@ class BackEnd:
         self.counter = 0
         self.song = Song()
         self.midi_path = 'ProgramaPrincipal/Resources/'
-        a = self.get_instrument_list()
+        self.play_obj = None
 
         #PABLO GONZA
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
@@ -102,10 +102,10 @@ class BackEnd:
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        wavfile.write("rodrigosynth.wav", self.song.fs, audio)
-        play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
+        
+        self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
-        play_obj.wait_done() 
+        #play_obj.wait_done() 
 
     def plot_wave(self,signal, final_time):
         plt.plot( signal)
@@ -202,26 +202,53 @@ class BackEnd:
             self.song.track[n_of_track].assign_instrument(instrument)
 
     def play_song(self):
-        raise NotImplementedError("Not Implemented")
+        if (self.song is not None):
+            self.syntesize_entire_song(self.song)
+            if (self.song.output_signal is not None):
+                self.play_signal(self.song.output_signal)
+            else: 
+                return -1
+        else:
+            return -1
 
     def play_track(self, n_of_track):
-        raise NotImplementedError("Not Implemented")
+        if self.song is not None:
+            if (n_of_track < len(self.song.tracks)):
+                self.synthesize_track(self.song.tracks[n_of_track])
+                if (self.song.tracks[n_of_track].output_signal is not None):
+                    self.play_signal(self.song.tracks[n_of_track].output_signal)
+                else: 
+                    return -1
+            else:
+                return -1
+        else:
+            return -1
+        
 
     def toggle_track(self, n_of_track):
         if (n_of_track < len(self.song.tracks)):
             self.song.track[n_of_track].toggle_track()
 
     def create_chord(self, list_of_notes):
+        #Ver como es el parametro list_of_notes
         raise NotImplementedError("Not Implemented")
 
     def pause_reproduction(self):
         raise NotImplementedError("Not Implemented")
 
     def stop_reproduction(self):
-        raise NotImplementedError("Not Implemented")
+        if self.play_obj is not None and self.play_obj.is_playing():
+            self.play_obj.stop()
+
 
     def save_as_wav_file(self, filename):
-        raise NotImplementedError("Not Implemented")
+        if (self.song is not None and self.song.output_signal is not None):
+            audio = self.song.output_signal  * (2 ** 15 - 1) / np.max(np.abs(self.song.output_signal))
+            audio = audio.astype(np.int16)
+            wavfile.write(filename, self.song.fs, audio)
+        else:
+            return -1
+        
 
     def save_as_mp3_file(self, filename):
         raise NotImplementedError("Not Implemented")
