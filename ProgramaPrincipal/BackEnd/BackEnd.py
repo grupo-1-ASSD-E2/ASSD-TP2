@@ -21,6 +21,10 @@ class BackEnd:
         self.sb_synthesizer = SB_Synthesizer()
         self.counter = 0
         self.song = Song()
+        self.midi_path = 'ProgramaPrincipal/Resources/'
+        a = self.get_instrument_list()
+
+        #PABLO GONZA
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
         self.song.load_midi_file_info('ProgramaPrincipal/Resources/faded.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/badguy.mid')
@@ -28,14 +32,31 @@ class BackEnd:
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/fragmento-rodrigo.mid')
 
-        self.midi_path = 'ProgramaPrincipal/Resources/'
-
-                
+        #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
         #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Queen - Bohemian Rhapsody.mid')
         #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
+        self.song.load_midi_file_info('Resources/faded.mid')
 
+        self.test_song()
+
+
+    def test_note(self):
+        #Para probar notas
+        note = Note(62,8,1,1,44100)
+        self.synthesize_note(note, 'Cello')
+        self.play_signal(note.output_signal)
+        
+
+    def test_track(self):
+        #Para probar un track
+        
+        self.song.tracks[7].assign_instrument('Piano')
+        self.synthesize_track(self.song.tracks[7])
+        self.play_signal(self.song.tracks[7].output_signal)
+        
+    def test_song(self):
         #Para probar cancion entera
         '''
         for i in range(len(self.song.tracks)):
@@ -65,34 +86,10 @@ class BackEnd:
         self.song.tracks[18].assign_instrument('Piano')
         self.song.tracks[19].assign_instrument('Banjo')
         self.song.tracks[20].assign_instrument('Violin')'''
-  
 
-
-        
         self.syntesize_entire_song(self.song)
         #self.play_signal(self.song.output_signal)
-        
-        
-        #Para probar notas
-        '''
-        start_time = time.time()
-        note = Note(62,8,1,1,44100)
-        self.synthesize_note(note, 'Cello')
-        print(time.time() - start_time)
-        self.play_signal(note.output_signal)
-        '''
-        
-        
-        
-        #Para probar un track
-        '''
-        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        
-        self.song.tracks[7].assign_instrument('Piano')
-        self.synthesize_track(self.song.tracks[7])
-        self.play_signal(self.song.tracks[7].output_signal)
-        '''
+
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
@@ -130,9 +127,14 @@ class BackEnd:
         start_time = time.time()
         
         for note in track.notes:
-            
-            self.synthesize_note(note, track.instrument)
-            track.output_signal = self.generate_output_signal(track.time_base.timeline_length, note, track.time_base.fs, delete_subarrays_after_generation=True, output_array=track.output_signal)
+            if (track.has_changed):
+                self.synthesize_note(note, track.instrument)
+                track.output_signal = self.generate_output_signal(track.time_base.timeline_length, note, track.time_base.fs, delete_subarrays_after_generation=True, output_array=track.output_signal)
+            else:
+                ##Load track from file
+                i = 0
+
+        track.has_changed = False
         print('track synthesis:',time.time() - start_time)
         #track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs, delete_subarrays_after_generation=True)
 
@@ -147,38 +149,6 @@ class BackEnd:
                 song.output_signal = self.generate_output_signal(song.time_base.timeline_length, track, song.time_base.fs, delete_subarrays_after_generation=True, output_array=song.output_signal)
                 song_activated_tracks.append(track)
         
-    '''
-    def generate_output_signal(self, N, arrays_to_add, fs, delete_subarrays_after_generation = False):#usar len(note.note_signal)
-        
-        start_time = time.time()
-        output = np.array([])
-        for i in arrays_to_add:
-            if len(array_to_add.output_signal) != 0: 
-                init_time_index = int(round(array_to_add.initial_time * fs))
-                index_difference = init_time_index - len(output)
-                if init_time_index >= len(output):
-                    zero_padd = np.zeros(index_difference, dtype=np.uint8)
-                    output = np.concatenate([output, zero_padd, array_to_add.output_signal])
-                    if delete_subarrays_after_generation:
-                        array_to_add.output_signal = None
-                    
-                else:
-                    if abs(index_difference) >= len(array_to_add.output_signal):
-                        output[init_time_index:len(array_to_add.output_signal) + init_time_index] += array_to_add.output_signal
-                        if delete_subarrays_after_generation:
-                            array_to_add.output_signal = None
-                    else:
-                        superpose, add = np.split(array_to_add.output_signal, [abs(index_difference)])
-                        if delete_subarrays_after_generation:
-                            array_to_add.output_signal = None
-                        output[init_time_index:] += superpose
-                        superpose = None
-                        output = np.concatenate((output, add))
-                        add = None
-        print('Generate function: ', time.time()-start_time)
-        np.save('track' + str(self.counter) + '.npy', output[0:N])
-        self.counter += 1
-        return output'''
 
     def generate_output_signal(self, N, array_to_add, fs, delete_subarrays_after_generation = False, output_array = np.array([])):#usar len(note.note_signal)
         
@@ -208,7 +178,58 @@ class BackEnd:
                     output = np.concatenate((output, add))
                     add = None
         #print('Generate function: ', time.time()-start_time)
-        #np.save('track' + str(self.counter) + '.npy', output[0:N])
+        np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', output[0:N])
         self.counter += 1
         return output
+
+
+
+
+    #########################CONEXION CON FRONT-END###################################
+
+    def load_midi_file(self, file_path):
+        ####Chequear que exista el PATH###
+        self.song.load_midi_file_info(file_path)
+
+    def get_track_list(self):
+        return self.song.track
+
+    def get_instrument_list(self):
+        return Instruments.list()
+
+    def assign_instrument_to_track(self, n_of_track, instrument):
+        if (n_of_track < len(self.song.tracks)):
+            self.song.track[n_of_track].assign_instrument(instrument)
+
+    def play_song(self):
+        raise NotImplementedError("Not Implemented")
+
+    def play_track(self, n_of_track):
+        raise NotImplementedError("Not Implemented")
+
+    def toggle_track(self, n_of_track):
+        if (n_of_track < len(self.song.tracks)):
+            self.song.track[n_of_track].toggle_track()
+
+    def create_chord(self, list_of_notes):
+        raise NotImplementedError("Not Implemented")
+
+    def pause_reproduction(self):
+        raise NotImplementedError("Not Implemented")
+
+    def stop_reproduction(self):
+        raise NotImplementedError("Not Implemented")
+
+    def save_as_wav_file(self, filename):
+        raise NotImplementedError("Not Implemented")
+
+    def save_as_mp3_file(self, filename):
+        raise NotImplementedError("Not Implemented")
+
+    def plot_spectrogram(self):
+        raise NotImplementedError("Not Implemented")
+    
+        
+            
+
 

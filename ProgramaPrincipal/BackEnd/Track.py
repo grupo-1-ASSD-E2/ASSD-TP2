@@ -11,29 +11,28 @@ class Track:
         self.notes = []
         self.instrument = None
         self.output_signal = []
-        self.time_base = None #ver si esto se necesita aca o no...
         self.initial_time = 0
         self.activated = True
+        self.has_changed = False
         
     def assign_instrument(self, instrument):
         self.instrument = instrument
+        self.has_changed = True
 
-    def initialize_output_signal_array(self, time_base):
-        self.time_base = time_base
-        self.output_signal = [0] * self.time_base.get_time_array()
-
-    # def synthesize(self): 
-    #     for note in self.notes:
-    #         self.instrument.synthesizer.create_note_signal(note, self.instrument)
 
     def get_output_signal(self):
         return self.output_signal
 
     def add_note(self, note):
         self.notes.append(note)
+        self.has_changed = True
+
 
     def set_activated(self, activated):
-        self.activated = activated
+        if (self.activated != activated):
+            self.has_changed = True
+            self.activated = activated
 
     def toggle_track(self):
         self.activated = not self.activated
+        self.has_changed = True

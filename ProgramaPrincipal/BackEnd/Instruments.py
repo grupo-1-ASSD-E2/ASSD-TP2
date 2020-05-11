@@ -15,3 +15,7 @@ class Instruments(Enum):
      BASSOON = ['Bassoon', 'ProgramaPrincipal/Resources/bassoon']
      SAXOPHONE = ['Saxophone', 'ProgramaPrincipal/Resources/saxophone']
 
+     @staticmethod
+     def list():
+        return list(map(lambda c: c.value, Instruments))
+
