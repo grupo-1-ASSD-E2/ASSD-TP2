@@ -24,7 +24,9 @@ class BackEnd:
         self.song = Song()
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
-        self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        self.song.load_midi_file_info('ProgramaPrincipal/Resources/fragmento-rodrigo.mid')
+
         self.midi_path = 'ProgramaPrincipal/Resources/'
 
                 
@@ -36,18 +38,18 @@ class BackEnd:
         #Para probar cancion entera
         
         for i in range(len(self.song.tracks)):
-            self.song.tracks[i].assign_instrument('Violin')
-        '''
-        self.song.tracks[3].assign_instrument('Accordeon')
-        self.song.tracks[5].assign_instrument('Viola')
-        self.song.tracks[4].assign_instrument('Cello')
-        self.song.tracks[6].assign_instrument('Cello')
-        self.song.tracks[7].assign_instrument('Mandolin')
-        self.song.tracks[8].assign_instrument('Violin')
-        self.song.tracks[9].assign_instrument('Mandolin')
-        self.song.tracks[10].assign_instrument('Trumpet')
-        self.song.tracks[11].assign_instrument('Oboe')
-        '''
+            self.song.tracks[i].assign_instrument('Piano')
+        
+        #self.song.tracks[2].assign_instrument('Saxophone')
+        #self.song.tracks[3].assign_instrument('Viola')
+        #self.song.tracks[4].assign_instrument('Cello')
+        #self.song.tracks[6].assign_instrument('Cello')
+        #self.song.tracks[7].assign_instrument('Banjo')
+        #self.song.tracks[8].assign_instrument('Violin')
+        #self.song.tracks[9].assign_instrument('Mandolin')
+        #self.song.tracks[10].assign_instrument('Trumpet')
+        #self.song.tracks[11].assign_instrument('Oboe')
+        
         self.syntesize_entire_song(self.song)
         self.play_signal(self.song.output_signal)
         
@@ -83,7 +85,7 @@ class BackEnd:
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
-        #wavfile.write("convelocity.wav", self.song.fs, audio)
+        wavfile.write("rodrigo.wav", self.song.fs, audio)
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
@@ -120,7 +122,7 @@ class BackEnd:
         song.output_signal = self.generate_output_signal(song.time_base.timeline_length, song_activated_tracks, song.time_base.fs, delete_subarrays_after_generation=True)
 
     #N: lango del array de salida (En caso de track, largo del track. En caso de song, largo de la song)
-    '''
+    
     def generate_output_signal(self, N, arrays_to_add, fs, delete_subarrays_after_generation = False):#usar len(note.note_signal)
         start_time = time.time()
         output = np.array([])
@@ -149,35 +151,5 @@ class BackEnd:
                         add = None
         print('Generate function: ', time.time()-start_time)
         return output[0:N]
-    '''
-
-    def generate_output_signal(self, N, arrays_to_add, fs, delete_subarrays_after_generation = False):#usar len(note.note_signal)
-        start_time = time.time()
-        output = array.array("f")
-        for i in arrays_to_add:
-            if len(i.output_signal) != 0: 
-                init_time_index = int(round(i.initial_time * fs))
-                index_difference = init_time_index - len(output)
-                if init_time_index >= len(output):
-                    zero_padd = [0]*index_difference
-                    output.extend(zero_padd)
-                    output.extend(i.output_signal)
-                    if delete_subarrays_after_generation:
-                        i.output_signal = np.array([])
-                    
-                else:
-                    if abs(index_difference) >= len(i.output_signal):
-                        output[init_time_index:len(i.output_signal) + init_time_index] += i.output_signal
-                        if delete_subarrays_after_generation:
-                            i.output_signal=np.array([])
-                    else:
-                        superpose, add = np.split(i.output_signal, [abs(index_difference)])
-                        if delete_subarrays_after_generation:
-                            i.output_signal=np.array([])
-                        output[init_time_index:] += superpose
-                        superpose = None
-                        output.extend(add)
-                        add = None
-        print('Generate function: ', time.time()-start_time)
-        return output[0:N]
+    
 
