@@ -82,7 +82,11 @@ class BackEnd:
         #self.plot_wave(signal, 1000000)
         audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
         audio = audio.astype(np.int16)
+<<<<<<< HEAD
         wavfile.write("under_the_sea.wav", self.song.fs, audio)
+=======
+        wavfile.write("convelocity.wav", self.song.fs, audio)
+>>>>>>> 1a806a7536b4601aeead5a1b97df160df3edf88a
         play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         play_obj.wait_done() 
@@ -100,7 +104,7 @@ class BackEnd:
             self.additive_synthesizer.create_note_signal(note, instrument)
         elif (instrument == Instruments.GUITAR.value[0] or instrument == Instruments.DRUM.value[0]):
             self.ks_synthesizer.create_note_signal(note, instrument)
-        elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0]):
+        elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0] or instrument == Instruments.DOG.value[0]):
             self.sb_synthesizer.create_note_signal(note, instrument)
 
     def synthesize_track(self, track):

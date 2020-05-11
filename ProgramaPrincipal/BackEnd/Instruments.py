@@ -12,4 +12,5 @@ class Instruments(Enum):
      MANDOLIN = ['Mandolin']
      BANJO = ['Banjo']
      ACCORDEON = ['Accordeon']
+     DOG = ['Dog']
 

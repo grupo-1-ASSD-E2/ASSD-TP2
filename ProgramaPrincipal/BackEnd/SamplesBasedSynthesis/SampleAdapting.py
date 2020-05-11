@@ -36,12 +36,9 @@ def change_speed(input_data, factor):
 
 def stretch(x, factor, nfft=2048):
     '''
-    stretch an audio sequence by a factor using FFT of size nfft converting to frequency domain
-    :param x: np.ndarray, audio array in PCM float32 format
-    :param factor: float, stretching or shrinking factor, depending on if its > or < 1 respectively
-    :return: np.ndarray, time stretched audio
+    Stretch x by a factor
     '''
-    stft = librosa.core.stft(x, n_fft=nfft).transpose()  # i prefer time-major fashion, so transpose
+    stft = librosa.core.stft(x, n_fft=nfft).transpose()
     stft_rows = stft.shape[0]
     stft_cols = stft.shape[1]
 
@@ -56,7 +53,7 @@ def stretch(x, factor, nfft=2048):
     for i, time in enumerate(times):
         left_frame = int(np.floor(time))
         local_frames = stft[[left_frame, left_frame + 1], :]
-        right_wt = time - np.floor(time)                        # weight on right frame out of 2
+        right_wt = time - np.floor(time)                    
         local_mag = (1 - right_wt) * np.absolute(local_frames[0, :]) + right_wt * np.absolute(local_frames[1, :])
         local_dphi = np.angle(local_frames[1, :]) - np.angle(local_frames[0, :]) - phase_adv
         local_dphi = local_dphi - 2 * np.pi * np.floor(local_dphi/(2 * np.pi))
