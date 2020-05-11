@@ -36,19 +36,21 @@ class BackEnd:
         #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
 
         #Para probar cancion entera
-        '''
-        for i in range(len(self.song.tracks)):
-            self.song.tracks[i].assign_instrument('Piano')
+        
+        #for i in range(len(self.song.tracks)):
+        #    self.song.tracks[i].assign_instrument('Piano')
+        self.song.tracks[0].assign_instrument('Guitar')
         self.song.tracks[1].assign_instrument('Mandolin')
         self.song.tracks[3].assign_instrument('Viola')
         self.song.tracks[2].assign_instrument('Saxophone')
-        #self.song.tracks[4].assign_instrument('Cello')
-        #self.song.tracks[6].assign_instrument('Cello')
-        #self.song.tracks[7].assign_instrument('Banjo')
-        #self.song.tracks[8].assign_instrument('Violin')
-        #self.song.tracks[9].assign_instrument('Mandolin')
-        #self.song.tracks[10].assign_instrument('Trumpet')
-        #self.song.tracks[11].assign_instrument('Oboe')
+        self.song.tracks[4].assign_instrument('Cello')
+        self.song.tracks[6].assign_instrument('Cello')
+        self.song.tracks[5].assign_instrument('Accordeon')
+        self.song.tracks[7].assign_instrument('Banjo')
+        self.song.tracks[8].assign_instrument('Violin')
+        self.song.tracks[9].assign_instrument('Mandolin')
+        self.song.tracks[10].assign_instrument('Trumpet')
+        self.song.tracks[11].assign_instrument('Oboe')
         
         self.syntesize_entire_song(self.song)
         self.play_signal(self.song.output_signal)
@@ -66,13 +68,14 @@ class BackEnd:
         
         
         #Para probar un track
-        
+        '''
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        '''
+        
         self.song.tracks[7].assign_instrument('Piano')
         self.synthesize_track(self.song.tracks[7])
-        self.play_signal(self.song.tracks[7].output_signal)'''
+        self.play_signal(self.song.tracks[7].output_signal)
+        '''
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
@@ -131,20 +134,21 @@ class BackEnd:
                 init_time_index = int(round(i.initial_time * fs))
                 index_difference = init_time_index - len(output)
                 if init_time_index >= len(output):
-                    zero_padd = np.zeros(index_difference)
+                    zero_padd = np.zeros(index_difference, dtype=np.uint8)
+                    #print(zero_padd.nbytes)
                     output = np.concatenate([output, zero_padd, i.output_signal])
                     if delete_subarrays_after_generation:
-                        i.output_signal=np.array([])
+                        i.output_signal = None
                     
                 else:
                     if abs(index_difference) >= len(i.output_signal):
                         output[init_time_index:len(i.output_signal) + init_time_index] += i.output_signal
                         if delete_subarrays_after_generation:
-                            i.output_signal=np.array([])
+                            i.output_signal = None
                     else:
                         superpose, add = np.split(i.output_signal, [abs(index_difference)])
                         if delete_subarrays_after_generation:
-                            i.output_signal=np.array([])
+                            i.output_signal = None
                         output[init_time_index:] += superpose
                         superpose = None
                         output = np.concatenate((output, add))

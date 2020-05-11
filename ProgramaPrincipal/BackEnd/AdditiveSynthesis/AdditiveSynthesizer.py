@@ -27,7 +27,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
                 amplitude_array = output_sine
             else:
                 difference = len(amplitude_array) - len(output_sine)
-                zeros = np.zeros(abs(difference))
+                zeros = np.zeros(abs(difference), dtype=np.uint16)
                 if (difference > 0):
 
 
