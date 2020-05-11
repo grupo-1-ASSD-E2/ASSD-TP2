@@ -100,7 +100,7 @@ class BackEnd:
             self.additive_synthesizer.create_note_signal(note, instrument)
         elif (instrument == Instruments.GUITAR.value[0] or instrument == Instruments.DRUM.value[0]):
             self.ks_synthesizer.create_note_signal(note, instrument)
-        elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0] or instrument == Instruments.DOG.value[0]):
+        elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0] or instrument == Instruments.BASSOON.value[0] or instrument == Instruments.SAXOPHONE.value[0]):
             self.sb_synthesizer.create_note_signal(note, instrument)
 
     def synthesize_track(self, track):
