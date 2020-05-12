@@ -142,7 +142,7 @@ class BackEnd:
         elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0] or instrument == Instruments.BASSOON.value[0] or instrument == Instruments.SAXOPHONE.value[0]):
             self.sb_synthesizer.create_note_signal(note, instrument)
 
-    def synthesize_track(self, track):
+    def synthesize_track(self, track, it):
         start_time = time.time()
         for note in track.notes:
             if (track.has_changed):
@@ -162,11 +162,12 @@ class BackEnd:
         it = 0
         for track in song.tracks:
             print(str(it))
-            it +=1
             if track.activated:
-                self.synthesize_track(track)
+                self.synthesize_track(track, it)
                 song.output_signal = self.generate_output_signal(song.time_base.timeline_length, track, song.time_base.fs, delete_subarrays_after_generation=True, output_array=song.output_signal)
                 song_activated_tracks.append(track)
+
+            it +=1
         
     def generate_output_signal(self, N, array_to_add, fs, delete_subarrays_after_generation = False, output_array = np.array([])):#usar len(note.note_signal)
         
