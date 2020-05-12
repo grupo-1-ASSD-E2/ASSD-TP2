@@ -30,7 +30,7 @@ class BackEnd:
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/badguy.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
+        #self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
 
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
@@ -100,10 +100,12 @@ class BackEnd:
         
         # Start playback
         #self.plot_wave(signal, 1000000)
-        audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
-        audio = audio.astype(np.int16)
-        
-        self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
+        if len(signal) > 0 and np.max(signal) is not 0:
+            audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
+            audio = audio.astype(np.int16)
+            self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
+        else:
+            return -1
         # Wait for playback to finish before exiting
         #play_obj.wait_done() 
 
@@ -154,28 +156,30 @@ class BackEnd:
         
         #start_time = time.time()
         output = output_array
-        
+        volume_normalize = 1
+        if len(array_to_add.output_signal) > 0 and np.max(array_to_add.output_signal) is not 0:
+            volume_normalize = 1.0 / np.amax(array_to_add.output_signal)
         if len(array_to_add.output_signal) != 0: 
             init_time_index = int(round(array_to_add.initial_time * fs))
             index_difference = init_time_index - len(output)
             if init_time_index >= len(output):
                 zero_padd = np.zeros(index_difference, dtype=np.uint8)
-                output = np.concatenate([output, zero_padd, array_to_add.output_signal])
+                output = np.concatenate([output, zero_padd, array_to_add.output_signal * (array_to_add.velocity / (127 * 2)) * volume_normalize])
                 if delete_subarrays_after_generation:
                     array_to_add.output_signal = None
                 
             else:
                 if abs(index_difference) >= len(array_to_add.output_signal):
-                    output[init_time_index:len(array_to_add.output_signal) + init_time_index] += array_to_add.output_signal
+                    output[init_time_index:len(array_to_add.output_signal) + init_time_index] += array_to_add.output_signal * (array_to_add.velocity / (127 * 2)) * volume_normalize
                     if delete_subarrays_after_generation:
                         array_to_add.output_signal = None
                 else:
                     superpose, add = np.split(array_to_add.output_signal, [abs(index_difference)])
                     if delete_subarrays_after_generation:
                         array_to_add.output_signal = None
-                    output[init_time_index:] += superpose
+                    output[init_time_index:] += superpose * (array_to_add.velocity / (127 * 2)) * volume_normalize
                     superpose = None
-                    output = np.concatenate((output, add))
+                    output = np.concatenate((output, add * (array_to_add.velocity / (127 * 2)) * volume_normalize))
                     add = None
         #print('Generate function: ', time.time()-start_time)
         #np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', output[0:N])
@@ -197,9 +201,10 @@ class BackEnd:
     def get_instrument_list(self):
         return Instruments.list()
 
-    def assign_instrument_to_track(self, n_of_track, instrument):
+    def assign_instrument_to_track(self, n_of_track, instrument, volume):
         if (n_of_track < len(self.song.tracks)):
             self.song.tracks[n_of_track].assign_instrument(instrument)
+            self.song.tracks[n_of_track].set_volume(volume)
 
     def synthesize_song(self):
         if (self.song is not None):
@@ -226,17 +231,16 @@ class BackEnd:
         else:
             return -1
         
-
     def toggle_track(self, n_of_track):
         if (n_of_track < len(self.song.tracks)):
-            self.song.track[n_of_track].toggle_track()
+            self.song.tracks[n_of_track].toggle_track()
 
     def create_chord(self, list_of_notes):
         #Ver como es el parametro list_of_notes
         raise NotImplementedError("Not Implemented")
 
     def pause_reproduction(self):
-        raise NotImplementedError("Not Implemented")
+        self.play_obj.stop()
 
     def continue_reproduction(self):
         raise NotImplementedError("Not Implemented")
