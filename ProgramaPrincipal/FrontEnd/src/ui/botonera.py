@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MediaObject(object):
     def setupUi(self, MediaObject):
         MediaObject.setObjectName("MediaObject")
-        MediaObject.resize(120, 50)
+        MediaObject.resize(225, 75)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

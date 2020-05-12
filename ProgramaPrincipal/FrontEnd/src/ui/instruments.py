@@ -17,6 +17,9 @@ class Ui_Instruments(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Instruments.sizePolicy().hasHeightForWidth())
         Instruments.setSizePolicy(sizePolicy)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/instruments/assets/instruments/piano.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Instruments.setWindowIcon(icon)
         Instruments.setStyleSheet("QWidget{\n"
 "    background-color: #6c7b95;\n"
 "}\n"
@@ -70,7 +73,7 @@ class Ui_Instruments(object):
 
     def retranslateUi(self, Instruments):
         _translate = QtCore.QCoreApplication.translate
-        Instruments.setWindowTitle(_translate("Instruments", "Form"))
+        Instruments.setWindowTitle(_translate("Instruments", "Instruments"))
         self.label.setText(_translate("Instruments", "Elija un Instrumento"))
 
 from FrontEnd.src.resources import buttons_rc

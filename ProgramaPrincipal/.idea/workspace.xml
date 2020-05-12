@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f3b99884-b390-4b3a-9fca-a230a4dbde3a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/FrontEnd/designer/botonera.ui" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/designer/botonera.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/designer/instruments.ui" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/designer/instruments.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FrontEnd/designer/main_window.ui" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/designer/main_window.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontEnd/src/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/MainWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/resources/buttons_rc.py" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/resources/buttons_rc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/ui/botonera.py" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/ui/botonera.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/ui/instruments.py" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/ui/instruments.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/ui/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/ui/main_window.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,11 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/FrontEnd/src/MainWindow.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="226">
-              <caret line="47" column="44" lean-forward="true" selection-start-line="47" selection-start-column="44" selection-end-line="47" selection-end-column="44" />
+              <caret line="47" column="44" selection-start-line="47" selection-start-column="44" selection-end-line="47" selection-end-column="44" />
               <folding>
                 <element signature="e#16#82#0" expanded="true" />
               </folding>
@@ -43,8 +48,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/FrontEnd/compile.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="52" column="17" selection-start-line="52" selection-start-column="17" selection-end-line="52" selection-end-column="17" />
+            <state relative-caret-position="303">
+              <caret line="53" column="38" selection-start-line="53" selection-start-column="38" selection-end-line="53" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -53,7 +58,7 @@
         <entry file="file://$PROJECT_DIR$/FrontEnd/src/widgets/mediabutton.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="306">
-              <caret line="18" column="14" lean-forward="true" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
+              <caret line="18" column="14" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
               <folding>
                 <element signature="e#16#65#0" expanded="true" />
               </folding>
@@ -61,11 +66,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/FrontEnd/src/ui/main_window.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="186" column="26" selection-start-line="186" selection-start-column="26" selection-end-line="186" selection-end-column="26" />
+            <state relative-caret-position="39">
+              <caret line="282" column="14" selection-start-line="282" selection-start-column="14" selection-end-line="282" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -114,8 +119,8 @@
         <option value="$PROJECT_DIR$/BackEnd/Instruments.py" />
         <option value="$PROJECT_DIR$/FrontEnd/compile.py" />
         <option value="$PROJECT_DIR$/main_fend.py" />
-        <option value="$PROJECT_DIR$/FrontEnd/src/ui/main_window.py" />
         <option value="$PROJECT_DIR$/FrontEnd/src/MainWindow.py" />
+        <option value="$PROJECT_DIR$/FrontEnd/src/ui/main_window.py" />
       </list>
     </option>
   </component>
@@ -163,7 +168,7 @@
               <item name="ProgramaPrincipal" type="462c0819:PsiDirectoryNode" />
               <item name="FrontEnd" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="widgets" type="462c0819:PsiDirectoryNode" />
+              <item name="ui" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -424,13 +429,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/FrontEnd/src/ui/main_window.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="186" column="26" selection-start-line="186" selection-start-column="26" selection-end-line="186" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/FrontEnd/src/resources/buttons_rc.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -451,17 +449,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/FrontEnd/compile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="52" column="17" selection-start-line="52" selection-start-column="17" selection-end-line="52" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/FrontEnd/src/widgets/mediabutton.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
-          <caret line="18" column="14" lean-forward="true" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
+          <caret line="18" column="14" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
           <folding>
             <element signature="e#16#65#0" expanded="true" />
           </folding>
@@ -471,10 +462,24 @@
     <entry file="file://$PROJECT_DIR$/FrontEnd/src/MainWindow.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="226">
-          <caret line="47" column="44" lean-forward="true" selection-start-line="47" selection-start-column="44" selection-end-line="47" selection-end-column="44" />
+          <caret line="47" column="44" selection-start-line="47" selection-start-column="44" selection-end-line="47" selection-end-column="44" />
           <folding>
             <element signature="e#16#82#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FrontEnd/compile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="53" column="38" selection-start-line="53" selection-start-column="38" selection-end-line="53" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FrontEnd/src/ui/main_window.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="39">
+          <caret line="282" column="14" selection-start-line="282" selection-start-column="14" selection-end-line="282" selection-end-column="14" />
         </state>
       </provider>
     </entry>

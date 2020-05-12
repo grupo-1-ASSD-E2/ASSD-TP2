@@ -115,7 +115,7 @@ class BackEnd:
         # Start playback
         #self.plot_wave(signal, 1000000)
         if len(signal) > 0 and np.max(signal) is not 0:
-            audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
+            audio = signal  * (2 ** 15 - 1) 
             audio = audio.astype(np.int16)
             self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
             self.play_obj.wait_done() 
