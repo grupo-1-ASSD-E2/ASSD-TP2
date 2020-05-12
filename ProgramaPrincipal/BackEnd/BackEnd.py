@@ -141,6 +141,7 @@ class BackEnd:
         #track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs, delete_subarrays_after_generation=True)
 
     def syntesize_entire_song(self, song):
+        song.output_signal = []
         song_activated_tracks = []
         it = 0
         for track in song.tracks:

@@ -37,14 +37,14 @@ class PartialNote:
 
     def __get_last_time_value__(self,note): #COMPLETADO
         
-        if (note.duration > self.s_time):
+        if (note.duration >= self.s_time):
             return note.duration  -((note.duration - self.s_time) * self.stageSslope + self.s_amp) / self.stageRslope
         else: #Si no se completan todas las etapas...
-            if note.duration < self.d_time:
+            if note.duration <= self.d_time:
                 #No hay etapa D
                 return note.duration  -((note.duration ) * self.stageAslope ) / self.stageRslope
                 
-            elif note.duration < self.s_time:
+            elif note.duration <= self.s_time:
                 #No hay etapa S
                 return note.duration  -((note.duration - self.d_time) * self.stageDslope + self.d_amp) / self.stageRslope
 
@@ -67,7 +67,7 @@ class PartialNote:
         r_time_index = int(round(note.duration * note.fs))
      
        
-        if (note.duration > self.s_time):
+        if (note.duration >= self.s_time):
 
             d_time_index = int(round((self.d_time) * note.fs))
             s_time_index = int(round(( self.s_time) * note.fs))
@@ -83,7 +83,7 @@ class PartialNote:
             data = np.concatenate([stageA, stageD, stageS, stageR])
             
         else: #Si no se completan todas las etapas...
-            if note.duration < self.d_time:
+            if note.duration <= self.d_time:
                 stageA, stageR = np.split(note_out, [r_time_index])
                 stageA =  (stageA ) * self.stageAslope
                 stageR = (stageR  - note.duration) * self.stageRslope +note.duration * self.stageAslope
@@ -91,7 +91,7 @@ class PartialNote:
                 data = np.concatenate([stageA, stageR])
                 # ETAPA A y etapa R
                 
-            elif note.duration < self.s_time:
+            elif note.duration <= self.s_time:
                 # ETAPA A, ETAPA D Y ETAPA R
                 d_time_index = int(round((self.d_time) * note.fs))
                 #d_time_index = time_base.get_time_index_in_time_subarray(time_array,  self.d_time + note.initial_time)
