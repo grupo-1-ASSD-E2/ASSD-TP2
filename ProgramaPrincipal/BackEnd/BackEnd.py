@@ -201,14 +201,16 @@ class BackEnd:
         if (n_of_track < len(self.song.tracks)):
             self.song.track[n_of_track].assign_instrument(instrument)
 
-    def play_song(self):
+    def synthesize_song(self):
         if (self.song is not None):
             self.syntesize_entire_song(self.song)
-            if (self.song.output_signal is not None):
-                self.play_signal(self.song.output_signal)
-            else: 
-                return -1
         else:
+            return -1
+
+    def play_song(self):
+        if (self.song.output_signal is not None):
+            self.play_signal(self.song.output_signal)
+        else: 
             return -1
 
     def play_track(self, n_of_track):
