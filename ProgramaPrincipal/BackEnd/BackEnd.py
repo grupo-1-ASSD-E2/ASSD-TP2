@@ -30,7 +30,7 @@ class BackEnd:
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/badguy.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
+        #self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
 
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
@@ -100,10 +100,12 @@ class BackEnd:
         
         # Start playback
         #self.plot_wave(signal, 1000000)
-        audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
-        audio = audio.astype(np.int16)
-        
-        self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
+        if len(signal) > 0 and np.max(signal) is not 0:
+            audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
+            audio = audio.astype(np.int16)
+            self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
+        else:
+            return -1
         # Wait for playback to finish before exiting
         #play_obj.wait_done() 
 
@@ -231,7 +233,7 @@ class BackEnd:
         
     def toggle_track(self, n_of_track):
         if (n_of_track < len(self.song.tracks)):
-            self.song.track[n_of_track].toggle_track()
+            self.song.tracks[n_of_track].toggle_track()
 
     def create_chord(self, list_of_notes):
         #Ver como es el parametro list_of_notes
