@@ -8,6 +8,8 @@ from scipy.io import wavfile
 
 from BackEnd.AditiveSynthesis.ADSR import ADSR
 
+
+np.concatenate()
 midiout = rtmidi.MidiOut()
 mid = MidiFile('Resources/Rodrigo_-_2do_movimiento_Concierto_de_Aranjuez__Adagio.mid', clip=True)
 mid1 = MidiFile('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid', clip=True)
