@@ -236,6 +236,9 @@ class BackEnd:
     def pause_reproduction(self):
         raise NotImplementedError("Not Implemented")
 
+    def continue_reproduction(self):
+        raise NotImplementedError("Not Implemented")
+
     def stop_reproduction(self):
         if self.play_obj is not None and self.play_obj.is_playing():
             self.play_obj.stop()
