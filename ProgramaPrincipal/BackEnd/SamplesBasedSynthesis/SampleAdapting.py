@@ -2,7 +2,6 @@ import os
 import numpy as np
 import soundfile as sf 
 import sys
-from numba import jit
 import librosa
 
 def note_scaling(input_data, input_samp, shift, time_factor):
