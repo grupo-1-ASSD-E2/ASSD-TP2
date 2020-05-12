@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f3b99884-b390-4b3a-9fca-a230a4dbde3a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/BackEnd/Instruments.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/Instruments.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/accordeon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/banjo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/bassoon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/cello.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/drum.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/guitar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/mandolin.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/oboe.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/piano.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/saxophone.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/trumpet.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/viola.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/InstrumentPhotos/violin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/src/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/src/MainWindow.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,11 +15,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/BackEnd/Instruments.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/FrontEnd/src/MainWindow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="62" selection-start-line="15" selection-start-column="62" selection-end-line="15" selection-end-column="62" />
+            <state relative-caret-position="328">
+              <caret line="69" column="42" selection-start-line="69" selection-start-column="42" selection-end-line="69" selection-end-column="42" />
+              <folding>
+                <element signature="e#16#82#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/FrontEnd/src/widgets/trackconfig.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="128">
+              <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+              <folding>
+                <element signature="e#16#65#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -40,36 +42,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/FrontEnd/compile.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="58" column="31" selection-start-line="58" selection-start-column="31" selection-end-line="58" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/FrontEnd/src/ui/botonera.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1173" />
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main_fend.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
-              <folding>
-                <element signature="e#0#40#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/BackEnd/Song.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" selection-start-line="6" selection-end-line="6" />
+            <state relative-caret-position="252">
+              <caret line="59" column="24" selection-start-line="59" selection-start-column="24" selection-end-line="59" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -77,31 +51,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/FrontEnd/src/ui/main_window.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
-              <caret line="176" column="14" selection-start-line="176" selection-start-column="14" selection-end-line="176" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/BackEnd/SamplesBasedSynthesis/SBSynthesis.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1385">
-              <caret line="91" selection-start-line="91" selection-end-line="91" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/FrontEnd/designer/botonera.ui">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/FrontEnd/src/widgets/instruments.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+            <state relative-caret-position="274">
+              <caret line="177" column="45" selection-start-line="177" selection-start-column="45" selection-end-line="177" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -121,7 +72,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/FrontEnd/src/MainWindow.py" />
         <option value="$PROJECT_DIR$/FrontEnd/src/widgets/trackconfig.py" />
         <option value="$PROJECT_DIR$/FrontEnd/src/widgets/mediabutton.py" />
         <option value="$PROJECT_DIR$/FrontEnd/src/widgets/instruments.py" />
@@ -129,6 +79,7 @@
         <option value="$PROJECT_DIR$/FrontEnd/compile.py" />
         <option value="$PROJECT_DIR$/main_fend.py" />
         <option value="$PROJECT_DIR$/FrontEnd/src/ui/main_window.py" />
+        <option value="$PROJECT_DIR$/FrontEnd/src/MainWindow.py" />
       </list>
     </option>
   </component>
@@ -171,19 +122,6 @@
               <item name="FrontEnd" type="462c0819:PsiDirectoryNode" />
               <item name="designer" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="ProgramaPrincipal" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ProgramaPrincipal" type="462c0819:PsiDirectoryNode" />
-              <item name="FrontEnd" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ProgramaPrincipal" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ProgramaPrincipal" type="462c0819:PsiDirectoryNode" />
-              <item name="FrontEnd" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -192,6 +130,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -324,13 +263,6 @@
         <state relative-caret-position="-51" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/FrontEnd/src/MainWindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="14" selection-start-line="6" selection-start-column="14" selection-end-line="6" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/BackEnd/TimeBase/TimeBase.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -349,24 +281,10 @@
     <entry file="file://$PROJECT_DIR$/BackEnd/Note.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/FrontEnd/src/widgets/trackconfig.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="14" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/FrontEnd/src/widgets/mediabutton.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="14" selection-start-line="4" selection-start-column="14" selection-end-line="4" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/FrontEnd/src/widgets/instruments.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -376,9 +294,6 @@
           <caret line="15" column="62" selection-start-line="15" selection-start-column="62" selection-end-line="15" selection-end-column="62" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/FrontEnd/designer/botonera.ui">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/main_fend.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -412,24 +327,54 @@
         <state relative-caret-position="-1202" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/BackEnd/SamplesBasedSynthesis/SBSynthesis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="722">
+          <caret line="85" selection-start-line="85" selection-end-line="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FrontEnd/designer/botonera.ui">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FrontEnd/src/widgets/instruments.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/FrontEnd/compile.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="58" column="31" selection-start-line="58" selection-start-column="31" selection-end-line="58" selection-end-column="31" />
+        <state relative-caret-position="252">
+          <caret line="59" column="24" selection-start-line="59" selection-start-column="24" selection-end-line="59" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/FrontEnd/src/ui/main_window.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="176" column="14" selection-start-line="176" selection-start-column="14" selection-end-line="176" selection-end-column="14" />
+        <state relative-caret-position="274">
+          <caret line="177" column="45" selection-start-line="177" selection-start-column="45" selection-end-line="177" selection-end-column="45" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BackEnd/SamplesBasedSynthesis/SBSynthesis.py">
+    <entry file="file://$PROJECT_DIR$/FrontEnd/src/widgets/trackconfig.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1385">
-          <caret line="91" selection-start-line="91" selection-end-line="91" />
+        <state relative-caret-position="128">
+          <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
+          <folding>
+            <element signature="e#16#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FrontEnd/src/MainWindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="69" column="42" selection-start-line="69" selection-start-column="42" selection-end-line="69" selection-end-column="42" />
+          <folding>
+            <element signature="e#16#82#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

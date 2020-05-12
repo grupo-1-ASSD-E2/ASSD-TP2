@@ -30,7 +30,7 @@ class BackEnd:
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/badguy.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/fragmento-rodrigo.mid')
+        self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
 
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
