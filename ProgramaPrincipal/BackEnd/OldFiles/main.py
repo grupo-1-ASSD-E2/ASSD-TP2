@@ -97,7 +97,7 @@ def create_wav_file(file_name, fs, audio):
 #reproduce_midi_file(mid3)
 
 
-ejecutar main
+#ejecutar main
 
 snapshot = tracemalloc.take_snapshot()
 display_top(snapshot)
