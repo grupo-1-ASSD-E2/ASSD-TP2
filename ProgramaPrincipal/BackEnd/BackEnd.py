@@ -24,6 +24,7 @@ from Instruments import Instruments
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import simpleaudio as sa
+import pyaudio
 import time
 
 
@@ -36,6 +37,7 @@ class BackEnd:
         self.song = Song()
         self.midi_path = 'ProgramaPrincipal/Resources/'
         self.play_obj = None
+        self.p = pyaudio.PyAudio()
 
         #PABLO GONZA
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
@@ -109,7 +111,8 @@ class BackEnd:
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
             
     
-    #PARA PROBAR
+
+    '''
     def play_signal(self, signal): 
         
         # Start playback
@@ -118,6 +121,24 @@ class BackEnd:
             audio = signal  * (2 ** 15 - 1) 
             audio = audio.astype(np.int16)
             self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
+        else:
+            return -1
+    '''
+    def play_signal(self, signal): 
+        
+        # Start playback
+        #self.plot_wave(signal, 1000000)
+        if len(signal) > 0 and np.max(signal) is not 0:
+            self.stream = self.p.open(format=pyaudio.paFloat32,
+                         channels=1,
+                         rate=self.song.fs,
+                         output=True,
+                         output_device_index=1
+                         )
+            audio = signal  * (2 ** 15 - 1) 
+            audio = audio.astype(np.int16)
+            self.stream.write(audio)
+            self.stream.start_stream()
         else:
             return -1
 
