@@ -88,7 +88,10 @@ class Ui_AudioTool(object):
         self.track_set.setSizePolicy(sizePolicy)
         self.track_set.setMinimumSize(QtCore.QSize(250, 0))
         self.track_set.setAutoFillBackground(True)
+        self.track_set.setFrameShape(QtWidgets.QFrame.Panel)
+        self.track_set.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
         self.track_set.setWidgetResizable(True)
+        self.track_set.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.track_set.setObjectName("track_set")
         self.track_setter = QtWidgets.QWidget()
         self.track_setter.setGeometry(QtCore.QRect(0, 0, 248, 296))
@@ -106,7 +109,7 @@ class Ui_AudioTool(object):
 "")
         self.track_0.setObjectName("track_0")
         self.verticalLayout.addWidget(self.track_0)
-        spacerItem = QtWidgets.QSpacerItem(20, 215, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.track_set.setWidget(self.track_setter)
         self.verticalLayout_4.addWidget(self.track_set)
@@ -116,10 +119,12 @@ class Ui_AudioTool(object):
         self.verticalLayout_4.addWidget(self.sintetizar)
         self.horizontalLayout_3.addWidget(self.track_seter)
         self.track_view = QtWidgets.QScrollArea(self.view_zone)
+        self.track_view.setFrameShape(QtWidgets.QFrame.WinPanel)
+        self.track_view.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.track_view.setWidgetResizable(True)
         self.track_view.setObjectName("track_view")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 274, 326))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 274, 324))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
@@ -159,6 +164,12 @@ class Ui_AudioTool(object):
         self.Efectos = QtWidgets.QWidget()
         self.Efectos.setObjectName("Efectos")
         self.Options.addTab(self.Efectos, "")
+        self.tab = QtWidgets.QWidget()
+        self.tab.setObjectName("tab")
+        self.Options.addTab(self.tab, "")
+        self.tab_2 = QtWidgets.QWidget()
+        self.tab_2.setObjectName("tab_2")
+        self.Options.addTab(self.tab_2, "")
         self.horizontalLayout.addWidget(self.Options)
         AudioTool.setCentralWidget(self.centralwidget)
 
@@ -179,9 +190,11 @@ class Ui_AudioTool(object):
         self.media_buttons_widget.setWhatsThis(_translate("AudioTool", "Media buttons Widget.  "))
         self.Options.setTabText(self.Options.indexOf(self.Sintesis), _translate("AudioTool", "Sintesis"))
         self.Options.setTabText(self.Options.indexOf(self.Efectos), _translate("AudioTool", "Efectos"))
+        self.Options.setTabText(self.Options.indexOf(self.tab), _translate("AudioTool", "Espectrograma"))
+        self.Options.setTabText(self.Options.indexOf(self.tab_2), _translate("AudioTool", "Notas"))
 
-from src.widgets.mediabutton import MediaButtonsWidget
-from src.widgets.trackconfig import TrackConfigWidget
+from FrontEnd.src.widgets.mediabutton import MediaButtonsWidget
+from FrontEnd.src.widgets.trackconfig import TrackConfigWidget
 from FrontEnd.src.resources import buttons_rc
 
 if __name__ == "__main__":
