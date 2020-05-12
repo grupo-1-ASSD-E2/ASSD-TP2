@@ -17,7 +17,7 @@ class SB_Synthesizer(SynthesizerAbstract):
         #PABLO Y GONZA
         #self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
         #MALE
-        self.samples_directory = 'BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
+        self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
         self.my_samples_frecuencies()
         print(time.time() - start_time)
 
