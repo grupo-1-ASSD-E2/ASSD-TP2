@@ -1,6 +1,8 @@
 import numpy as np
 import mido
 from mido import MidiFile
+#Pablo y Gonza
+
 from BackEnd.Song import Song
 from BackEnd.Track import Track
 from BackEnd.Note import Note
@@ -8,6 +10,17 @@ from BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 from BackEnd.KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
 from BackEnd.SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
 from BackEnd.Instruments import Instruments
+
+#Male
+'''
+from BackEnd.Song import Song
+from Track import Track
+from Note import Note
+from AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
+from KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
+from SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
+from Instruments import Instruments
+'''
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import simpleaudio as sa
@@ -30,16 +43,18 @@ class BackEnd:
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/badguy.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
+        
 
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
-        #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Queen - Bohemian Rhapsody.mid')
         #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('Resources/faded.mid')
+        #self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
 
         #self.test_song()
+        self.test_track(7)
 
 
     def test_note(self):
@@ -49,12 +64,11 @@ class BackEnd:
         self.play_signal(note.output_signal)
         
 
-    def test_track(self):
+    def test_track(self,track_number):
         #Para probar un track
-        
-        self.song.tracks[7].assign_instrument('Piano')
-        self.synthesize_track(self.song.tracks[7])
-        self.play_signal(self.song.tracks[7].output_signal)
+        self.song.tracks[track_number].assign_instrument('Guitar')
+        self.synthesize_track(self.song.tracks[track_number])
+        self.play_signal(self.song.tracks[track_number].output_signal)
         
     def test_song(self):
         #Para probar cancion entera
@@ -106,6 +120,7 @@ class BackEnd:
         self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         # Wait for playback to finish before exiting
         #play_obj.wait_done() 
+        print('HOLA')
 
     def plot_wave(self,signal, final_time):
         plt.plot( signal)
@@ -125,7 +140,6 @@ class BackEnd:
 
     def synthesize_track(self, track):
         start_time = time.time()
-        
         for note in track.notes:
             if (track.has_changed):
                 self.synthesize_note(note, track.instrument)
