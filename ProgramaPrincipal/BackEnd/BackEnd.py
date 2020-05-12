@@ -165,7 +165,6 @@ class BackEnd:
                 song.output_signal = self.generate_output_signal(song.time_base.timeline_length, track, song.time_base.fs, delete_subarrays_after_generation=True, output_array=song.output_signal)
                 song_activated_tracks.append(track)
         
-
     def generate_output_signal(self, N, array_to_add, fs, delete_subarrays_after_generation = False, output_array = np.array([])):#usar len(note.note_signal)
         
         #start_time = time.time()
