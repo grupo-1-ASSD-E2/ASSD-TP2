@@ -142,7 +142,7 @@ class BackEnd:
         elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0] or instrument == Instruments.BASSOON.value[0] or instrument == Instruments.SAXOPHONE.value[0]):
             self.sb_synthesizer.create_note_signal(note, instrument)
 
-    def synthesize_track(self, track, it):
+    def synthesize_track(self, track, n_of_track):
         start_time = time.time()
         for note in track.notes:
             if (track.has_changed):
