@@ -26,6 +26,7 @@ from scipy.io import wavfile
 import simpleaudio as sa
 import pyaudio
 import time
+import sounddevice as sd
 
 
 class BackEnd:
@@ -37,16 +38,7 @@ class BackEnd:
         self.song = Song()
         self.midi_path = 'ProgramaPrincipal/Resources/'
         self.play_obj = None
-        self.p = pyaudio.PyAudio()
-
-        #PABLO GONZA
-        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
-        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/faded.mid')
-        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/badguy.mid')
-        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
-        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         
-
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
         #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
@@ -54,9 +46,6 @@ class BackEnd:
         #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('Resources/faded.mid')
         #self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
-
-        #self.test_song()
-        #self.test_track(7)
 
 
     def test_note(self):
@@ -68,49 +57,28 @@ class BackEnd:
 
     def test_track(self,track_number):
         #Para probar un track
-        self.song.tracks[track_number].assign_instrument('Guitar')
+        self.song.tracks[track_number].assign_instrument('Piano')
         self.synthesize_track(self.song.tracks[track_number],track_number)
         self.play_signal(self.song.tracks[track_number].output_signal)
         
     def test_song(self):
         #Para probar cancion entera
-        '''
         for i in range(len(self.song.tracks)):
             self.song.tracks[i].assign_instrument('Accordeon')
-        '''
-        
         self.song.tracks[0].assign_instrument('Piano')
-        '''
         self.song.tracks[1].assign_instrument('Mandolin')
         self.song.tracks[3].assign_instrument('Violin')
         self.song.tracks[2].assign_instrument('Saxophone')
         self.song.tracks[4].assign_instrument('Cello')
         self.song.tracks[6].assign_instrument('Basoon')
         self.song.tracks[5].assign_instrument('Accordeon')
-        self.song.tracks[7].assign_instrument('Banjo')'''
-        '''
-        self.song.tracks[8].assign_instrument('Violin')
-        self.song.tracks[9].assign_instrument('Mandolin')
-        self.song.tracks[10].assign_instrument('Trumpet')
-        self.song.tracks[11].assign_instrument('Oboe')
-        self.song.tracks[12].assign_instrument('Guitar')
-        self.song.tracks[13].assign_instrument('Mandolin')
-        self.song.tracks[14].assign_instrument('Viola')
-        self.song.tracks[15].assign_instrument('Saxophone')
-        self.song.tracks[16].assign_instrument('Cello')
-        self.song.tracks[17].assign_instrument('Piano')
-        self.song.tracks[18].assign_instrument('Piano')
-        self.song.tracks[19].assign_instrument('Banjo')
-        self.song.tracks[20].assign_instrument('Violin')'''
-
+        self.song.tracks[7].assign_instrument('Banjo')
         self.syntesize_entire_song(self.song)
-        #self.play_signal(self.song.output_signal)
+        self.play_signal(self.song.output_signal)
 
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
-            
-    
 
     '''
     def play_signal(self, signal): 
@@ -118,27 +86,20 @@ class BackEnd:
         # Start playback
         #self.plot_wave(signal, 1000000)
         if len(signal) > 0 and np.max(signal) is not 0:
-            audio = signal  * (2 ** 15 - 1) 
-            audio = audio.astype(np.int16)
-            self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
+            self.audio = signal  * (2 ** 15 - 1) 
+            self.audio = self.audio.astype(np.int16)
+            self.start_time = time.time()
+            self.play_obj = sa.play_buffer(self.audio, 1, 2, self.song.fs)
         else:
             return -1
     '''
+    
     def play_signal(self, signal): 
-        
-        # Start playback
-        #self.plot_wave(signal, 1000000)
         if len(signal) > 0 and np.max(signal) is not 0:
-            self.stream = self.p.open(format=pyaudio.paFloat32,
-                         channels=1,
-                         rate=self.song.fs,
-                         output=True,
-                         output_device_index=1
-                         )
-            audio = signal  * (2 ** 15 - 1) 
-            audio = audio.astype(np.int16)
-            self.stream.write(audio)
-            self.stream.start_stream()
+            self.audio = signal * (2 ** 15) 
+            self.start_time = time.time()
+            self.audio = self.audio.astype(np.int16)
+            sd.play(self.audio)
         else:
             return -1
 
@@ -148,7 +109,6 @@ class BackEnd:
         plt.ylabel('amplitude(A)')
         plt.xlim(0, final_time)
         plt.show()
-
 
     def synthesize_note(self, note, instrument):
         if (instrument == Instruments.TRUMPET.value[0] or instrument == Instruments.VIOLIN.value[0] or instrument == Instruments.OBOE.value[0]) or instrument == Instruments.ACCORDEON.value[0]:
@@ -269,16 +229,20 @@ class BackEnd:
         #Ver como es el parametro list_of_notes
         raise NotImplementedError("Not Implemented")
 
-    def pause_reproduction(self):
-        self.play_obj.stop()
-
-    def continue_reproduction(self):
-        raise NotImplementedError("Not Implemented")
+    '''
+    def pause_continue_reproduction(self, action):
+        if action == 'pause':
+            self.end_time = time.time() - self.start_time
+            sd.stop()
+            
+            played, self.to_play = np.split(self.audio, [int(round(self.end_time * self.song.fs))])
+        elif action == 'continue':
+            self.start_time = time.time()
+            sd.play(self.to_play, self.song.fs)
+    '''
 
     def stop_reproduction(self):
-        if self.play_obj is not None and self.play_obj.is_playing():
-            self.play_obj.stop()
-
+        sd.stop()
 
     def save_as_wav_file(self, filename):
         if (self.song is not None and self.song.output_signal is not None):

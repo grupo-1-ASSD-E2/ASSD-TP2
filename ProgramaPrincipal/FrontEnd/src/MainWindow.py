@@ -56,7 +56,6 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                     self.backend.toggle_track(i)
 
             self.backend.synthesize_song()
-            self.backend.play_song()
             self.working = False
 
     def play(self):
@@ -64,21 +63,21 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             self.media_buttons_widget.pause.toggle()
         if self.media_buttons_widget.stop.isChecked():
             self.media_buttons_widget.stop.toggle()
-        self.backend.play_song()
+        else:
+            self.backend.play_song()
 
     def pause(self):
         if self.media_buttons_widget.play.isChecked():
             self.media_buttons_widget.play.toggle()
         if self.media_buttons_widget.stop.isChecked():
             self.media_buttons_widget.stop.toggle()
-        self.backend.stop_reproduction()
 
     def stop(self):
         if self.media_buttons_widget.pause.isChecked():
             self.media_buttons_widget.pause.toggle()
         if self.media_buttons_widget.play.isChecked():
             self.media_buttons_widget.play.toggle()
-        pass
+        self.backend.stop_reproduction()
 
     def preview_adjust(self, track_number):
         if self.old_preview is not None:
