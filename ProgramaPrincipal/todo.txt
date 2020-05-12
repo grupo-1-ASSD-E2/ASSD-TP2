@@ -1,0 +1,22 @@
+Cargar un archivo midi
+	Devolver lista de tracks
+
+Asignar instrumento a un track
+Reproducir song
+Reproducir track
+Silenciar track
+Des-silenciar track
+Cambio estado track (instrumento, silencio, ..)
+Lista de instrumentos
+Crear nota o acorde
+	Elegir un instrumento, una lista de frecuencias,duraciones,volumenes (de 0 a 1. Transformar a velocity multiplicando 		por 127/2 para pasarselo a la sintesis )y tiempos de inicio.
+Pausar o detener reproduccion
+Guardar archivo wav (o mp3?)
+
+Agregar efectos #Santi
+
+Ver que onda parametros de cada instrumento
+Ver espectrograma de un track o una song #Facu
+
+
+###Ver como hacer para no resintetizar los tracks que no cambiaron

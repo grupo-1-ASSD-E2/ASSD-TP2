@@ -20,6 +20,9 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.select_file.clicked.connect(self.open_midi)
         self.sintetizar.clicked.connect(self.create_tracks)
         self.backend = backend
+        self.media_buttons_widget.pause.clicked.connect(self.pause)
+        self.media_buttons_widget.play.clicked.connect(self.play)
+        self.media_buttons_widget.stop.clicked.connect(self.stop)
 
     def open_midi(self):
         self.track_manager = []  # Clear previous tracks
@@ -40,12 +43,32 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
     def create_tracks(self):
         for i in range(0, len(self.track_manager)):
             volume, instrument = self.track_manager[i].get_data()
-            self.backend.assign_instrument_to_track(i, instrument)
-            if volume == 0:
+            self.backend.assign_instrument_to_track(i, instrument, volume/100.0)
+            if volume == 0 or instrument == '':
                 self.backend.toggle_track(i)
 
         self.backend.synthesize_song()
         self.backend.play_song()
+
+    def play(self):
+        if self.media_buttons_widget.pause.isChecked():
+            self.media_buttons_widget.pause.toggle()
+        if self.media_buttons_widget.stop.isChecked():
+            self.media_buttons_widget.stop.toggle()
+
+    def pause(self):
+        if self.media_buttons_widget.play.isChecked():
+            self.media_buttons_widget.play.toggle()
+        if self.media_buttons_widget.stop.isChecked():
+            self.media_buttons_widget.stop.toggle()
+        pass
+
+    def stop(self):
+        if self.media_buttons_widget.pause.isChecked():
+            self.media_buttons_widget.pause.toggle()
+        if self.media_buttons_widget.play.isChecked():
+            self.media_buttons_widget.play.toggle()
+        pass
 
 
 if __name__ == "__main__":

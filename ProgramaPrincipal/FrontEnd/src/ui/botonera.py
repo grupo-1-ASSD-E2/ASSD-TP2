@@ -11,30 +11,39 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MediaObject(object):
     def setupUi(self, MediaObject):
         MediaObject.setObjectName("MediaObject")
-        MediaObject.resize(151, 50)
+        MediaObject.resize(120, 50)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MediaObject.sizePolicy().hasHeightForWidth())
+        MediaObject.setSizePolicy(sizePolicy)
         self.horizontalLayout = QtWidgets.QHBoxLayout(MediaObject)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.pushButton = QtWidgets.QPushButton(MediaObject)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.pause = QtWidgets.QPushButton(MediaObject)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy)
-        self.pushButton.setStyleSheet(":active{\n"
+        sizePolicy.setHeightForWidth(self.pause.sizePolicy().hasHeightForWidth())
+        self.pause.setSizePolicy(sizePolicy)
+        self.pause.setStyleSheet(":active{\n"
 "    border-image:url(:/botones/assets/buttons/pause.png) 0 0 0 0;\n"
 "}\n"
+"\n"
+":checked{\n"
+"    border-image:url(:/botones/assets/buttons/pause_on.png) 0 0 0 0;\n"
+"}\n"
 "")
-        self.pushButton.setText("")
-        self.pushButton.setCheckable(True)
-        self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout.addWidget(self.pushButton)
-        self.pushButton_2 = QtWidgets.QPushButton(MediaObject)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.pause.setText("")
+        self.pause.setCheckable(True)
+        self.pause.setObjectName("pause")
+        self.horizontalLayout.addWidget(self.pause)
+        self.play = QtWidgets.QPushButton(MediaObject)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
-        self.pushButton_2.setSizePolicy(sizePolicy)
-        self.pushButton_2.setStyleSheet(":active{\n"
+        sizePolicy.setHeightForWidth(self.play.sizePolicy().hasHeightForWidth())
+        self.play.setSizePolicy(sizePolicy)
+        self.play.setStyleSheet(":active{\n"
 "    border-image:url(:/botones/assets/buttons/play.png) 0 0 0 0;\n"
 "}\n"
 "\n"
@@ -42,17 +51,17 @@ class Ui_MediaObject(object):
 "    border-image:url(:/botones/assets/buttons/play_on.png) 0 0 0 0;\n"
 "}\n"
 "")
-        self.pushButton_2.setText("")
-        self.pushButton_2.setCheckable(True)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.horizontalLayout.addWidget(self.pushButton_2)
-        self.pushButton_3 = QtWidgets.QPushButton(MediaObject)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.play.setText("")
+        self.play.setCheckable(True)
+        self.play.setObjectName("play")
+        self.horizontalLayout.addWidget(self.play)
+        self.stop = QtWidgets.QPushButton(MediaObject)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
-        self.pushButton_3.setSizePolicy(sizePolicy)
-        self.pushButton_3.setStyleSheet(":active{\n"
+        sizePolicy.setHeightForWidth(self.stop.sizePolicy().hasHeightForWidth())
+        self.stop.setSizePolicy(sizePolicy)
+        self.stop.setStyleSheet(":active{\n"
 "    border-image:url(:/botones/assets/buttons/stop.png) ;\n"
 "}\n"
 "\n"
@@ -61,10 +70,10 @@ class Ui_MediaObject(object):
 "\n"
 "}\n"
 "")
-        self.pushButton_3.setText("")
-        self.pushButton_3.setCheckable(True)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.horizontalLayout.addWidget(self.pushButton_3)
+        self.stop.setText("")
+        self.stop.setCheckable(True)
+        self.stop.setObjectName("stop")
+        self.horizontalLayout.addWidget(self.stop)
 
         self.retranslateUi(MediaObject)
         QtCore.QMetaObject.connectSlotsByName(MediaObject)
