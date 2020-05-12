@@ -38,11 +38,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
                     amplitude_array += output_sine
 
 
-        note.output_signal = (note.velocity/(127/2))  * amplitude_array
-
-        if len(note.output_signal) > 0 and np.max(note.output_signal) is not 0:
-            note.output_signal = note.output_signal / np.max(np.abs(note.output_signal))
-        
+        note.output_signal =   amplitude_array      
 
         #endtime = time.time()
 

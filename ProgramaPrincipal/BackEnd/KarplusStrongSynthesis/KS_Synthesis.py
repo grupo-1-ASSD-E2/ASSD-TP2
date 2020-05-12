@@ -15,12 +15,15 @@ class KS_Synthesizer(SynthesizerAbstract):
         if instrument == 'Guitar':
             self.karplus_strong(note)
         elif instrument == 'Drum':
-            self.karplus_strong_Extended(note)
+            self.b = 0.49
+            self.s = 1
+            self.karplus_strong_extended(note, self.b)
+            #self.karplus_strong_extended_modified(note, self.b, self.s)
 
 
     def karplus_strong(self, note):
         N = np.linspace(0, note.duration, int(round(note.fs * note.duration)))
-        rl = 0.9995
+        rl = 1
         L = int(np.rint((note.fs / note.frequency) - 0.5))
         wavetable = (2 * np.random.randint(0, 2, L+2) - 1).astype(np.float) #va L+1
         sample_k = 0
@@ -33,9 +36,46 @@ class KS_Synthesizer(SynthesizerAbstract):
             y.append(sample_k)
         note.output_signal = np.array(y)
 
-    def karplus_strong_extended(self, note):
-        i=1
-
+    def karplus_strong_extended(self, note, b):
+        N = np.linspace(0, note.duration, int(round(note.fs * note.duration)))
+        rl = 0.9995
+        L = int(np.rint((note.fs / note.frequency) - 0.5))
+        wavetable = (2 * np.random.randint(0, 2, L+2) - 1).astype(np.float) #va L+1
+        sample_k = 0
+        y = []
+        for k in range(N.size):
+            r = np.random.binomial(1, b)
+            sign = float(r == 1) * 2 - 1
+            if k <= L:
+                sample_k = sign * 0.5 * rl * (wavetable[k+1] + wavetable[k])
+            else:
+                sample_k = sign * 0.5 * rl * (y[k-L] + y[k-L-1])
+            y.append(sample_k)
+        note.output_signal = np.array(y)
+            
+    def karplus_strong_extended_modified(self, note, b, s):
+        N = np.linspace(0, note.duration, int(round(note.fs * note.duration)))
+        rl = 0.9995
+        L = int(np.rint((note.fs / note.frequency) - 0.5))
+        wavetable = (2 * np.random.randint(0, 2, L+2) - 1).astype(np.float) #va L+1
+        sample_k = 0
+        y = []
+        for k in range(N.size):
+            r = np.random.binomial(1, b)
+            sign = float(r == 1) * 2 - 1
+            r = np.random.binomial(1, 1 - 1/s)
+            if r == 0:
+                if k <= L:
+                    sample_k = sign * 0.5 * rl * (wavetable[k+1] + wavetable[k])
+                else:
+                    sample_k = sign * 0.5 * rl * (y[k-L] + y[k-L-1])
+            elif r == 1:
+                if k <= L: 
+                    sample_k = sign * rl * wavetable[k+1]
+                else: 
+                    sample_k = sign * rl * y[k-L]
+            y.append(sample_k)
+        note.output_signal = np.array(y)
 
 
 

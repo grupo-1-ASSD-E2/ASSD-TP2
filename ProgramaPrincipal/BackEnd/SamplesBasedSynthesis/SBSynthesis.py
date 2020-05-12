@@ -1,12 +1,6 @@
-'''
 from BackEnd.SynthesizerAbstract import SynthesizerAbstract
 from BackEnd.SamplesBasedSynthesis.SampleAdapting import *
 from BackEnd.Instruments import Instruments
-'''
-from BackEnd.SynthesizerAbstract import SynthesizerAbstract
-from BackEnd.SamplesBasedSynthesis.SampleAdapting import *
-from BackEnd.Instruments import Instruments
-
 import numpy as np
 import soundfile as sf
 import os
@@ -20,7 +14,10 @@ class SB_Synthesizer(SynthesizerAbstract):
         start_time = time.time()
         self.existing_frec_dict()
         self.instrument = 'Piano'
-        self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
+        #PABLO Y GONZA
+        #self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
+        #MALE
+        self.samples_directory = 'BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
         self.my_samples_frecuencies()
         print(time.time() - start_time)
 

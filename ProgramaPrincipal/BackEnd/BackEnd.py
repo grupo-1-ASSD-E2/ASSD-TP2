@@ -1,6 +1,8 @@
 import numpy as np
 import mido
 from mido import MidiFile
+#Pablo y Gonza
+
 from BackEnd.Song import Song
 from BackEnd.Track import Track
 from BackEnd.Note import Note
@@ -8,6 +10,17 @@ from BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 from BackEnd.KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
 from BackEnd.SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
 from BackEnd.Instruments import Instruments
+'''
+#Male
+
+#from BackEnd.Song import Song
+#from Track import Track
+#from Note import Note
+from AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
+from KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
+from SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
+from Instruments import Instruments
+'''
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import simpleaudio as sa
@@ -26,20 +39,22 @@ class BackEnd:
 
         #PABLO GONZA
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
-        self.song.load_midi_file_info('ProgramaPrincipal/Resources/faded.mid')
+        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/faded.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/badguy.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/fragmento-rodrigo.mid')
+        
 
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
         #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Queen - Bohemian Rhapsody.mid')
-        #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
-        self.song.load_midi_file_info('Resources/faded.mid')
+        self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
+        #self.song.load_midi_file_info('Resources/faded.mid')
+        #self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
 
-        self.test_song()
+        #self.test_song()
+        self.test_track(7)
 
 
     def test_note(self):
@@ -49,12 +64,11 @@ class BackEnd:
         self.play_signal(note.output_signal)
         
 
-    def test_track(self):
+    def test_track(self,track_number):
         #Para probar un track
-        
-        self.song.tracks[7].assign_instrument('Piano')
-        self.synthesize_track(self.song.tracks[7])
-        self.play_signal(self.song.tracks[7].output_signal)
+        self.song.tracks[track_number].assign_instrument('Guitar')
+        self.synthesize_track(self.song.tracks[track_number])
+        self.play_signal(self.song.tracks[track_number].output_signal)
         
     def test_song(self):
         #Para probar cancion entera
@@ -100,12 +114,17 @@ class BackEnd:
         
         # Start playback
         #self.plot_wave(signal, 1000000)
-        audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
-        audio = audio.astype(np.int16)
-        
-        self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
+        if len(signal) > 0 and np.max(signal) is not 0:
+            audio = signal  * (2 ** 15 - 1) 
+            audio = audio.astype(np.int16)
+            self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
+            self.play_obj.wait_done() 
+        else:
+            return -1
         # Wait for playback to finish before exiting
         #play_obj.wait_done() 
+        print('TERMINOOOO')
+
 
     def plot_wave(self,signal, final_time):
         plt.plot( signal)
@@ -125,7 +144,6 @@ class BackEnd:
 
     def synthesize_track(self, track):
         start_time = time.time()
-        
         for note in track.notes:
             if (track.has_changed):
                 self.synthesize_note(note, track.instrument)
@@ -149,36 +167,37 @@ class BackEnd:
                 song.output_signal = self.generate_output_signal(song.time_base.timeline_length, track, song.time_base.fs, delete_subarrays_after_generation=True, output_array=song.output_signal)
                 song_activated_tracks.append(track)
         
-
     def generate_output_signal(self, N, array_to_add, fs, delete_subarrays_after_generation = False, output_array = np.array([])):#usar len(note.note_signal)
         
         #start_time = time.time()
         output = output_array
-        
+        volume_normalize = 1
+        if len(array_to_add.output_signal) > 0 and np.max(array_to_add.output_signal) is not 0:
+            volume_normalize = 1.0 / np.amax(array_to_add.output_signal)
         if len(array_to_add.output_signal) != 0: 
             init_time_index = int(round(array_to_add.initial_time * fs))
             index_difference = init_time_index - len(output)
             if init_time_index >= len(output):
                 zero_padd = np.zeros(index_difference, dtype=np.uint8)
-                output = np.concatenate([output, zero_padd, array_to_add.output_signal])
+                output = np.concatenate([output, zero_padd, array_to_add.output_signal * (array_to_add.velocity / (127 * 2)) * volume_normalize])
                 if delete_subarrays_after_generation:
                     array_to_add.output_signal = None
                 
             else:
                 if abs(index_difference) >= len(array_to_add.output_signal):
-                    output[init_time_index:len(array_to_add.output_signal) + init_time_index] += array_to_add.output_signal
+                    output[init_time_index:len(array_to_add.output_signal) + init_time_index] += array_to_add.output_signal * (array_to_add.velocity / (127 * 2)) * volume_normalize
                     if delete_subarrays_after_generation:
                         array_to_add.output_signal = None
                 else:
                     superpose, add = np.split(array_to_add.output_signal, [abs(index_difference)])
                     if delete_subarrays_after_generation:
                         array_to_add.output_signal = None
-                    output[init_time_index:] += superpose
+                    output[init_time_index:] += superpose * (array_to_add.velocity / (127 * 2)) * volume_normalize
                     superpose = None
-                    output = np.concatenate((output, add))
+                    output = np.concatenate((output, add * (array_to_add.velocity / (127 * 2)) * volume_normalize))
                     add = None
         #print('Generate function: ', time.time()-start_time)
-        np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', output[0:N])
+        #np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', output[0:N])
         self.counter += 1
         return output
 
@@ -192,23 +211,26 @@ class BackEnd:
         self.song.load_midi_file_info(file_path)
 
     def get_track_list(self):
-        return self.song.track
+        return self.song.tracks
 
     def get_instrument_list(self):
         return Instruments.list()
 
-    def assign_instrument_to_track(self, n_of_track, instrument):
+    def assign_instrument_to_track(self, n_of_track, instrument, volume):
         if (n_of_track < len(self.song.tracks)):
-            self.song.track[n_of_track].assign_instrument(instrument)
+            self.song.tracks[n_of_track].assign_instrument(instrument)
+            self.song.tracks[n_of_track].set_volume(volume)
 
-    def play_song(self):
+    def synthesize_song(self):
         if (self.song is not None):
             self.syntesize_entire_song(self.song)
-            if (self.song.output_signal is not None):
-                self.play_signal(self.song.output_signal)
-            else: 
-                return -1
         else:
+            return -1
+
+    def play_song(self):
+        if (self.song.output_signal is not None):
+            self.play_signal(self.song.output_signal)
+        else: 
             return -1
 
     def play_track(self, n_of_track):
@@ -224,16 +246,18 @@ class BackEnd:
         else:
             return -1
         
-
     def toggle_track(self, n_of_track):
         if (n_of_track < len(self.song.tracks)):
-            self.song.track[n_of_track].toggle_track()
+            self.song.tracks[n_of_track].toggle_track()
 
     def create_chord(self, list_of_notes):
         #Ver como es el parametro list_of_notes
         raise NotImplementedError("Not Implemented")
 
     def pause_reproduction(self):
+        self.play_obj.stop()
+
+    def continue_reproduction(self):
         raise NotImplementedError("Not Implemented")
 
     def stop_reproduction(self):
