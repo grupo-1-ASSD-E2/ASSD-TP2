@@ -24,7 +24,6 @@ class SB_Synthesizer(SynthesizerAbstract):
     def create_note_signal(self, note, instrument):
         #If the instrument changes, search new samples
         self.init_instrument_samples(instrument)
-
         #Look for the closest note in the samples and calculate the shifts required
         closest_note = self.closest_note_search(note.frequency)
         midi_code_note = self.midi_code_from_frec(note.frequency)
