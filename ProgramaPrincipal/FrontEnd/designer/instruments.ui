@@ -17,7 +17,11 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Instruments</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/buttons.qrc">
+    <normaloff>:/instruments/assets/instruments/piano.png</normaloff>:/instruments/assets/instruments/piano.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget{
@@ -60,7 +64,7 @@ QPushButton {
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0" columnstretch="3,0">
+     <layout class="QGridLayout" name="gridLayout" rowstretch="0" columnstretch="3">
       <item row="0" column="0">
        <widget class="QPushButton" name="base_button_4">
         <property name="sizePolicy">
