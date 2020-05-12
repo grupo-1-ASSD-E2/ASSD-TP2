@@ -44,6 +44,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             if volume == 0:
                 self.backend.toggle_track(i)
 
+        self.backend.synthesize_song()
         self.backend.play_song()
 
 
