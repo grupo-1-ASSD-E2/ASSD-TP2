@@ -90,7 +90,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
 
                 """ Mark new track"""
                 self.track_manager[track_number].setStyleSheet(
-                    'QWidget { border-style: solid; background-color: rgb(81, 76, 149); border-radius: 5px;}')
+                    'QWidget { border-style: solid; background-color: rgb(31, 172, 102); border-radius: 5px;}')
                 self.old_preview = track_number
             else:
                 """ Unselect track """
@@ -99,7 +99,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                 self.old_preview = None
         else:
             self.track_manager[track_number].setStyleSheet(
-                'QWidget { border-style: solid; background-color: rgb(81, 76, 149); border-radius: 5px;}')
+                'QWidget { border-style: solid; background-color: rgb(31, 172, 102); border-radius: 5px;}')
             self.old_preview = track_number
 
 
