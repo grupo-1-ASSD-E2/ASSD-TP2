@@ -229,7 +229,6 @@ class BackEnd:
         else:
             return -1
         
-
     def toggle_track(self, n_of_track):
         if (n_of_track < len(self.song.tracks)):
             self.song.track[n_of_track].toggle_track()
@@ -242,7 +241,7 @@ class BackEnd:
         self.play_obj.stop()
 
     def continue_reproduction(self):
-        self.play_obj.play()
+        raise NotImplementedError("Not Implemented")
 
     def stop_reproduction(self):
         if self.play_obj is not None and self.play_obj.is_playing():
