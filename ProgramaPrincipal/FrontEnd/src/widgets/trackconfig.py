@@ -15,6 +15,13 @@ class TrackConfigWidget(QWidget, Ui_track):
         if instruments is not None:
             self.instrument_getter = instruments
         self.instrument.clicked.connect(self.get_instrument)
+        self.preview.clicked.connect(self.click)
+
+    def click(self):
+        if self.preview.isChecked():
+            self.setStyleSheet('QWidget { border-style: solid; background-color: rgb(24, 180, 24); border-radius: 5px;}')
+        else:
+            self.setStyleSheet('QWidget { border-style: solid; background-color: rgb(81, 76, 149); border-radius: 5px;}')
 
     def get_data(self):
         volume = 0 if self.mute.isChecked() else self.volume.value()

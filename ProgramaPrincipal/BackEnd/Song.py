@@ -107,8 +107,6 @@ class Song:
                                         t_on = self.time_base.convert_tick_to_time(ticks_counter)
                                         t_off = self.time_base.convert_tick_to_time(ticks_counter1)
                                         note_duration = t_off - t_on
-                                        #if track_counter == 9:
-                                            #print('note duration:', note_duration)
                                         if note_duration > 0:
                                             new_note = Note(msg.note, note_duration, msg.velocity, t_on, self.fs) #Si descartamos las que empiezan y terminan al mismo tiempo, meter esto adentro del if
                                             new_track.add_note(new_note)

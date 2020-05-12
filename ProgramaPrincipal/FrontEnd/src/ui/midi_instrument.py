@@ -94,6 +94,10 @@ class Ui_track(object):
         self.mute.setCheckable(True)
         self.mute.setObjectName("mute")
         self.horizontalLayout_2.addWidget(self.mute)
+        self.preview = QtWidgets.QCheckBox(self.tracks_b)
+        self.preview.setText("")
+        self.preview.setObjectName("preview")
+        self.horizontalLayout_2.addWidget(self.preview)
         self.horizontalLayout.addWidget(self.tracks_b)
 
         self.retranslateUi(track)

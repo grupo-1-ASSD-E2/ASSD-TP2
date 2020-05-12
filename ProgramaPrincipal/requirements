@@ -2,3 +2,4 @@ mido
 simpleaudio
 librosa
 os
+sounddevice
