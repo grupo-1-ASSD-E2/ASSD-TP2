@@ -64,13 +64,14 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             self.media_buttons_widget.pause.toggle()
         if self.media_buttons_widget.stop.isChecked():
             self.media_buttons_widget.stop.toggle()
+        self.backend.play_song()
 
     def pause(self):
         if self.media_buttons_widget.play.isChecked():
             self.media_buttons_widget.play.toggle()
         if self.media_buttons_widget.stop.isChecked():
             self.media_buttons_widget.stop.toggle()
-        pass
+        self.backend.stop_reproduction()
 
     def stop(self):
         if self.media_buttons_widget.pause.isChecked():

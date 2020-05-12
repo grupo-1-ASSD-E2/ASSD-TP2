@@ -2,7 +2,7 @@ import numpy as np
 import mido
 from mido import MidiFile
 #Pablo y Gonza
-'''
+
 from BackEnd.Song import Song
 from BackEnd.Track import Track
 from BackEnd.Note import Note
@@ -13,14 +13,14 @@ from BackEnd.Instruments import Instruments
 '''
 #Male
 
-from BackEnd.Song import Song
-from Track import Track
-from Note import Note
+#from BackEnd.Song import Song
+#from Track import Track
+#from Note import Note
 from AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 from KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
 from SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
 from Instruments import Instruments
-
+'''
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import simpleaudio as sa
@@ -47,14 +47,14 @@ class BackEnd:
 
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
-        self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Queen - Bohemian Rhapsody.mid')
         #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('Resources/faded.mid')
         #self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
 
         #self.test_song()
-        self.test_track(7)
+        #self.test_track(7)
 
 
     def test_note(self):
@@ -67,7 +67,7 @@ class BackEnd:
     def test_track(self,track_number):
         #Para probar un track
         self.song.tracks[track_number].assign_instrument('Guitar')
-        self.synthesize_track(self.song.tracks[track_number])
+        self.synthesize_track(self.song.tracks[track_number],track_number)
         self.play_signal(self.song.tracks[track_number].output_signal)
         
     def test_song(self):
@@ -115,14 +115,11 @@ class BackEnd:
         # Start playback
         #self.plot_wave(signal, 1000000)
         if len(signal) > 0 and np.max(signal) is not 0:
-            audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
+            audio = signal  * (2 ** 15 - 1) 
             audio = audio.astype(np.int16)
             self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
         else:
             return -1
-        # Wait for playback to finish before exiting
-        #play_obj.wait_done() 
-        print('HOLA')
 
     def plot_wave(self,signal, final_time):
         plt.plot( signal)
@@ -140,35 +137,36 @@ class BackEnd:
         elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0] or instrument == Instruments.BASSOON.value[0] or instrument == Instruments.SAXOPHONE.value[0]):
             self.sb_synthesizer.create_note_signal(note, instrument)
 
-    def synthesize_track(self, track):
+    def synthesize_track(self, track, n_of_track):
         start_time = time.time()
-        for note in track.notes:
-            if (track.has_changed):
+        if (track.has_changed):
+            for note in track.notes:
                 self.synthesize_note(note, track.instrument)
                 track.output_signal = self.generate_output_signal(track.time_base.timeline_length, note, track.time_base.fs, delete_subarrays_after_generation=True, output_array=track.output_signal)
-            else:
-                ##Load track from file
-                i = 0
+            np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', track.output_signal)
+            self.counter += 1
+        else:
+            ##Load track from file
+            track.output_signal = np.load('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(n_of_track) + '.npy')
 
         track.has_changed = False
         print('track synthesis:',time.time() - start_time)
         #track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs, delete_subarrays_after_generation=True)
 
     def syntesize_entire_song(self, song):
+        song.output_signal = []
         song_activated_tracks = []
         it = 0
         for track in song.tracks:
             print(str(it))
-            it +=1
             if track.activated:
-                self.synthesize_track(track)
+                self.synthesize_track(track, it)
                 song.output_signal = self.generate_output_signal(song.time_base.timeline_length, track, song.time_base.fs, delete_subarrays_after_generation=True, output_array=song.output_signal)
                 song_activated_tracks.append(track)
-        
 
-    def generate_output_signal(self, N, array_to_add, fs, delete_subarrays_after_generation = False, output_array = np.array([])):#usar len(note.note_signal)
+            it +=1
         
-        #start_time = time.time()
+    def generate_output_signal(self, N, array_to_add, fs, delete_subarrays_after_generation = False, output_array = np.array([])):
         output = output_array
         volume_normalize = 1
         if len(array_to_add.output_signal) > 0 and np.max(array_to_add.output_signal) is not 0:
@@ -195,10 +193,7 @@ class BackEnd:
                     superpose = None
                     output = np.concatenate((output, add * (array_to_add.velocity / (127 * 2)) * volume_normalize))
                     add = None
-        #print('Generate function: ', time.time()-start_time)
-        #np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', output[0:N])
-        self.counter += 1
-        return output
+        return output[0:N]
 
 
 
@@ -235,7 +230,7 @@ class BackEnd:
     def play_track(self, n_of_track):
         if self.song is not None:
             if (n_of_track < len(self.song.tracks)):
-                self.synthesize_track(self.song.tracks[n_of_track])
+                self.synthesize_track(self.song.tracks[n_of_track],n_of_track)
                 if (self.song.tracks[n_of_track].output_signal is not None):
                     self.play_signal(self.song.tracks[n_of_track].output_signal)
                 else: 

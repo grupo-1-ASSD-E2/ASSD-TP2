@@ -12,8 +12,10 @@ class AdditiveSynthesizer(SynthesizerAbstract):
     def create_note_signal(self, note, instrument):
         #start_time = time.time()
         amplitude_array = None
+        
         partials = self.__get_partials__(instrument, note.frequency)
         for i in range(0, len(partials)):
+            print(str(i))
             freq = partials[i].get_freq()
             phase = partials[i].get_phase()
            
