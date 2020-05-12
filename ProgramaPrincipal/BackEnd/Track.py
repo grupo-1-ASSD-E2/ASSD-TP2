@@ -14,6 +14,7 @@ class Track:
         self.initial_time = 0
         self.activated = True
         self.has_changed = False
+        self.velocity = 127 #Represents the volume. min: 0. max: 127.
         
     def assign_instrument(self, instrument):
         self.instrument = instrument
@@ -36,3 +37,15 @@ class Track:
     def toggle_track(self):
         self.activated = not self.activated
         self.has_changed = True
+
+
+    def set_volume(self, volume):
+        """Defines volumen of the track.
+        min: 0
+        max: 1 
+        """
+        if (0 <= volume <= 127):
+            self.velocity = volume * 127
+            self.has_changed = True
+        else:
+            return -1
