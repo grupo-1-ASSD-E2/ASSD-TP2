@@ -43,7 +43,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
     def create_tracks(self):
         for i in range(0, len(self.track_manager)):
             volume, instrument = self.track_manager[i].get_data()
-            self.backend.assign_instrument_to_track(i, instrument)
+            self.backend.assign_instrument_to_track(i, instrument, volume/100.0)
             if volume == 0:
                 self.backend.toggle_track(i)
 
@@ -51,13 +51,25 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.backend.play_song()
 
     def play(self):
-        pass
+        if self.media_buttons_widget.pause.isChecked():
+            self.media_buttons_widget.pause.toggle()
+        if self.media_buttons_widget.stop.isChecked():
+            self.media_buttons_widget.stop.toggle()
 
     def pause(self):
+        if self.media_buttons_widget.play.isChecked():
+            self.media_buttons_widget.play.toggle()
+        if self.media_buttons_widget.stop.isChecked():
+            self.media_buttons_widget.stop.toggle()
         pass
 
     def stop(self):
+        if self.media_buttons_widget.pause.isChecked():
+            self.media_buttons_widget.pause.toggle()
+        if self.media_buttons_widget.play.isChecked():
+            self.media_buttons_widget.play.toggle()
         pass
+
 
 if __name__ == "__main__":
     app = QApplication([])
