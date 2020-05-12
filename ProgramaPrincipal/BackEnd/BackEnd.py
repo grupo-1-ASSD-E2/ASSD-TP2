@@ -154,28 +154,30 @@ class BackEnd:
         
         #start_time = time.time()
         output = output_array
-        
+        volume_normalize = 1
+        if len(array_to_add.output_signal) > 0 and np.max(array_to_add.output_signal) is not 0:
+            volume_normalize = 1.0 / np.amax(array_to_add.output_signal)
         if len(array_to_add.output_signal) != 0: 
             init_time_index = int(round(array_to_add.initial_time * fs))
             index_difference = init_time_index - len(output)
             if init_time_index >= len(output):
                 zero_padd = np.zeros(index_difference, dtype=np.uint8)
-                output = np.concatenate([output, zero_padd, array_to_add.output_signal])
+                output = np.concatenate([output, zero_padd, array_to_add.output_signal * (array_to_add.velocity / (127 * 2)) * volume_normalize])
                 if delete_subarrays_after_generation:
                     array_to_add.output_signal = None
                 
             else:
                 if abs(index_difference) >= len(array_to_add.output_signal):
-                    output[init_time_index:len(array_to_add.output_signal) + init_time_index] += array_to_add.output_signal
+                    output[init_time_index:len(array_to_add.output_signal) + init_time_index] += array_to_add.output_signal * (array_to_add.velocity / (127 * 2)) * volume_normalize
                     if delete_subarrays_after_generation:
                         array_to_add.output_signal = None
                 else:
                     superpose, add = np.split(array_to_add.output_signal, [abs(index_difference)])
                     if delete_subarrays_after_generation:
                         array_to_add.output_signal = None
-                    output[init_time_index:] += superpose
+                    output[init_time_index:] += superpose * (array_to_add.velocity / (127 * 2)) * volume_normalize
                     superpose = None
-                    output = np.concatenate((output, add))
+                    output = np.concatenate((output, add * (array_to_add.velocity / (127 * 2)) * volume_normalize))
                     add = None
         #print('Generate function: ', time.time()-start_time)
         #np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', output[0:N])
@@ -197,9 +199,10 @@ class BackEnd:
     def get_instrument_list(self):
         return Instruments.list()
 
-    def assign_instrument_to_track(self, n_of_track, instrument):
+    def assign_instrument_to_track(self, n_of_track, instrument, volume):
         if (n_of_track < len(self.song.tracks)):
             self.song.tracks[n_of_track].assign_instrument(instrument)
+            self.song.tracks[n_of_track].set_volume(volume)
 
     def synthesize_song(self):
         if (self.song is not None):
@@ -236,10 +239,10 @@ class BackEnd:
         raise NotImplementedError("Not Implemented")
 
     def pause_reproduction(self):
-        raise NotImplementedError("Not Implemented")
+        self.play_obj.stop()
 
     def continue_reproduction(self):
-        raise NotImplementedError("Not Implemented")
+        self.play_obj.play()
 
     def stop_reproduction(self):
         if self.play_obj is not None and self.play_obj.is_playing():
