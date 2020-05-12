@@ -6,10 +6,9 @@ import librosa
 
 def note_scaling(input_data, input_samp, shift, time_factor):
 	'''
-	This function initiates the call to start shifting the pitch by the factor shift.
+	This function initiates the call to start shifting the pitch by the parameter shift.
 	Returns: pitched sound as array
 	'''
-
 	transposed = pitch_shift(input_data, shift, time_factor)
 	return transposed.astype(input_data.dtype)
 
@@ -28,7 +27,6 @@ def change_speed(input_data, factor):
 	'''
 	This function changes the speed of playback of the .WAV file by some factor. It is used with pitching to accomodate the speed.
 	'''
-
 	indices = np.round(np.arange(0, len(input_data), factor)) #Create an even-spaced array (input_data) spaced by the factor.
 	indices = indices[indices < len(input_data)].astype(int) #Astype int takes the neghboring values to these, but then preserves the same vector length. 
 	return input_data[indices.astype(int)]
