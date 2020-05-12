@@ -109,10 +109,10 @@ class Song:
                                         note_duration = t_off - t_on
                                         #if track_counter == 9:
                                             #print('note duration:', note_duration)
-                                        #if note_duration > 0:
-                                        new_note = Note(msg.note, note_duration, msg.velocity, t_on, self.fs) #Si descartamos las que empiezan y terminan al mismo tiempo, meter esto adentro del if
-                                        new_track.add_note(new_note)
-                                        good_notes_counter += 1
+                                        if note_duration > 0:
+                                            new_note = Note(msg.note, note_duration, msg.velocity, t_on, self.fs) #Si descartamos las que empiezan y terminan al mismo tiempo, meter esto adentro del if
+                                            new_track.add_note(new_note)
+                                            good_notes_counter += 1
                             else:
                                 break
                         if note_still_on == True:
@@ -121,6 +121,7 @@ class Song:
             if good_notes_counter > 0:
                 self.tracks.append(new_track)
                 track_counter += 1
+        print('track counter:', track_counter)
             # print('good_notes_counter', good_notes_counter)
             # print('same_time_counter:', same_time_counter)
             # print('notes_Still_on_counter:', notes_still_on_counter)

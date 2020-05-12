@@ -2,7 +2,7 @@ import numpy as np
 import mido
 from mido import MidiFile
 #Pablo y Gonza
-'''
+
 from BackEnd.Song import Song
 from BackEnd.Track import Track
 from BackEnd.Note import Note
@@ -13,14 +13,14 @@ from BackEnd.Instruments import Instruments
 '''
 #Male
 
-from BackEnd.Song import Song
-from Track import Track
-from Note import Note
+#from BackEnd.Song import Song
+#from Track import Track
+#from Note import Note
 from AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 from KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
 from SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
 from Instruments import Instruments
-
+'''
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import simpleaudio as sa
@@ -47,9 +47,9 @@ class BackEnd:
 
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
-        self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Queen - Bohemian Rhapsody.mid')
-        #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
+        self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('Resources/faded.mid')
         #self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
 
@@ -118,11 +118,13 @@ class BackEnd:
             audio = signal  * (2 ** 15 - 1) / np.max(np.abs(signal))
             audio = audio.astype(np.int16)
             self.play_obj = sa.play_buffer(audio, 1, 2, self.song.fs)
+            self.play_obj.wait_done() 
         else:
             return -1
         # Wait for playback to finish before exiting
         #play_obj.wait_done() 
-        print('HOLA')
+        print('TERMINOOOO')
+
 
     def plot_wave(self,signal, final_time):
         plt.plot( signal)
