@@ -2,7 +2,7 @@ import numpy as np
 import mido
 from mido import MidiFile
 #Pablo y Gonza
-
+'''
 from BackEnd.Song import Song
 from BackEnd.Track import Track
 from BackEnd.Note import Note
@@ -10,9 +10,9 @@ from BackEnd.AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 from BackEnd.KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
 from BackEnd.SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
 from BackEnd.Instruments import Instruments
-
-#Male
 '''
+#Male
+
 from BackEnd.Song import Song
 from Track import Track
 from Note import Note
@@ -20,7 +20,7 @@ from AdditiveSynthesis.AdditiveSynthesizer import AdditiveSynthesizer
 from KarplusStrongSynthesis.KS_Synthesis import KS_Synthesizer
 from SamplesBasedSynthesis.SBSynthesis import SB_Synthesizer
 from Instruments import Instruments
-'''
+
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 import simpleaudio as sa
