@@ -20,6 +20,9 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.select_file.clicked.connect(self.open_midi)
         self.sintetizar.clicked.connect(self.create_tracks)
         self.backend = backend
+        self.media_buttons_widget.pause.clicked.connect(self.pause)
+        self.media_buttons_widget.play.clicked.connect(self.play)
+        self.media_buttons_widget.stop.clicked.connect(self.stop)
 
     def open_midi(self):
         self.track_manager = []  # Clear previous tracks
@@ -47,6 +50,14 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.backend.synthesize_song()
         self.backend.play_song()
 
+    def play(self):
+        pass
+
+    def pause(self):
+        pass
+
+    def stop(self):
+        pass
 
 if __name__ == "__main__":
     app = QApplication([])
