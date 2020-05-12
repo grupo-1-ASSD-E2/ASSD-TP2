@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication
 from BackEnd.BackEnd import BackEnd
 from FrontEnd.src.MainWindow import MyMainWindow
+import os
 
 
 if __name__ == "__main__":

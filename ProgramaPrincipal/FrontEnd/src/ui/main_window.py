@@ -180,8 +180,8 @@ class Ui_AudioTool(object):
         self.Options.setTabText(self.Options.indexOf(self.Sintesis), _translate("AudioTool", "Sintesis"))
         self.Options.setTabText(self.Options.indexOf(self.Efectos), _translate("AudioTool", "Efectos"))
 
-from src.widgets.mediabutton import MediaButtonsWidget
-from src.widgets.trackconfig import TrackConfigWidget
+from FrontEnd.src.widgets.mediabutton import MediaButtonsWidget
+from FrontEnd.src.widgets.trackconfig import TrackConfigWidget
 from FrontEnd.src.resources import buttons_rc
 
 if __name__ == "__main__":
