@@ -66,7 +66,7 @@ class BackEnd:
 
     def test_track(self,track_number):
         #Para probar un track
-        self.song.tracks[track_number].assign_instrument('Guitar')
+        self.song.tracks[track_number].assign_instrument('Piano')
         self.synthesize_track(self.song.tracks[track_number])
         self.play_signal(self.song.tracks[track_number].output_signal)
         

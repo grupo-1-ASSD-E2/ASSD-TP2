@@ -98,7 +98,7 @@ class Song:
                     if msg.velocity != 0:
                         note_still_on = True
                         ticks_counter1 = ticks_counter
-                        for msg1 in track[counter::]:
+                        for msg1 in track[(counter+1)::]:
                             ticks_counter1 += msg1.time
                             if note_still_on == True:
                                 if ((msg1.type == 'note_off') or ((msg1.type =='note_on') and (msg1.velocity == 0))):
