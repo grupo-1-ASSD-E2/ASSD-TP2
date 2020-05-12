@@ -26,20 +26,20 @@ class BackEnd:
 
         #PABLO GONZA
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Toy_Story.mid')
-        self.song.load_midi_file_info('ProgramaPrincipal/Resources/faded.mid')
+        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/faded.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/badguy.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('ProgramaPrincipal/Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        #self.song.load_midi_file_info('ProgramaPrincipal/Resources/fragmento-rodrigo.mid')
+        self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
 
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
         #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Queen - Bohemian Rhapsody.mid')
         #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
-        self.song.load_midi_file_info('Resources/faded.mid')
+        #self.song.load_midi_file_info('Resources/faded.mid')
 
-        self.test_song()
+        #self.test_song()
 
 
     def test_note(self):
@@ -178,7 +178,7 @@ class BackEnd:
                     output = np.concatenate((output, add))
                     add = None
         #print('Generate function: ', time.time()-start_time)
-        np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', output[0:N])
+        #np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', output[0:N])
         self.counter += 1
         return output
 
@@ -192,23 +192,25 @@ class BackEnd:
         self.song.load_midi_file_info(file_path)
 
     def get_track_list(self):
-        return self.song.track
+        return self.song.tracks
 
     def get_instrument_list(self):
         return Instruments.list()
 
     def assign_instrument_to_track(self, n_of_track, instrument):
         if (n_of_track < len(self.song.tracks)):
-            self.song.track[n_of_track].assign_instrument(instrument)
+            self.song.tracks[n_of_track].assign_instrument(instrument)
 
-    def play_song(self):
+    def synthesize_song(self):
         if (self.song is not None):
             self.syntesize_entire_song(self.song)
-            if (self.song.output_signal is not None):
-                self.play_signal(self.song.output_signal)
-            else: 
-                return -1
         else:
+            return -1
+
+    def play_song(self):
+        if (self.song.output_signal is not None):
+            self.play_signal(self.song.output_signal)
+        else: 
             return -1
 
     def play_track(self, n_of_track):
@@ -234,6 +236,9 @@ class BackEnd:
         raise NotImplementedError("Not Implemented")
 
     def pause_reproduction(self):
+        raise NotImplementedError("Not Implemented")
+
+    def continue_reproduction(self):
         raise NotImplementedError("Not Implemented")
 
     def stop_reproduction(self):
