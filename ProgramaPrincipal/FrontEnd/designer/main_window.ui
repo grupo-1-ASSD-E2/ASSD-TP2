@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>570</width>
-    <height>400</height>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -58,16 +58,22 @@
         <item>
          <widget class="QWidget" name="widget_4" native="true">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>40</height>
+           </size>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
             <widget class="QPushButton" name="select_file">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -106,7 +112,7 @@
         <item>
          <widget class="QWidget" name="view_zone" native="true">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -141,7 +147,7 @@
                    <x>0</x>
                    <y>0</y>
                    <width>248</width>
-                   <height>180</height>
+                   <height>296</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout">
@@ -207,7 +213,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>274</width>
-                <height>210</height>
+                <height>326</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -240,6 +246,18 @@
         </item>
         <item>
          <widget class="QWidget" name="buttom" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>50</height>
+           </size>
+          </property>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
             <widget class="QLabel" name="wav_file">
@@ -277,7 +295,7 @@
            <item>
             <widget class="MediaButtonsWidget" name="media_buttons_widget">
              <property name="toolTip">
-              <string/>
+              <string>Click and drag here</string>
              </property>
              <property name="whatsThis">
               <string>Media buttons Widget.  </string>

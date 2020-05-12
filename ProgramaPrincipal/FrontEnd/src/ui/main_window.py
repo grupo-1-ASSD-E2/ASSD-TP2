@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_AudioTool(object):
     def setupUi(self, AudioTool):
         AudioTool.setObjectName("AudioTool")
-        AudioTool.resize(570, 400)
+        AudioTool.resize(570, 515)
         AudioTool.setStyleSheet("background-color: #6c7b95;")
         self.centralwidget = QtWidgets.QWidget(AudioTool)
         self.centralwidget.setObjectName("centralwidget")
@@ -33,16 +33,17 @@ class Ui_AudioTool(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.Sintesis)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.widget_4 = QtWidgets.QWidget(self.Sintesis)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.widget_4.sizePolicy().hasHeightForWidth())
         self.widget_4.setSizePolicy(sizePolicy)
+        self.widget_4.setMaximumSize(QtCore.QSize(16777215, 40))
         self.widget_4.setObjectName("widget_4")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget_4)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.select_file = QtWidgets.QPushButton(self.widget_4)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.select_file.sizePolicy().hasHeightForWidth())
@@ -67,7 +68,7 @@ class Ui_AudioTool(object):
         self.horizontalLayout_4.addWidget(self.midi_name)
         self.verticalLayout_2.addWidget(self.widget_4)
         self.view_zone = QtWidgets.QWidget(self.Sintesis)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.view_zone.sizePolicy().hasHeightForWidth())
@@ -90,7 +91,7 @@ class Ui_AudioTool(object):
         self.track_set.setWidgetResizable(True)
         self.track_set.setObjectName("track_set")
         self.track_setter = QtWidgets.QWidget()
-        self.track_setter.setGeometry(QtCore.QRect(0, 0, 248, 180))
+        self.track_setter.setGeometry(QtCore.QRect(0, 0, 248, 296))
         self.track_setter.setObjectName("track_setter")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.track_setter)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -118,7 +119,7 @@ class Ui_AudioTool(object):
         self.track_view.setWidgetResizable(True)
         self.track_view.setObjectName("track_view")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 274, 210))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 274, 326))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
@@ -131,6 +132,12 @@ class Ui_AudioTool(object):
         self.horizontalLayout_3.addWidget(self.track_view)
         self.verticalLayout_2.addWidget(self.view_zone)
         self.buttom = QtWidgets.QWidget(self.Sintesis)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.buttom.sizePolicy().hasHeightForWidth())
+        self.buttom.setSizePolicy(sizePolicy)
+        self.buttom.setMaximumSize(QtCore.QSize(16777215, 50))
         self.buttom.setObjectName("buttom")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.buttom)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -145,7 +152,6 @@ class Ui_AudioTool(object):
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem2)
         self.media_buttons_widget = MediaButtonsWidget(self.buttom)
-        self.media_buttons_widget.setToolTip("")
         self.media_buttons_widget.setObjectName("media_buttons_widget")
         self.horizontalLayout_2.addWidget(self.media_buttons_widget)
         self.verticalLayout_2.addWidget(self.buttom)
@@ -169,12 +175,13 @@ class Ui_AudioTool(object):
         self.label_3.setText(_translate("AudioTool", "Aca van a venir una visualizacion fachera de los traks"))
         self.wav_file.setText(_translate("AudioTool", "Wav file..."))
         self.save.setText(_translate("AudioTool", "Save"))
+        self.media_buttons_widget.setToolTip(_translate("AudioTool", "Click and drag here"))
         self.media_buttons_widget.setWhatsThis(_translate("AudioTool", "Media buttons Widget.  "))
         self.Options.setTabText(self.Options.indexOf(self.Sintesis), _translate("AudioTool", "Sintesis"))
         self.Options.setTabText(self.Options.indexOf(self.Efectos), _translate("AudioTool", "Efectos"))
 
-from FrontEnd.src.widgets.mediabutton import MediaButtonsWidget
-from FrontEnd.src.widgets.trackconfig import TrackConfigWidget
+from src.widgets.mediabutton import MediaButtonsWidget
+from src.widgets.trackconfig import TrackConfigWidget
 from FrontEnd.src.resources import buttons_rc
 
 if __name__ == "__main__":
