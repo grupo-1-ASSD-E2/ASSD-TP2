@@ -13,24 +13,26 @@ class AllPassFilter(object):
         self.g = gain
         self.m = delay
 
-    def compute(self, sample: np.ndarray, sample_size: int) -> np.ndarray:
-        out = np.zeros(sample_size)
-        for i in range(0, sample_size):
-            """ y(n) = g x(n) + x(n-M) - g y(n-M) / Comb filter equation """
-            out[i] = self.g * sample[i] + self.old_input[self.p2read] - self.g * self.old_output[self.p2read]
-
-            """ keep old output values """
-            self.old_output[self.p2write] = out[i]
-            self.old_input[self.p2write] = sample[i]
-
-            """ Circular buffer stuff """
-            self.p2read += 1
-            self.p2write += 1
-            if self.p2read >= self.buffer_len:
-                self.p2read = 0
-            if self.p2write >= self.buffer_len:
-                self.p2write = 0
+    def compute(self, sample: np.ndarray) -> np.ndarray:
+        out = np.array(list(map(self.one_run, sample)))
         return out.copy()
+
+    def one_run(self, sample):
+        """ y(n) = g x(n) + x(n-M) - g y(n-M) / Comb filter equation """
+        out = self.g * sample + self.old_input[self.p2read] - self.g * self.old_output[self.p2read]
+
+        """ keep old output values """
+        self.old_output[self.p2write] = out
+        self.old_input[self.p2write] = sample
+
+        """ Circular buffer stuff """
+        self.p2read += 1
+        self.p2write += 1
+        if self.p2read >= self.buffer_len:
+            self.p2read = 0
+        if self.p2write >= self.buffer_len:
+            self.p2write = 0
+        return out
 
     def reset(self):
         self.old_output = np.zeros(self.buffer_len)
@@ -44,9 +46,9 @@ class AllPassFilter(object):
         p2w = self.p2write
         self.p2read = p2w - new_delay if p2w >= new_delay else p2w - new_delay + self.buffer_len
 
-    def get_impulse_response(self, buffer_length=44100) -> np.ndarray:
-        delta = np.zeros(int(buffer_length))
+    def get_impulse_response(self) -> np.ndarray:
+        delta = np.zeros(int(self.buffer_len))
         delta[0] = 1
 
-        h = self.compute(delta, buffer_length)
+        h = self.compute(delta)
         return h

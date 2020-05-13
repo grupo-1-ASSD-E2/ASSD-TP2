@@ -11,7 +11,10 @@ class Effect(object):
         """ Provide basic attributes to adjust for gui implementation """
         return self.properties.copy()
 
-    def get_impulse_response(self, buffer_length=44100) -> np.ndarray:
+    def compute(self, audio_input: np.ndarray):
+        pass
+
+    def get_impulse_response(self) -> np.ndarray:
         pass
 
     def change_param(self, new_properties):

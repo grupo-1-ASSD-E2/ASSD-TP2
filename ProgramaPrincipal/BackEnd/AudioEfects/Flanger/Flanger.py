@@ -2,10 +2,10 @@ import numpy as np
 from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 
-class Vibrato(Effect):
+class Flanger(Effect):
 
     def __init__(self, buffer_len, sample_rate, delay=1, f0=5):
-        super(Vibrato, self).__init__("Eco")
+        super(Flanger, self).__init__("Eco")
         self.properties = {"Retraso (ms)": ((float, (0, 5)), delay),
                            "Frecuecia (Hz)": ((float, (0, 100)), f0)}
 
@@ -19,15 +19,16 @@ class Vibrato(Effect):
         self.p2read = buffer_len - self.m0
         self.p2write = 0
 
-    def compute(self, sample: np.ndarray, sample_size: int) -> np.ndarray:
-        out = np.zeros(sample_size)
+    def compute(self, sample: np.ndarray) -> np.ndarray:
+        out = np.zeros(self.buffer_len)
         """ To increase efficiency """
         k = 2*np.pi*self.fo/self.sample_rate
         sin = np.sin
         m0 = self.m0
         a = self.a
 
-        for i in range(0, sample_size):
+        # Not implemented yet
+        for i in range(0, self.buffer_len):
             p2read_b = np.floor(self.p2read + m0 * a * sin(k * i))
             p2read_b = p2read_b % self.buffer_len if p2read_b >= self.buffer_len else p2read_b
 
@@ -45,14 +46,9 @@ class Vibrato(Effect):
                 self.p2read = 0
             if self.p2write >= self.buffer_len:
                 self.p2write = 0
-        return out.copy()
 
-    def get_impulse_response(self, buffer_length=44100) -> np.ndarray:
-        delta = np.zeros(int(buffer_length))
-        delta[0] = 1
-        h = self.compute(delta, buffer_length)
-
-        return h
+        output = (out, out)
+        return output
 
     def change_param(self, new_properties):
         self.fo = new_properties["Frecuecia (Hz)"][1]

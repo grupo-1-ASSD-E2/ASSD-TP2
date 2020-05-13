@@ -4,7 +4,7 @@ from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 class LowPassReverb(Effect):
 
-    def __init__(self, buffer_len: int,  g: float, delay: float, sample_rate: int):
+    def __init__(self, buffer_len: int = 2**15,  g: float = 0.3, delay: float = 500, sample_rate: int = 44100):
         super(LowPassReverb, self).__init__("Reverb low-pass")
         self.properties = {"Absorción": ((float, (0, 1)), g),
                            "Retardo (ms)": ((float, (0, buffer_len*1000.0/float(sample_rate))), delay)}
@@ -13,38 +13,41 @@ class LowPassReverb(Effect):
         self.old_output = np.zeros(int(buffer_len))
         self.buffer_len = buffer_len
         self.sample_rate = sample_rate
-        self.p2read = buffer_len - delay
+        self.m = np.floor(delay * sample_rate / 1000.0)
+        self.p2read = int(buffer_len - self.m)
         self.p2write = 0
-        self.g = g
-        self.m = np.floor(delay*sample_rate/1000.0)
+        self.g = g/5.0
 
-    def compute(self, sample: np.ndarray, sample_size: int) -> np.ndarray:
-        out = np.zeros(sample_size)
-        for i in range(0, sample_size):
-            in_value = sample[i]
-            """ y(n) = x(n) + g (y(n-M) + y(n-M-1)  """
-            out[i] = in_value + self.g * (self.old_output[self.p2read]+self.old_output[self.p2read-1])
+    def compute(self, sample: np.ndarray) -> np.ndarray:
+        sample = sample[0]
+        out = np.array(list(map(self.one_run, sample)))
+        return (out, out)
 
-            """ keep old useful values """
-            self.old_output[self.p2write] = out[i]
+    def one_run(self, sample):
+        """ y(n) = x(n) - g (y(n-M) + y(n-M-1)  """
+        out = sample - self.g * (self.old_output[self.p2read] + self.old_output[self.p2read - 1])
 
-            """ Circular buffer stuff """
-            self.p2read += 1
-            self.p2write += 1
-            if self.p2read >= self.buffer_len:
-                self.p2read = 0
-            if self.p2write >= self.buffer_len:
-                self.p2write = 0
-        return out.copy()
+        """ keep old useful values """
+        self.old_output[self.p2write] = out
+
+        """ Circular buffer stuff """
+        self.p2read += 1
+        self.p2write += 1
+        if self.p2read >= self.buffer_len:
+            self.p2read = 0
+        if self.p2write >= self.buffer_len:
+            self.p2write = 0
+
+        return out
 
     def get_impulse_response(self, buffer_length=44100) -> np.ndarray:
         delta = np.zeros(int(buffer_length))
         delta[0] = 1
 
-        h = self.compute(delta, buffer_length)
+        h = self.compute(delta)
         return h
 
-    def reset(self):
+    def clear(self):
         self.old_output = np.zeros(self.buffer_len)
         self.p2read = self.buffer_len - self.m
         self.p2write = 0

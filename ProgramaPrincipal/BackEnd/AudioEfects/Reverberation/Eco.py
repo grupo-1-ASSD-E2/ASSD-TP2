@@ -4,7 +4,7 @@ from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 class EcoSimple(Effect):
 
-    def __init__(self, buffer_len, sample_rate, gain, delay):
+    def __init__(self, buffer_len=2**15, gain=0.7, delay=20, sample_rate=44100):
         super(EcoSimple, self).__init__("Eco")
         self.properties = {"Absorción": ((float, (0, 1)), gain),
                            "Retardo (ms)": ((float, (0, buffer_len*1000.0/float(sample_rate))), delay)}
@@ -12,33 +12,41 @@ class EcoSimple(Effect):
         self.old_input = np.zeros(int(buffer_len))
         self.buffer_len = buffer_len
         self.sample_rate = sample_rate
-        self.p2read = buffer_len - delay
+        self.m = np.floor(delay * sample_rate / 1000.0)
+        self.p2read = int(buffer_len - self.m)
         self.p2write = 0
         self.g = gain
-        self.m = np.floor(delay*sample_rate/1000.0)
 
-    def compute(self, sample: np.ndarray, sample_size: int) -> np.ndarray:
-        out = np.zeros(sample_size)
-        for i in range(0, sample_size):
-            """ y(n) = x(n) + g x(n-M) / Comb filter equation """
-            out[i] = sample[i] + self.g * self.old_input[self.p2read]
+    def compute(self, sample: np.ndarray) -> np.ndarray:
+        sample = sample[0]
+        out = np.array(list(map(self.one_run, sample)))
+        return (out, out)
 
-            """ keep old output values """
-            self.old_input[self.p2write] = out[i]
+    def one_run(self, sample):
+        """ y(n) = x(n) + g x(n-M) / Comb filter equation """
+        out = sample + self.g * self.old_input[self.p2read]
+        """ keep old output values """
+        self.old_input[self.p2write] = sample
 
-            """ Circular buffer stuff """
-            self.p2read += 1
-            self.p2write += 1
-            if self.p2read >= self.buffer_len:
-                self.p2read = 0
-            if self.p2write >= self.buffer_len:
-                self.p2write = 0
-        return out.copy()
+        """ Circular buffer stuff """
+        self.p2read += 1
+        self.p2write += 1
+        if self.p2read >= self.buffer_len:
+            self.p2read = 0
+        if self.p2write >= self.buffer_len:
+            self.p2write = 0
+
+        return out
+
+    def clear(self):
+        self.old_input = np.zeros(int(self.buffer_len))
+        self.p2read = int(self.buffer_len - self.m)
+        self.p2write = 0
 
     def get_impulse_response(self, buffer_length=44100) -> np.ndarray:
         delta = np.zeros(int(buffer_length))
         delta[0] = 1
-        h = self.compute(delta, buffer_length)
+        h = self.compute(delta)
 
         return h
 

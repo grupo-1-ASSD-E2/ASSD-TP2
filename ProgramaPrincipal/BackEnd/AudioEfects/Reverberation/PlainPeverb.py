@@ -5,22 +5,32 @@ from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 class PlainReverb(Effect):
 
-    def __init__(self, buffer_len: int, sample_rate: int = 44100, t_60=1):
+    def __init__(self, buffer_len: int = 2**15, sample_rate: int = 44100, t_60=1):
         super(PlainReverb, self).__init__("Reverb plain")
         self.properties = {"Tiempo de Reverberacion (s)": ((float, (0, 10)), t_60),
                            "Delay (ms)": ((float, (0, buffer_len * 1000.0 / float(sample_rate))),
                                           1979 / (float(sample_rate) * 1000))}
 
-        self.defaults_N = 1979
+        self.defaults_N = 15323
         self.sample_rate = sample_rate
         self.g = 10**(-3*self.defaults_N/(sample_rate*t_60))
-
+        self.buffer_len = buffer_len
         self.c1 = CombFilter(buffer_len, self.g, self.defaults_N)
 
-    def get_impulse_response(self, buffer_length=44100) -> np.ndarray:
-        delta = np.zeros(int(buffer_length))
+    def compute(self, audio_input: np.ndarray):
+        audio_input = audio_input[0]
+        out = self.c1.compute(audio_input)
+        out = np.array([out])
+        output = (out, out)
+        return output
+
+    def clear(self):
+        self.c1.reset()
+
+    def get_impulse_response(self) -> np.ndarray:
+        delta = np.zeros(int(self.buffer_len))
         delta[0] = 1
-        h = self.c1.compute(delta, buffer_length)
+        h = self.c1.compute(delta)
 
         return h
 

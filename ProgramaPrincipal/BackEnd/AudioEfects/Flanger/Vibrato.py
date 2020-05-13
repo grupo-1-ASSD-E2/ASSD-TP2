@@ -20,8 +20,8 @@ class Vibrato(Effect):
         self.p2read = buffer_len - self.m0
         self.p2write = 0
 
-    def compute(self, sample: np.ndarray, sample_size: int) -> np.ndarray:
-        out = np.zeros(sample_size)
+    def compute(self, sample: np.ndarray) -> np.ndarray:
+        out = np.zeros(self.buffer_len)
         """ To increase efficiency """
         k = 2*np.pi*self.fo/self.sample_rate
         sin = np.sin
@@ -29,7 +29,7 @@ class Vibrato(Effect):
         a = self.a
         g = self.g
 
-        for i in range(0, sample_size):
+        for i in range(0, self.buffer_len):
             """ y(n) = g x(n) + (1-g) x(n-M(n))  """
             p2read_b = np.floor(self.p2read + m0*sin(k*i))
             p2read_b = p2read_b % self.buffer_len if p2read_b >= self.buffer_len else p2read_b
@@ -46,14 +46,9 @@ class Vibrato(Effect):
                 self.p2read = 0
             if self.p2write >= self.buffer_len:
                 self.p2write = 0
-        return out.copy()
 
-    def get_impulse_response(self, buffer_length=44100) -> np.ndarray:
-        delta = np.zeros(int(buffer_length))
-        delta[0] = 1
-        h = self.compute(delta, buffer_length)
-
-        return h
+        output = (out, out)
+        return output
 
     def change_param(self, new_properties):
         self.fo = new_properties["Frecuecia (Hz)"][1]
