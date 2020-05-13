@@ -15,8 +15,7 @@ class Vibrato(Effect):
         self.old_input = np.zeros(int(buffer_len))
         self.buffer_len = buffer_len
         self.g = gain
-        self.a = 0.5
-        self.m0 = np.floor(sample_rate*delay/((1-self.a)*1000))
+        self.m0 = np.floor(sample_rate*delay/1000.0)
         self.p2read = buffer_len - self.m0
         self.p2write = 0
 
@@ -26,7 +25,6 @@ class Vibrato(Effect):
         k = 2*np.pi*self.fo/self.sample_rate
         sin = np.sin
         m0 = self.m0
-        a = self.a
         g = [self.g]*self.buffer_len
         offset = [m0*sin(k*i) for i in range(0, self.buffer_len)]
 

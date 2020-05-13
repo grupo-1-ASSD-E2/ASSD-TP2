@@ -5,7 +5,7 @@ from BackEnd.AudioEfects.Reverberation.AllPassReverb import AllPassReverb
 from BackEnd.AudioEfects.Reverberation.Reverb import Reverb
 from BackEnd.AudioEfects.convolutioner import Convolutioner
 from BackEnd.AudioEfects.Flanger.Vibrato import Vibrato
-
+from BackEnd.AudioEfects.Flanger.Flanger import Flanger
 import matplotlib.pyplot as plt
 import librosa
 import numpy as np
@@ -22,8 +22,9 @@ eco = Reverb(buffer_len=a, t_60=10)
 eco1 = PlainReverb(buffer_len=a)
 conv = Convolutioner(frame_count=a)
 vibrato = Vibrato(buffer_len=a)
+flan = Flanger(buffer_len=a)
 conv.update_input(new_data, np.dtype('float32'))
-conv.custom_processing_callback(vibrato.compute)
+conv.custom_processing_callback(flan.compute)
 conv.set_mixing_gain(1)
 conv.start_non_blocking_processing(frame_count=a)
 
