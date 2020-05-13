@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d3cb694-527a-44c0-8281-88c6638f930c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/AudioEfects/BaseAudioEffect/BaseEffect.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/AudioEfects/BaseAudioEffect/BaseEffect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/AudioEfects/Filters/AllPass.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/AudioEfects/Filters/AllPass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/AudioEfects/Filters/Comb.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/AudioEfects/Filters/Comb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/AudioEfects/Flanger/Flanger.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/AudioEfects/Flanger/Flanger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BackEnd/AudioEfects/Flanger/Vibrato.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/AudioEfects/Flanger/Vibrato.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/AllPassReverb.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/AllPassReverb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/Eco.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/Eco.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/LowPassReverb.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/LowPassReverb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/PlainPeverb.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/PlainPeverb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/Reverb.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/Reverb.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,8 +16,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="18" column="34" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
+            <state relative-caret-position="318">
+              <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
               <folding>
                 <element signature="e#0#59#0" expanded="true" />
               </folding>
@@ -36,6 +26,18 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/BackEnd/AudioEfects/Flanger/Vibrato.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="134">
+              <caret line="29" column="36" selection-start-line="29" selection-start-column="36" selection-end-line="29" selection-end-column="36" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/AllPassReverb.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="369">
@@ -73,17 +75,17 @@
         <option value="$PROJECT_DIR$/FrontEnd/widgets/messageinput.py" />
         <option value="$PROJECT_DIR$/FrontEnd/designer.py" />
         <option value="$PROJECT_DIR$/BackEnd/AudioEfects/BaseAudioEffect/BaseEffect.py" />
-        <option value="$PROJECT_DIR$/BackEnd/AudioEfects/Flanger/Vibrato.py" />
         <option value="$PROJECT_DIR$/BackEnd/AudioEfects/Flanger/Flanger.py" />
         <option value="$PROJECT_DIR$/BackEnd/AudioEfects/convolutioner.py" />
         <option value="$PROJECT_DIR$/BackEnd/AudioEfects/Filters/AllPass.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/BackEnd/AudioEfects/Filters/Comb.py" />
         <option value="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/PlainPeverb.py" />
         <option value="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/Reverb.py" />
         <option value="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/LowPassReverb.py" />
         <option value="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/Eco.py" />
         <option value="$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/AllPassReverb.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/BackEnd/AudioEfects/Flanger/Vibrato.py" />
       </list>
     </option>
   </component>
@@ -125,6 +127,13 @@
               <item name="ProgramaPrincipal" type="462c0819:PsiDirectoryNode" />
               <item name="BackEnd" type="462c0819:PsiDirectoryNode" />
               <item name="AudioEfects" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ProgramaPrincipal" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ProgramaPrincipal" type="462c0819:PsiDirectoryNode" />
+              <item name="BackEnd" type="462c0819:PsiDirectoryNode" />
+              <item name="AudioEfects" type="462c0819:PsiDirectoryNode" />
+              <item name="Flanger" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -274,13 +283,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.2618658" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2618658" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.6579378" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -344,16 +354,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/BackEnd/AudioEfects/Flanger/Vibrato.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="50" column="21" selection-start-line="50" selection-start-column="21" selection-end-line="50" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -466,20 +466,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/AllPassReverb.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="34" column="23" selection-start-line="34" selection-start-column="23" selection-end-line="34" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="18" column="34" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
+        <state relative-caret-position="318">
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
           <folding>
             <element signature="e#0#59#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BackEnd/AudioEfects/Reverberation/AllPassReverb.py">
+    <entry file="file://$PROJECT_DIR$/BackEnd/AudioEfects/Flanger/Vibrato.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="34" column="23" selection-start-line="34" selection-start-column="23" selection-end-line="34" selection-end-column="23" />
+        <state relative-caret-position="134">
+          <caret line="29" column="36" selection-start-line="29" selection-start-column="36" selection-end-line="29" selection-end-column="36" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>

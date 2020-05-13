@@ -19,7 +19,7 @@ class EcoSimple(Effect):
 
     def compute(self, sample: np.ndarray) -> np.ndarray:
         sample = sample[0]
-        out = np.array(list(map(self.one_run, sample)))
+        out = np.array([list(map(self.one_run, sample))])
         return (out, out)
 
     def one_run(self, sample):

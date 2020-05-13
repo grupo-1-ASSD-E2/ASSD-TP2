@@ -4,6 +4,8 @@ from BackEnd.AudioEfects.Reverberation.PlainPeverb import PlainReverb
 from BackEnd.AudioEfects.Reverberation.AllPassReverb import AllPassReverb
 from BackEnd.AudioEfects.Reverberation.Reverb import Reverb
 from BackEnd.AudioEfects.convolutioner import Convolutioner
+from BackEnd.AudioEfects.Flanger.Vibrato import Vibrato
+
 import matplotlib.pyplot as plt
 import librosa
 import numpy as np
@@ -19,9 +21,9 @@ a = 2**15
 eco = Reverb(buffer_len=a, t_60=10)
 eco1 = PlainReverb(buffer_len=a)
 conv = Convolutioner(frame_count=a)
-
+vibrato = Vibrato(buffer_len=a)
 conv.update_input(new_data, np.dtype('float32'))
-conv.custom_processing_callback(eco.compute)
+conv.custom_processing_callback(vibrato.compute)
 conv.set_mixing_gain(1)
 conv.start_non_blocking_processing(frame_count=a)
 
@@ -31,8 +33,9 @@ while conv.processing():
 input = conv.input_array[0]
 out2 = conv.output_array.copy()
 _x = np.arange(len(out2))/44100.0
-plt.plot(_x, out2)
 plt.plot(np.arange(len(input))/44100.0, input)
+plt.plot(_x, out2)
+
 plt.show()
 
 #write('my_file.wav', 44100, np.int16(out2*32767))
