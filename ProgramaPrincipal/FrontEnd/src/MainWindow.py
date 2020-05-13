@@ -63,6 +63,8 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             self.media_buttons_widget.pause.toggle()
         if self.media_buttons_widget.stop.isChecked():
             self.media_buttons_widget.stop.toggle()
+        if self.old_preview is not None:
+            pass  # should only play 1 track
         else:
             self.backend.play_song()
 
