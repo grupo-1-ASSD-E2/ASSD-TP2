@@ -131,17 +131,13 @@ class BackEnd:
                 difference = int(round(self.song.song_duration * self.song.fs) - len(track.output_signal))
                 zero = np.zeros(difference)
                 track.output_signal = np.concatenate((track.output_signal, zero))
-            np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', track.output_signal)
+            if track.instrument != '':
+                np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', track.output_signal)
             track.output_signal = np.array([])
             self.counter += 1
-        else:
-            ##Load track from file
-            #track.output_signal = np.load('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(n_of_track) + '.npy')
-            a = 0
 
         track.has_changed = False
         print('track synthesis:',time.time() - start_time)
-        #track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs, delete_subarrays_after_generation=True)
 
     def syntesize_entire_song(self, song):
         song.output_signal = []
@@ -150,7 +146,6 @@ class BackEnd:
         for track in song.tracks:
             if track.activated:
                 self.synthesize_track(track, it)
-                #song.output_signal = self.generate_output_signal(song.time_base.timeline_length, track, song.time_base.fs, delete_subarrays_after_generation=True, output_array=song.output_signal)
                 song_activated_tracks.append(track)
             it +=1
         

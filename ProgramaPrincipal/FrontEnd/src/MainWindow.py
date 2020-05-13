@@ -128,7 +128,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             pass  # should only play 1 track
         else:
             pass
-            #self.backend.play_song()
+            self.backend.play_song()
 
     def stop(self):
         if self.media_buttons_widget.play.isChecked():
