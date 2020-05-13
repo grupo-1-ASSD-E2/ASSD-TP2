@@ -182,6 +182,7 @@ cython_debug/
 *.user
 *.userosscache
 *.sln.docstates
+*.settings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -531,3 +532,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+
+# ADDED BY FACUNDO FARALL
+.vs
+.vscode
