@@ -113,12 +113,12 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             self.working = True
             for i in range(0, len(self.track_manager)):
                 volume, instrument = self.track_manager[i].get_data()
-                #self.backend.assign_instrument_to_track(i, instrument, volume/100.0)
+                self.backend.assign_instrument_to_track(i, instrument, volume/100.0)
                 if volume == 0 or instrument == '':
                     pass
                     #self.backend.toggle_track(i)
 
-            #self.backend.synthesize_song()
+            self.backend.synthesize_song()
             self.working = False
 
     def play(self):

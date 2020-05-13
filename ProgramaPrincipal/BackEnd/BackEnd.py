@@ -128,9 +128,9 @@ class BackEnd:
                 self.synthesize_note(note, track.instrument)
                 track.output_signal = self.generate_output_signal(track.time_base.timeline_length, note, track.time_base.fs, delete_subarrays_after_generation=True, output_array=track.output_signal)
             if len(track.output_signal) < self.song.song_duration * self.song.fs:
-                difference = self.song.song_duration * self.song.fs - len(track.output_signal)
+                difference = int(round(self.song.song_duration * self.song.fs) - len(track.output_signal))
                 zero = np.zeros(difference)
-                track.output_signal = np.concatenate(track.output_signal, zero)
+                track.output_signal = np.concatenate((track.output_signal, zero))
             np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', track.output_signal)
             track.output_signal = np.array([])
             self.counter += 1
