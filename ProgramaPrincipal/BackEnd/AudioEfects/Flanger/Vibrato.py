@@ -4,11 +4,12 @@ from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 class Vibrato(Effect):
 
+    default_properties = {"Retraso (ms)": ((float, (0, 5)), 1),
+                  "Frecuecia (Hz)": ((float, (0, 100)), 5),
+                  "Profundidad": ((float, (0, 1)), 0.7)}
+
     def __init__(self, buffer_len=2**15, sample_rate=44100, gain=0.7, delay=1, f0=5):
-        super(Vibrato, self).__init__("Eco")
-        self.properties = {"Retraso (ms)": ((float, (0, 5)), delay),
-                           "Frecuecia (Hz)": ((float, (0, 100)), f0),
-                           "Profundidad": ((float, (0, 1)), gain)}
+        super(Vibrato, self).__init__("Vibrato")
 
         self.fo = f0
         self.sample_rate = sample_rate
@@ -53,9 +54,9 @@ class Vibrato(Effect):
         return out
 
     def change_param(self, new_properties):
-        self.fo = new_properties["Frecuecia (Hz)"][1]
-        self.g = new_properties["Profundidad"][1]
-        delay = new_properties["Retraso (ms)"][1]/1000
+        self.fo = new_properties["Frecuecia (Hz)"]
+        self.g = new_properties["Profundidad"]
+        delay = new_properties["Retraso (ms)"]/1000
         self.m0 = np.floor(self.sample_rate * delay / (1 - self.a))
 
 

@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MediaObject(object):
     def setupUi(self, MediaObject):
         MediaObject.setObjectName("MediaObject")
-        MediaObject.resize(225, 75)
+        MediaObject.resize(150, 75)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -19,24 +19,6 @@ class Ui_MediaObject(object):
         MediaObject.setSizePolicy(sizePolicy)
         self.horizontalLayout = QtWidgets.QHBoxLayout(MediaObject)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.pause = QtWidgets.QPushButton(MediaObject)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pause.sizePolicy().hasHeightForWidth())
-        self.pause.setSizePolicy(sizePolicy)
-        self.pause.setStyleSheet(":active{\n"
-"    border-image:url(:/botones/assets/buttons/pause.png) 0 0 0 0;\n"
-"}\n"
-"\n"
-":checked{\n"
-"    border-image:url(:/botones/assets/buttons/pause_on.png) 0 0 0 0;\n"
-"}\n"
-"")
-        self.pause.setText("")
-        self.pause.setCheckable(True)
-        self.pause.setObjectName("pause")
-        self.horizontalLayout.addWidget(self.pause)
         self.play = QtWidgets.QPushButton(MediaObject)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)

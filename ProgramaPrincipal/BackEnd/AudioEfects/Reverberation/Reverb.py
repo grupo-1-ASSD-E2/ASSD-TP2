@@ -5,10 +5,10 @@ from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 
 class Reverb(Effect):
+    default_properties = {"Tiempo de Reverberacion (s)": ((float, (0, 10)), 2)}
 
     def __init__(self, buffer_len: int = 2**15,  sample_rate: int = 44100, t_60=3):
         super(Reverb, self).__init__("Reverb")
-        self.properties = {"Tiempo de Reverberacion (s)": ((float, (0, 10)), t_60)}
 
         self.defaults_N = np.array([1373, 1583, 1783, 1979])
         self.defaults_N_2 = np.array([73, 21])
@@ -55,8 +55,6 @@ class Reverb(Effect):
     def change_param(self, new_properties):
         new_t_60 = new_properties["Tiempo de Reverberacion (s)"][1]
         self.change_t_60(new_t_60)
-        self.my_ir = np.array([self.get_impulse_response()])
-        self.convolutioner.compute_IR(self.my_ir, self.my_ir)
 
     def change_t_60(self, new_t_60: float):
         self.gi = 10 ** (-3 * self.defaults_N / (44100 * new_t_60))
@@ -65,12 +63,3 @@ class Reverb(Effect):
         self.c3.change_param(self.gi[2], self.defaults_N[2])
         self.c4.change_param(self.gi[3], self.defaults_N[3])
 
-    def __get_filters_response_debug__(self):
-        h1 = self.c1.get_impulse_response()
-        h2 = self.c2.get_impulse_response()
-        h3 = self.c3.get_impulse_response()
-        h4 = self.c4.get_impulse_response()
-        h5 = self.a1.get_impulse_response()
-        h6 = self.a2.get_impulse_response()
-
-        return h1, h2, h3, h4, h5, h6

@@ -4,15 +4,14 @@ from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 
 class AllPassReverb(Effect):
+    default_properties = {"Tiempo de Reverberacion (s)": ((float, (0, 10)), 1),
+                  "Delay (ms)": ((float, (0, 700)), 44.8)}
 
     def __init__(self, buffer_len=2**15, sample_rate: int = 44100, t_60=1):
         super(AllPassReverb, self).__init__("Reverb all-pass")
-        self.properties = {"Tiempo de Reverberacion (s)": ((float, (0, 10)), t_60),
-                           "Delay (ms)": ((float, (0, buffer_len*1000.0/float(sample_rate))),
-                                          1979/(float(sample_rate)*1000))}
 
         self.sample_rate = sample_rate
-        self.defaults_N = int(sample_rate/5)
+        self.defaults_N = 1979
         self.g = 10 ** (-3 * self.defaults_N / (sample_rate * t_60))  # review
         self.buffer_len = buffer_len
         self.c1 = AllPassFilter(buffer_len, self.g, self.defaults_N)
@@ -35,9 +34,9 @@ class AllPassReverb(Effect):
         self.c1.reset()
 
     def change_param(self, new_properties):
-        new_t_60 = new_properties["Tiempo de Reverberacion (s)"][1]
-        new_delay = new_properties["Delay (ms)"][1]
-        n = np.floor(new_delay * 1000 * self.sample_rate)
+        new_t_60 = new_properties["Tiempo de Reverberacion (s)"]
+        new_delay = new_properties["Delay (ms)"]
+        n = int(np.floor(new_delay * self.sample_rate / 1000.0))
         n = n if n != self.defaults_N else None
         self.change_t_60(new_t_60, n)
 

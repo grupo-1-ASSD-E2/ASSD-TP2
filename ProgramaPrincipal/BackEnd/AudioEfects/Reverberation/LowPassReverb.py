@@ -3,11 +3,11 @@ from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 
 class LowPassReverb(Effect):
+    default_properties = {"Absorción": ((float, (0, 1)), 0.3),
+                  "Retardo (ms)": ((float, (0, 700)), 500)}
 
     def __init__(self, buffer_len: int = 2**15,  g: float = 0.3, delay: float = 500, sample_rate: int = 44100):
         super(LowPassReverb, self).__init__("Reverb low-pass")
-        self.properties = {"Absorción": ((float, (0, 1)), g),
-                           "Retardo (ms)": ((float, (0, buffer_len*1000.0/float(sample_rate))), delay)}
 
         """ Buffer to keep old output """
         self.old_output = np.zeros(int(buffer_len))
@@ -53,10 +53,10 @@ class LowPassReverb(Effect):
         self.p2write = 0
 
     def change_param(self, new_properties):
-        new_gain = new_properties["Absorción"][1]
-        new_delay = np.floor(new_properties["Retardo (ms)"][1] * self.sample_rate / 1000.0)
+        new_gain = new_properties["Absorción"]
+        new_delay = np.floor(new_properties["Retardo (ms)"] * self.sample_rate / 1000.0)
 
-        self.g = new_gain if new_gain > 1 else self.g  # Validate input
+        self.g = new_gain/5.0
         self.m = new_delay if 0 < new_delay < self.buffer_len else new_delay % self.buffer_len  # Validate input
         p2w = self.p2write
         self.p2read = p2w - new_delay if p2w >= new_delay else p2w - new_delay + self.buffer_len

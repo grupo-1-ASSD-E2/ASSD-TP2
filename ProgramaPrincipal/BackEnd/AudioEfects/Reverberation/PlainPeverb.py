@@ -4,12 +4,11 @@ from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 
 class PlainReverb(Effect):
+    default_properties = {"Tiempo de Reverberacion (s)": ((float, (0, 10)), 1),
+                           "Delay (ms)": ((float, (0, 700)), 300)}
 
     def __init__(self, buffer_len: int = 2**15, sample_rate: int = 44100, t_60=1):
         super(PlainReverb, self).__init__("Reverb plain")
-        self.properties = {"Tiempo de Reverberacion (s)": ((float, (0, 10)), t_60),
-                           "Delay (ms)": ((float, (0, buffer_len * 1000.0 / float(sample_rate))),
-                                          1979 / (float(sample_rate) * 1000))}
 
         self.defaults_N = 15323
         self.sample_rate = sample_rate
@@ -35,9 +34,9 @@ class PlainReverb(Effect):
         return h
 
     def change_param(self, new_properties):
-        new_t_60 = new_properties["Tiempo de Reverberacion (s)"][1]
-        new_delay = new_properties["Delay (ms)"][1]
-        n = np.floor(new_delay * 1000 * self.sample_rate)
+        new_t_60 = new_properties["Tiempo de Reverberacion (s)"]
+        new_delay = new_properties["Delay (ms)"]
+        n = np.floor(new_delay * self.sample_rate / 1000.0)
         n = n if n != self.defaults_N else None
         self.change_t_60(new_t_60, n)
 

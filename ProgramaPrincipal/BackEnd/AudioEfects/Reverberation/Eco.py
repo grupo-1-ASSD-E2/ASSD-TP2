@@ -4,10 +4,12 @@ from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 class EcoSimple(Effect):
 
+    default_properties = {"Absorción": ((float, (0, 1)), 0.7),
+                  "Retardo (ms)": ((float, (0, 700)), 20)}
+
     def __init__(self, buffer_len=2**15, gain=0.7, delay=20, sample_rate=44100):
         super(EcoSimple, self).__init__("Eco")
-        self.properties = {"Absorción": ((float, (0, 1)), gain),
-                           "Retardo (ms)": ((float, (0, buffer_len*1000.0/float(sample_rate))), delay)}
+        self.properties = {"Absorción": gain, "Retardo (ms)": delay}
 
         self.old_input = np.zeros(int(buffer_len))
         self.buffer_len = buffer_len
@@ -51,8 +53,8 @@ class EcoSimple(Effect):
         return h
 
     def change_param(self, new_properties):
-        new_gain = new_properties["Absorción"][1]
-        new_delay = np.floor(new_properties["Retardo (ms)"][1]*self.sample_rate/1000.0)
+        new_gain = new_properties["Absorción"]
+        new_delay = np.floor(new_properties["Retardo (ms)"]*self.sample_rate/1000.0)
 
         self.g = new_gain if new_gain > 1 else self.g  # Validate input
         self.m = new_delay if 0 < new_delay < self.buffer_len else new_delay % self.buffer_len  # Validate input
