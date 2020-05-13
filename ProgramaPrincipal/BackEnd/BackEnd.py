@@ -222,6 +222,9 @@ class BackEnd:
                 return -1
         else:
             return -1
+    
+    def stop_reproduction(self):
+        sd.stop()
         
     def toggle_track(self, n_of_track):
         if (n_of_track < len(self.song.tracks)):
@@ -231,29 +234,13 @@ class BackEnd:
         #Ver como es el parametro list_of_notes
         raise NotImplementedError("Not Implemented")
 
-    '''
-    def pause_continue_reproduction(self, action):
-        if action == 'pause':
-            self.end_time = time.time() - self.start_time
-            sd.stop()
-            
-            played, self.to_play = np.split(self.audio, [int(round(self.end_time * self.song.fs))])
-        elif action == 'continue':
-            self.start_time = time.time()
-            sd.play(self.to_play, self.song.fs)
-    '''
-
-    def stop_reproduction(self):
-        sd.stop()
-
     def save_as_wav_file(self, filename):
         if (self.song is not None and self.song.output_signal is not None):
             audio = self.song.output_signal  * (2 ** 15 - 1) / np.max(np.abs(self.song.output_signal))
             audio = audio.astype(np.int16)
             wavfile.write(filename, self.song.fs, audio)
         else:
-            return -1
-        
+            return -1   
 
     def save_as_mp3_file(self, filename):
         raise NotImplementedError("Not Implemented")
