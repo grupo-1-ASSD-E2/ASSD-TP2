@@ -41,14 +41,14 @@ class BackEnd:
         
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
-        self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
+        #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
         #self.song.load_midi_file_info('Resources/Queen - Bohemian Rhapsody.mid')
         #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
         #self.song.load_midi_file_info('Resources/faded.mid')
         #self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
 
         #self.test_song()
-        self.test_track(0)
+        #self.test_track(0)
 
 
     def test_note(self):
@@ -142,7 +142,6 @@ class BackEnd:
         song_activated_tracks = []
         it = 0
         for track in song.tracks:
-            print(str(it))
             if track.activated:
                 self.synthesize_track(track, it)
                 song.output_signal = self.generate_output_signal(song.time_base.timeline_length, track, song.time_base.fs, delete_subarrays_after_generation=True, output_array=song.output_signal)
