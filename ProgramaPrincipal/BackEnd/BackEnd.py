@@ -83,7 +83,6 @@ class BackEnd:
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
 
-    '''
     def play_signal(self, signal): 
         
         # Start playback
@@ -95,16 +94,7 @@ class BackEnd:
             self.play_obj = sa.play_buffer(self.audio, 1, 2, self.song.fs)
         else:
             return -1
-    '''
     
-    def play_signal(self, signal): 
-        if len(signal) > 0 and np.max(signal) is not 0:
-            self.audio = signal * (2 ** 15) 
-            self.start_time = time.time()
-            self.audio = self.audio.astype(np.int16)
-            sd.play(self.audio)
-        else:
-            return -1
 
     def plot_wave(self,signal, final_time):
         plt.plot( signal)
@@ -179,8 +169,6 @@ class BackEnd:
         return output[0:N]
 
 
-
-
     #########################CONEXION CON FRONT-END###################################
 
     def load_midi_file(self, file_path):
@@ -224,15 +212,20 @@ class BackEnd:
             return -1
     
     def stop_reproduction(self):
-        sd.stop()
+        if self.play_obj.is_playing() and self.play_obj is not None:
+            self.play_obj.stop()
         
     def toggle_track(self, n_of_track):
         if (n_of_track < len(self.song.tracks)):
             self.song.tracks[n_of_track].toggle_track()
 
     def create_chord(self, list_of_notes):
-        #Ver como es el parametro list_of_notes
-        raise NotImplementedError("Not Implemented")
+        chord = np.array([])
+        for note_ in list_of_notes:
+            new_note = Note(note_.note_number, note_.duration, note_.velocity, note_.initial_time, note_.fs)
+            self.synthesize_note(new_note,note_.instrument)
+            chord = self.generate_output_signal(note_.initial_time + note_.duration*note_.fs, new_note, new_note.fs, delete_subarrays_after_generation=True,output_array=chord)
+        self.play_signal(chord)
 
     def save_as_wav_file(self, filename):
         if (self.song is not None and self.song.output_signal is not None):
