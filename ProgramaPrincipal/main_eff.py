@@ -15,6 +15,11 @@ from scipy.io.wavfile import write
 
 from PyQt5.QtCore import QTime
 
+a = [0, 1]
+string = 'Track 1'
+print(a[int(string.split()[-1])])
+exit()
+
 time_1 = QTime(0, 10, 1)
 print(time_1.toString("m:ss"))
 time_1.setHMS(0,65/60,65%60)

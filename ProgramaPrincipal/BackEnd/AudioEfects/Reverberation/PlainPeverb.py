@@ -4,7 +4,7 @@ from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
 
 
 class PlainReverb(Effect):
-    default_properties = {"Tiempo de Reverberacion (s)": ((float, (0, 10)), 1),
+    default_properties = {"Tiempo de Reverberacion (s)": ((float, (0.1, 10)), 1),
                            "Delay (ms)": ((float, (0, 700)), 300)}
 
     def __init__(self, buffer_len: int = 2**15, sample_rate: int = 44100, t_60=1):

@@ -16,6 +16,7 @@ from FrontEnd.src.widgets.effectwidget import EffectPropertyWidget
 from FrontEnd.src.widgets.effectedtrack import EditedTrackWidget
 from BackEnd.BackEnd import BackEnd
 from BackEnd.Effects import Effects
+from BackEnd.GUI_resources.spectrogram_plotter import Spectrogrammer, PyQtPlotter
 from BackEnd.path import origin as path
 """
 Reminders:
@@ -82,11 +83,68 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.inner_timer.timeout.connect(self.count_down_callback)
         self.song_time = QTime()
 
+        """ Spectrogram things """
+        self.spectrogrammer = Spectrogrammer()
+        self.plotter = PyQtPlotter()
+        self.plot_work.clicked.connect(self.sepectro_plot)
+
+    def sepectro_plot(self):
+        source = self.plot_track.currentText()
+        data = []
+        if source == '':
+            """ Incomplete """
+            return
+        elif source == 'Plain Song':
+            data = np.sum(self.all_tracks, axis=0)
+        elif source == 'Edited Song':
+            data = self.media_player.output_array.copy()
+        else:
+            track_num = int(source.split()[-1])
+            useful_index = self.available_to_play.index(track_num-1)
+            data = self.all_tracks[useful_index]
+        """ Ya tenemos los datos ahora hay que cortar el tramo de tiempo que se quiera """
+
+        init = 44100*self.plot_time.time().minute()*60+self.plot_time.time().second()
+        fin = init+(self.plot_long.value()*44100)
+
+        song = data[init:fin]
+        time_array = np.arange(0, song.size/44100.0, 1/44100, dtype=song.dtype)
+        self.spectrogrammer.compute_audio_array(time_array, song)
+        self.spectrogrammer.calculate_FFTs()
+
+        mag = self.spectrogrammer.get_FFTs_magnitude()
+        time = self.spectrogrammer.get_resampled_time_array()
+        freq = self.spectrogrammer.get_FFTs_freq()
+
+        util_canvas = self.plotter.spectrogram(time, freq, mag)
+
+
+
+        """
+        if self.plot_space.count() > 2:
+        
+        try:
+            old = self.plot_space
+            self.plot_space.layout().removeWidget(old)
+        except Exception:
+            pass
+        """
+
+        self.plot_space.addWidget(util_canvas)
+
+        #toolbar = NavigationToolbar(self.plotters[0].canvas, self)
+        #if self.toolbar_1.count() > 2:
+        #    # Cleaning stacked widget
+        #    self.toolbar_1.removeWidget(self.filter_data.currentWidget())
+        #self.toolbar_1.setCurrentIndex(self.toolbar_1.addWidget(toolbar))
+
+
     def count_down_callback(self):
         if self.media_player.processing():
             self.song_time = self.song_time.addSecs(-1)
             self.count_down.setText(self.song_time.toString("m:ss"))
         else:
+            self.plot_track.addItem('Edited Song')
             self.count_down.setText('00:00')
             self.media_player.terminate_processing()
             self.inner_timer.stop()
@@ -95,6 +153,8 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                 i.reset()
 
     def disable_effect_enviroment(self):
+        self.plot_track.clear()
+
         self.working = False
         self.audio_available = False
         self.old_preview = None
@@ -276,7 +336,8 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                     'QWidget { border-style: solid; background-color: rgbrgb(81, 76, 149); border-radius: 5px;}')
             self.backend.synthesize_song()
             self.enable_effects()
-
+            self.plot_track.addItem('Plain Song')
+            self.plot_track.addItems(['Track '+str(i+1) for i in self.available_to_play])
             self.working = False
             all_tracks = []
             """ Load tracks """
@@ -288,6 +349,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                 """ Send input to convolutioner """
                 self.media_player.update_input(np.array(all_tracks), np.dtype('float32'))
 
+            self.all_tracks = all_tracks.copy()
             """ Set timer """
             song_len = len(all_tracks[0])
             song_len = np.ceil(song_len/44100.0)

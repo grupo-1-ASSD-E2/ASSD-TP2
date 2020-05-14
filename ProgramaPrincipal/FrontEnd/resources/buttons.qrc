@@ -19,6 +19,7 @@
     <file>../assets/instruments/note.png</file>
   </qresource>
   <qresource prefix="botones">
+    <file>../assets/buttons/cross.png</file>
     <file>../assets/buttons/pause_on.png</file>
     <file>../assets/buttons/file.png</file>
     <file>../assets/buttons/file_hoover.png</file>
