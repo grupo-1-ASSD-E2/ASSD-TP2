@@ -1,6 +1,7 @@
 # Python modules
 import functools
 import numpy as np
+from multiprocessing import Pool
 
 # PyQt5 modules
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
@@ -28,6 +29,10 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         super(MyMainWindow, self).__init__(parent)
         self.setupUi(self)
 
+        self.backend = backend
+        self.media_player = convolutioner
+        self.media_player.custom_processing_callback(self.audio_callback)
+
         self.working = False
         self.audio_available = False
         self.old_preview = None
@@ -43,7 +48,6 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.select_file.clicked.connect(self.open_midi)
         self.sintetizar.clicked.connect(self.create_tracks)
         self.sintetizar.setDisabled(True)  # No synthesis whitout midi
-        self.backend = backend
         self.available_to_play = []
 
         """ Media player buttons """
@@ -139,6 +143,10 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.current_track = who
         self.working_tracks[who].show_properties()
 
+    def audio_callback(self, sample):
+        out = np.array(list(map(lambda audio, fun: fun(audio), sample, self.all_callbacks)))
+        return out[:, 0], out[:, 1]
+
     def effect_to_song(self):
         print('hola')
 
@@ -184,7 +192,6 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             else:
                 self.all_callbacks[useful_index] = self.nothing
 
-
     def renew_effect(self, index):
         layout = self.effect_container.layout()
 
@@ -197,7 +204,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                 my_item = EffectPropertyWidget(self, prop, valor[0][1], valor[1])
                 layout.addWidget(my_item)
                 self.old_effect_prop.append(my_item)
-            self.working_tracks[self.current_track].set_effect(efecto[2](), self.old_effect_prop )
+            self.working_tracks[self.current_track].set_effect(efecto[2](), self.old_effect_prop)
 
     def open_midi(self):
         layout = self.track_setter.layout()
@@ -253,25 +260,26 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             self.enable_effects()
 
             self.working = False
-
+            all_tracks = []
             """ Load tracks """
             for i in range(0, len(self.available_to_play)):
                 song = np.load(path + 'BackEnd/Tracks/' + 'track' + str(i) + '.npy')
-                self.all_tracks.append(song)
+                all_tracks.append(song)
                 self.all_callbacks.append(self.nothing)  # Adding functions with all ones
+            print(np.array(all_tracks))
+            if self.media_player is not None:
+                """ Send input to convolutioner """
+                self.media_player.update_input(np.array(all_tracks), np.dtype('float32'))
 
     def play(self):
         if self.media_buttons_widget.stop.isChecked():
             self.media_buttons_widget.stop.toggle()
-        if self.old_preview is not None:
-            pass  # should only play 1 track
-        else:
-            self.backend.play_song()
+
+        self.media_player.start_non_blocking_processing()
 
     def stop(self):
         if self.media_buttons_widget.play.isChecked():
             self.media_buttons_widget.play.toggle()
-        #  self.backend.stop_reproduction()
 
     def preview_adjust(self, track_number):
         if self.old_preview is not None:
@@ -298,13 +306,13 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
     @staticmethod
     def nothing(sample):
         """ All deltas response, for no effect output """
-        return sample, sample
+        return (sample, sample)
 
     @staticmethod
     def mute(sample):
         """ All deltas response, for no effect output """
         out = np.array([np.zeros(len(sample))])
-        return out, out
+        return (out, out)
 
 
 if __name__ == "__main__":

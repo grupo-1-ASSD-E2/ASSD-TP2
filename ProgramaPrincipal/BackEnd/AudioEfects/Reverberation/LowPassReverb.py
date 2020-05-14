@@ -19,7 +19,6 @@ class LowPassReverb(Effect):
         self.g = g/5.0
 
     def compute(self, sample: np.ndarray) -> np.ndarray:
-        sample = sample[0]
         out = np.array([list(map(self.one_run, sample))])
         return (out, out)
 
@@ -63,5 +62,5 @@ class LowPassReverb(Effect):
         self.g = new_gain/5.0
         self.m = new_delay if 0 < new_delay < self.buffer_len else new_delay % self.buffer_len  # Validate input
         p2w = self.p2write
-        self.p2read = p2w - new_delay if p2w >= new_delay else p2w - new_delay + self.buffer_len
+        self.p2read = int(p2w - new_delay if p2w >= new_delay else p2w - new_delay + self.buffer_len)
 

@@ -40,7 +40,7 @@ class BackEnd:
         self.midi_path = path + 'Resources/'
         self.play_obj = None
 
-        self.test_note()
+        #self.test_note()
         
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')

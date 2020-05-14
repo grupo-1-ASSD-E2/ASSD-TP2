@@ -20,7 +20,6 @@ class Flanger(Effect):
         self.p2write = 0
 
     def compute(self, sample: np.ndarray) -> np.ndarray:
-        sample = sample[0]
         """ To increase efficiency """
         k = 2*np.pi*self.fo/self.sample_rate
         sin = np.sin

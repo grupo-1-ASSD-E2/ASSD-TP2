@@ -14,14 +14,7 @@ class SB_Synthesizer(SynthesizerAbstract):
     def __init__ (self):
         self.existing_frec_dict()
         self.instrument = 'Piano'
-<<<<<<< HEAD
-        #PABLO Y GONZA
-        #self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
-        #MALE
         self.samples_directory = path + 'BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
-=======
-        self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
->>>>>>> f14117a997e5b2b442b7fb04cab50ce4cc3017a6
         self.my_samples_frecuencies()
 
     def create_note_signal(self, note, instrument):

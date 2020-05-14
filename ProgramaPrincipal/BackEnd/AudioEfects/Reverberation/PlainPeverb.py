@@ -17,7 +17,6 @@ class PlainReverb(Effect):
         self.c1 = CombFilter(buffer_len, self.g, self.defaults_N)
 
     def compute(self, audio_input: np.ndarray):
-        audio_input = audio_input[0]
         out = self.c1.compute(audio_input)
         out = np.array([out])
         output = (out, out)
@@ -44,7 +43,7 @@ class PlainReverb(Effect):
         n = n if n != self.defaults_N else None
         self.change_t_60(new_t_60, n)
 
-    def change_t_60(self, new_t_60: float, new_n=None):
+    def change_t_60(self, new_t_60: float, new_n: int = None):
         self.defaults_N = new_n if new_n is not None else self.defaults_N
         self.g = 10 ** (-3 * self.defaults_N / (44100 * new_t_60))
         self.c1.change_param(self.g, self.defaults_N)

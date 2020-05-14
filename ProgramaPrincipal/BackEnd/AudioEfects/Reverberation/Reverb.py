@@ -25,8 +25,6 @@ class Reverb(Effect):
         self.a2 = AllPassFilter(buffer_len, self.gj[1], self.defaults_N_2[1])
 
     def compute(self, audio_input: np.ndarray):
-
-        audio_input = audio_input[0]
         y_a = (self.c1.compute(audio_input) + self.c2.compute(audio_input) + self.c3.compute(audio_input) +
                self.c4.compute(audio_input)) / 4
         out = self.a1.compute(self.a2.compute(y_a))

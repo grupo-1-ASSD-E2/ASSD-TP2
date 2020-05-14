@@ -17,7 +17,6 @@ class AllPassReverb(Effect):
         self.c1 = AllPassFilter(buffer_len, self.g, self.defaults_N)
 
     def compute(self, audio_input: np.ndarray):
-        audio_input = audio_input[0]
         out = self.c1.compute(audio_input)
         out = np.array([out])
         output = (out.copy(), out.copy())
