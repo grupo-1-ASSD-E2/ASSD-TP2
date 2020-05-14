@@ -11,20 +11,14 @@ import time
 class SB_Synthesizer(SynthesizerAbstract):
 
     def __init__ (self):
-        start_time = time.time()
         self.existing_frec_dict()
         self.instrument = 'Piano'
-        #PABLO Y GONZA
-        #self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
-        #MALE
         self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
         self.my_samples_frecuencies()
-        print(time.time() - start_time)
 
     def create_note_signal(self, note, instrument):
         #If the instrument changes, search new samples
         self.init_instrument_samples(instrument)
-
         #Look for the closest note in the samples and calculate the shifts required
         closest_note = self.closest_note_search(note.frequency)
         midi_code_note = self.midi_code_from_frec(note.frequency)
@@ -33,7 +27,6 @@ class SB_Synthesizer(SynthesizerAbstract):
         data, samplerate = sf.read(self.samples_directory + closest_note)
         note_length = int(round(note.fs * note.duration))
         #Pitch the sample to create the required note
-        #start_time = time.time()
         if int(shift) != 0:
             if note.duration == 0.0:
                 note.output_signal = []

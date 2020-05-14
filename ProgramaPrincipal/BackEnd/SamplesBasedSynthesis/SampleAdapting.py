@@ -44,7 +44,7 @@ def stretch(x, factor, nfft=2048):
     stft_new = np.zeros((len(times), stft_cols), dtype=np.complex_)
     phase_adv = (2 * np.pi * hop * np.arange(0, stft_cols))/ nfft
     phase = np.angle(stft[0])
-
+    
     stft = np.concatenate( (stft, np.zeros((1, stft_cols))), axis=0)
 
     for i, time in enumerate(times):

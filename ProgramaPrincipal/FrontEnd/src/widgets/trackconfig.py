@@ -1,11 +1,14 @@
 # PyQt5 modules
 from PyQt5.QtWidgets import QWidget, QApplication
+from PyQt5.QtCore import pyqtSignal
 
 # Project modules
 from FrontEnd.src.ui.midi_instrument import Ui_track
 
 
 class TrackConfigWidget(QWidget, Ui_track):
+
+    clicked = pyqtSignal()
 
     def __init__(self, parent=None, name=None, instruments=None):
         super(TrackConfigWidget, self).__init__(parent)
@@ -16,6 +19,7 @@ class TrackConfigWidget(QWidget, Ui_track):
             self.instrument_getter = instruments
         self.instrument.clicked.connect(self.get_instrument)
         self.preview.clicked.connect(self.click)
+        self.widget.mouseReleaseEvent = lambda event: self.clicked.emit()
 
     def click(self):
         if self.preview.isChecked():

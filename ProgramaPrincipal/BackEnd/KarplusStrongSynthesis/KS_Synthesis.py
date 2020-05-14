@@ -12,7 +12,7 @@ class KS_Synthesizer(SynthesizerAbstract):
         i = 0
 
     def create_note_signal(self, note, instrument):
-        if instrument == 'Guitar':
+        if instrument == 'ElecGuitar':
             self.karplus_strong(note)
         elif instrument == 'Drum':
             self.b = 0.49

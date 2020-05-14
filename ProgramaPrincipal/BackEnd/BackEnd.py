@@ -49,6 +49,9 @@ class BackEnd:
         #self.song.load_midi_file_info('Resources/faded.mid')
         #self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
 
+        #self.test_song()
+        #self.test_track(0)
+
 
     def test_note(self):
         #Para probar notas
@@ -99,16 +102,7 @@ class BackEnd:
             wavfile.write("trumpet_synth.wav", self.song.fs, self.audio)
         else:
             return -1
-    '''
     
-    def play_signal(self, signal): 
-        if len(signal) > 0 and np.max(signal) is not 0:
-            self.audio = signal * (2 ** 15) / np.max(signal)
-            self.start_time = time.time()
-            self.audio = self.audio.astype(np.int16)
-            sd.play(self.audio)
-        else:
-            return -1'''
 
     def plot_wave(self,signal, final_time):
         plt.plot( signal)
@@ -120,9 +114,9 @@ class BackEnd:
     def synthesize_note(self, note, instrument):
         if (instrument == Instruments.TRUMPET.value[0] or instrument == Instruments.VIOLIN.value[0] or instrument == Instruments.OBOE.value[0]) or instrument == Instruments.ACCORDEON.value[0]:
             self.additive_synthesizer.create_note_signal(note, instrument)
-        elif (instrument == Instruments.GUITAR.value[0] or instrument == Instruments.DRUM.value[0]):
+        elif (instrument == Instruments.ELECTRIC_GUITAR.value[0] or instrument == Instruments.DRUM.value[0]):
             self.ks_synthesizer.create_note_signal(note, instrument)
-        elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0] or instrument == Instruments.BASSOON.value[0] or instrument == Instruments.SAXOPHONE.value[0]):
+        elif (instrument == Instruments.PIANO.value[0] or instrument == Instruments.CELLO.value[0] or instrument == Instruments.VIOLA.value[0] or instrument == Instruments.MANDOLIN.value[0] or instrument == Instruments.BANJO.value[0] or instrument == Instruments.BASSOON.value[0] or instrument == Instruments.SAXOPHONE.value[0] or instrument == Instruments.ELECTRIC_BASS.value[0] or instrument == Instruments.ACOUSTIC_GUITAR.value[0]) :
             self.sb_synthesizer.create_note_signal(note, instrument)
 
     def synthesize_track(self, track, n_of_track):
@@ -131,27 +125,26 @@ class BackEnd:
             for note in track.notes:
                 self.synthesize_note(note, track.instrument)
                 track.output_signal = self.generate_output_signal(track.time_base.timeline_length, note, track.time_base.fs, delete_subarrays_after_generation=True, output_array=track.output_signal)
-            np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', track.output_signal)
+            if len(track.output_signal) < self.song.song_duration * self.song.fs:
+                difference = int(round(self.song.song_duration * self.song.fs) - len(track.output_signal))
+                zero = np.zeros(difference)
+                track.output_signal = np.concatenate((track.output_signal, zero))
+            if track.instrument != '':
+                np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', track.output_signal)
+            track.output_signal = np.array([])
             self.counter += 1
-        else:
-            ##Load track from file
-            track.output_signal = np.load('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(n_of_track) + '.npy')
 
         track.has_changed = False
         print('track synthesis:',time.time() - start_time)
-        #track.output_signal = self.generate_output_signal(track.time_base.timeline_length, track.notes, track.time_base.fs, delete_subarrays_after_generation=True)
 
     def syntesize_entire_song(self, song):
         song.output_signal = []
         song_activated_tracks = []
         it = 0
         for track in song.tracks:
-            print(str(it))
             if track.activated:
                 self.synthesize_track(track, it)
-                song.output_signal = self.generate_output_signal(song.time_base.timeline_length, track, song.time_base.fs, delete_subarrays_after_generation=True, output_array=song.output_signal)
                 song_activated_tracks.append(track)
-
             it +=1
         
     def generate_output_signal(self, N, array_to_add, fs, delete_subarrays_after_generation = False, output_array = np.array([])):
@@ -182,8 +175,6 @@ class BackEnd:
                     output = np.concatenate((output, add * (array_to_add.velocity / (127 * 2)) * volume_normalize))
                     add = None
         return output[0:N]
-
-
 
 
     #########################CONEXION CON FRONT-END###################################
@@ -227,29 +218,22 @@ class BackEnd:
                 return -1
         else:
             return -1
+    
+    def stop_reproduction(self):
+        if self.play_obj.is_playing() and self.play_obj is not None:
+            self.play_obj.stop()
         
     def toggle_track(self, n_of_track):
         if (n_of_track < len(self.song.tracks)):
             self.song.tracks[n_of_track].toggle_track()
 
     def create_chord(self, list_of_notes):
-        #Ver como es el parametro list_of_notes
-        raise NotImplementedError("Not Implemented")
-
-    '''
-    def pause_continue_reproduction(self, action):
-        if action == 'pause':
-            self.end_time = time.time() - self.start_time
-            sd.stop()
-            
-            played, self.to_play = np.split(self.audio, [int(round(self.end_time * self.song.fs))])
-        elif action == 'continue':
-            self.start_time = time.time()
-            sd.play(self.to_play, self.song.fs)
-    '''
-
-    def stop_reproduction(self):
-        sd.stop()
+        chord = np.array([])
+        for note_ in list_of_notes:
+            new_note = Note(note_.note_number, note_.duration, note_.velocity, note_.initial_time, note_.fs)
+            self.synthesize_note(new_note,note_.instrument)
+            chord = self.generate_output_signal(note_.initial_time + note_.duration*note_.fs, new_note, new_note.fs, delete_subarrays_after_generation=True,output_array=chord)
+        self.play_signal(chord)
 
     def save_as_wav_file(self, filename):
         if (self.song is not None and self.song.output_signal is not None):
@@ -257,8 +241,7 @@ class BackEnd:
             audio = audio.astype(np.int16)
             wavfile.write(filename, self.song.fs, audio)
         else:
-            return -1
-        
+            return -1   
 
     def save_as_mp3_file(self, filename):
         raise NotImplementedError("Not Implemented")
