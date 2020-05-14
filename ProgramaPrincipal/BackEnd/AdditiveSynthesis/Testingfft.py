@@ -7,10 +7,10 @@ from scipy import signal as sig
 import xlwt
 
 
-fs_rate, signal = wavfile.read("ProgramaPrincipal\\BackEnd\\AdditiveSynthesis\\inst\\accordeon-g5.wav")
-book = xlwt.Workbook(encoding="utf-8")
+fs_rate, signal = wavfile.read("ProgramaPrincipal\\BackEnd\\AdditiveSynthesis\\inst\\acc-c4.wav")
+#book = xlwt.Workbook(encoding="utf-8")
 
-sheet1 = book.add_sheet("Sheet 1")
+#sheet1 = book.add_sheet("Sheet 1")
 
 N = signal.shape[0]
 secs = N / float(fs_rate)
@@ -37,8 +37,8 @@ def iterate(n):
 
     for i in range(n, n+5):
         high_freq_fft = fftobtained.copy()
-        high_freq_fft[np.abs(freqs) >( 795 * i)] = 0
-        high_freq_fft[np.abs(freqs) < 770* i] = 0
+        high_freq_fft[np.abs(freqs) >( 270 * i)] = 0
+        high_freq_fft[np.abs(freqs) < 250* i] = 0
         filtered_sig = fftpack.ifft(high_freq_fft)
 
         axes[i - n, 0].plot(freqs, abs(high_freq_fft) / maxmax)
@@ -52,8 +52,8 @@ def iterate(n):
         amplitudemax = np.max(abs(high_freq_fft))
 
 
-        sheet1.write(i, 0, str(fmax))
-        sheet1.write(i, 1, str(amplitudemax/maxmax))
+        #sheet1.write(i, 0, str(fmax))
+        #sheet1.write(i, 1, str(amplitudemax/maxmax))
         
 
         amplitudes.append(amplitudemax/maxmax)
@@ -74,7 +74,7 @@ def plot_once():
     #axes[0].set_title("Signal")
     axes[0].plot( t,signal/np.max(signal), color='C0')
     
-    axes[0].set_title("Trompeta")
+    axes[0].set_title("Acordeón")
     axes[0].set_ylabel("Amplitud")
     axes[0].set_xlabel("Tiempo (s)")
 
@@ -101,6 +101,6 @@ plot_once()
 iterate(1)
 iterate(6)
 
-book.save("trial.xls")
+#book.save("trial.xls")
 
 #iterate(11)

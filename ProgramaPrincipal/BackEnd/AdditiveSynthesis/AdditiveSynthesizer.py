@@ -12,67 +12,51 @@ class AdditiveSynthesizer(SynthesizerAbstract):
         i = 0
 
     def create_note_signal(self, note, instrument):
-        #start_time = time.time()
+        #Crear la señal de salida de la nota que ingrese como parametro
+
         amplitude_array = None
         
-        partials = self.__get_partials__(instrument, note.frequency)
+        partials = self.__get_partials__(instrument, note.frequency)    #Se buscan los parciales del instrumento indicado
         for i in range(0, len(partials)):
             freq = partials[i].get_freq()
             phase = partials[i].get_phase()
            
-            partials[i].get_amplitude_array(note)
-
-            #self.plot_wave(partials[i].output_signal)
+            partials[i].get_amplitude_array(note)   #Se obtiene la ADSR de los parciales            
             
-            
-            time_vals = np.linspace(0, partials[i].last_time_value, note.fs*partials[i].last_time_value)
+            time_vals = np.linspace(0, partials[i].last_time_value, note.fs*partials[i].last_time_value)    #Se crea el arreglo de tiempo para la señal
 
-            output_sine = partials[i].output_signal * np.sin(
-                    freq * 2 * np.pi * time_vals - 180*phase/np.pi )
+            output_sine = partials[i].output_signal * np.sin(freq * 2 * np.pi * time_vals - 180*phase/np.pi )   #Se multiplica la ADSR con el seno de cada parcial
 
-            #if (freq > 500 and i > 5):
-            #    output_sine *= 0.1
-
-            #self.plot_wave(output_sine)
-
+            #Se suman las señakes de cada parcial
             if i == 0:
                 amplitude_array = output_sine
             else:
-                difference = len(amplitude_array) - len(output_sine)
-                zeros = np.zeros(abs(difference))
-                if (difference > 0):
+                difference = len(amplitude_array) - len(output_sine)    #Chequea diferencias de longitudes para poder sumar
+                zeros = np.zeros(abs(difference))                       #Crea un arreglo de ceros que permita igualar las longitudes
+                if (difference > 0):    #Dependiendo de cual sea mas grande, el arreglo de ceros se concatena a uno u otros
 
-
-                    amplitude_array += np.concatenate([output_sine, zeros])
+                    amplitude_array += np.concatenate([output_sine, zeros]) #Se concatena y se suma
                 elif (difference <0):
                     amplitude_array = np.concatenate([amplitude_array, zeros]) +output_sine
                 else:
                     amplitude_array += output_sine
 
-            #self.plot_wave(amplitude_array)
 
-
-        note.output_signal =   amplitude_array      
-
-        #endtime = time.time()
-
-        #print(str(endtime - start_time))
-
-    def plot_wave(self,signal):
-        plt.plot( signal)
-        plt.xlabel('time(s)')
-        plt.ylabel('amplitude(A)')
-        #plt.xlim(0, final_time)
-        plt.show()
-
+        note.output_signal =   amplitude_array    #Se obtuvo la señal de salida de la nota  
 
     def __get_partials__(self, instrument, frequency):
-        freq_of_samples = 261.63
+        #Funcion para obtener los parciales de un instrumento a una frecuencia indicada.
+        #Se devuelve un arreglo de objetos de la clase PartialNote.
+        #Los parametros de cada parcial fueron obtenidos a partir del analisis de distintos samples de los instrumentos
 
-        multiplier = frequency / freq_of_samples
+
+        
         if (instrument == Instruments.TRUMPET.value[0]):
 
-            if frequency <= 500:
+            if frequency <= 500:    #Se obtuvo una serie de datos por debajo de 500Hz y otra por encima de 500Hz para aumentar precisión debido a la ley de caída de los parciales.
+                freq_of_samples = 261.63    #Frecuencia con la que se obtuvieron los datos
+
+                multiplier = frequency / freq_of_samples #Multiplicador de frecuencia que permite shiftear los datos a la frecuencia buscada.
                 partial1 = PartialNote(261.65532 * multiplier, 0.76483, 0.37, 0.4728, 0.0365, 0.91, 0.0291, 7.4, 0.028, 7.61)
             
                 partial2 = PartialNote(523.310642 * multiplier, 0.1167782, 0.37, 0.46, 0.06, 2.58, 0.058, 7.4, 0.05, 7.6)
@@ -106,12 +90,12 @@ class AdditiveSynthesizer(SynthesizerAbstract):
 
                 partials = [partial1, partial2, partial3, partial4, partial5, partial6, partial7, partial8, partial9, partial10,
                             partial11, partial12, partial13, partial14]
-                #partials = [partial1]
+                
                 return partials
             else:
-                freq_of_samples = 783.99
+                freq_of_samples = 783.99 #Frecuencia con la que se obtuvieron los datos
 
-                multiplier = frequency / freq_of_samples
+                multiplier = frequency / freq_of_samples #Multiplicador de frecuencia que permite shiftear los datos a la frecuencia buscada.
                 partial1 = PartialNote(784.52889 * multiplier,-2.0838746, 0.37, 0.57, 0.2708, 1.21671, 0.240596, 5.8, 0.203, 6.1)
 
                 partial2 = PartialNote( 1566.24305 * multiplier,-2.614516, 0.37, 0.708, 0.4335, 1.47095, 0.325361, 5.7, 0.32536, 6.1)
@@ -128,7 +112,10 @@ class AdditiveSynthesizer(SynthesizerAbstract):
 
         elif(instrument == Instruments.OBOE.value[0]):
 
-            if (frequency <=500):
+            if (frequency <=500):#Se obtuvo una serie de datos por debajo de 500Hz y otra por encima de 500Hz para aumentar precisión debido a la ley de caída de los parciales.
+                freq_of_samples = 261.63     #Frecuencia con la que se obtuvieron los datos
+
+                multiplier = frequency / freq_of_samples #Multiplicador de frecuencia que permite shiftear los datos a la frecuencia buscada.
                 partial1 = PartialNote(260.9281 * multiplier,-1.83709, 0, 0.1168, 0.132, 0.296, 0.128, 6.36, 0.124, 6.75)
 
                 partial2 = PartialNote(521.712996 * multiplier,-1.43441, 0, 0.07, 0.07, 0.442, 0.07, 6.36, 0.07, 6.75)
@@ -153,9 +140,9 @@ class AdditiveSynthesizer(SynthesizerAbstract):
                 partials = [partial1, partial2, partial3,partial4, partial5, partial6, partial8, partial9]
                 return partials
             else:
-                freq_of_samples = 932.328
+                freq_of_samples = 932.328 #Frecuencia con la que se obtuvieron los datos
 
-                multiplier = frequency / freq_of_samples
+                multiplier = frequency / freq_of_samples #Multiplicador de frecuencia que permite shiftear los datos a la frecuencia buscada.
 
                 partial1 = PartialNote(928.7298 * multiplier,0.01449, 0, 0.112829, 0.520753, 1.45245, 0.4917, 5.7, 0.4626, 6.67)
 
@@ -168,30 +155,63 @@ class AdditiveSynthesizer(SynthesizerAbstract):
 
 
         elif (instrument == Instruments.VIOLIN.value[0]):
-            partial1 = PartialNote(261.58854 * multiplier, -2.93465, 0.026, 0.5, 0.35, 0.569, 0.2837, 3, 0.2837, 3.489)
 
-            partial2 = PartialNote(522.94078 * multiplier, 2.7098, 0.026, 0.453, 0.091, 0.523, 0.11, 3, 0.09, 3.27575)
+            if frequency <= 500:#Se obtuvo una serie de datos por debajo de 500Hz y otra por encima de 500Hz para aumentar precisión debido a la ley de caída de los parciales.
+                freq_of_samples = 261.63    # Frecuencia con la que se obtuvieron los datos
 
-            partial3 = PartialNote(784.52932 * multiplier, 0.363645, 0.026, 0.0713, 0.0594, 0.546, 0.1496, 3, 0.1307, 3.29)
+                multiplier = frequency / freq_of_samples #Multiplicador de frecuencia que permite shiftear los datos a la frecuencia buscada.
+                partial1 = PartialNote(261.58854 * multiplier, -2.93465, 0.026, 0.5, 0.35, 0.569, 0.2837, 3, 0.2837, 3.489)
 
-            partial4 = PartialNote(1039.73765 * multiplier, 2.1862, 0.026, 0.03234, 0.0376, 0.54, 0.07, 3, 0.0495, 3.3)
+                partial2 = PartialNote(522.94078 * multiplier, 2.7098, 0.026, 0.453, 0.091, 0.523, 0.11, 3, 0.09, 3.27575)
 
-            partial5 = PartialNote(1314.3229 * multiplier, 1.46007, 0.026, 0.0488, 0.0388, 0.724, 0.12, 3, 0.1, 3.3)
+                partial3 = PartialNote(784.52932 * multiplier, 0.363645, 0.026, 0.0713, 0.0594, 0.546, 0.1496, 3, 0.1307, 3.29)
 
-            partial6 = PartialNote(1580.4012 * multiplier, 1.971578, 0.026, 0.297, 0.029, 0.53, 0.107, 3, 0.077, 3.3)
+                partial4 = PartialNote(1039.73765 * multiplier, 2.1862, 0.026, 0.03234, 0.0376, 0.54, 0.07, 3, 0.0495, 3.3)
 
-            partial7 = PartialNote(1841.98978 * multiplier, -0.59578, 0.026, 0.05, 0.024, 0.56, 0.05, 3, 0.0425, 3.3)
+                partial5 = PartialNote(1314.3229 * multiplier, 1.46007, 0.026, 0.0488, 0.0388, 0.724, 0.12, 3, 0.1, 3.3)
 
-            partial8 = PartialNote(2091.054205 * multiplier, 3.101057, 0.026, 0.05238, 0.02, 0.59, 0.07, 3, 0.069, 3.3)
+                partial6 = PartialNote(1580.4012 * multiplier, 1.971578, 0.026, 0.297, 0.029, 0.53, 0.107, 3, 0.077, 3.3)
 
-            partial9 = PartialNote(2589.18306 * multiplier,0.03179217, 0.026, 0.058, 0.0236, 0.61, 0.06, 3, 0.06, 3.3)
+                partial7 = PartialNote(1841.98978 * multiplier, -0.59578, 0.026, 0.05, 0.024, 0.56, 0.05, 3, 0.0425, 3.3)
 
-            partials = [partial1, partial2, partial3, partial4, partial5, partial6, partial7, partial8, partial9]
-            #partials = [partial1]
-            return partials
+                partial8 = PartialNote(2091.054205 * multiplier, 3.101057, 0.026, 0.05238, 0.02, 0.59, 0.07, 3, 0.069, 3.3)
+
+                partial9 = PartialNote(2589.18306 * multiplier,0.03179217, 0.026, 0.058, 0.0236, 0.61, 0.06, 3, 0.06, 3.3)
+
+                partials = [partial1, partial2, partial3, partial4, partial5, partial6, partial7, partial8, partial9]
+                
+                return partials
+
+            else:
+                freq_of_samples = 932.33 #Frecuencia con la que se obtuvieron los datos
+
+                multiplier = frequency / freq_of_samples #Multiplicador de frecuencia que permite shiftear los datos a la frecuencia buscada.
+
+                partial1 = PartialNote(932.633 * multiplier,2.89414, 0, 0.4247, 0.5271, 0.7276, 0.433716, 6.4, 0.418, 6.658)
+                
+                partial2 = PartialNote(1870.971 * multiplier, -0.46688, 0, 0.4, 0.284, 0.5257, 0.2584, 6.4, 0.2236, 6.66)
+                                
+                partial3 = PartialNote(2808.8025 * multiplier, -2.896195, 0, 0.374, 0.249, 0.488, 0.227, 6.4, 0.1985, 6.63)
+                                
+                partial4 = PartialNote( 3749.423 * multiplier, -1.21915, 0, 0.387, 0.365, 0.5, 0.29, 6.4, 0.265, 6.61)
+
+                partial5 = PartialNote(4682.183 * multiplier, 1.835926, 0, 0.7907, 0.1234, 0.98, 0.1, 6.4, 0.085, 6.61)
+
+                partial6 = PartialNote(5577.1605 * multiplier, -2.34273, 0, 0.4105, 0.0616, 0.6, 0.05, 6.4, 0.045, 6.637)
+
+                partials = [partial1, partial2, partial3, partial4, partial5, partial6]
+
+                return partials
+
+
+
         elif (instrument == Instruments.ACCORDEON.value[0]):
 
-            if frequency<=500:
+            if frequency<=500:#Se obtuvo una serie de datos por debajo de 500Hz y otra por encima de 500Hz para aumentar precisión debido a la ley de caída de los parciales.
+
+                freq_of_samples = 261.63    #Frecuencia con la que se obtuvieron los datos
+
+                multiplier = frequency / freq_of_samples    #Multiplicador de frecuencia que permite shiftear los datos a la frecuencia buscada.
 
                 partial1 = PartialNote(262.3775 * multiplier, 2.151939, 0.01, 0.114, 0.3647, 0.192, 0.339, 3.93, 0.3124, 4.119)
                 
@@ -219,12 +239,12 @@ class AdditiveSynthesizer(SynthesizerAbstract):
                 partial17 = PartialNote(4460.26472 * multiplier, 2.4423946, 0.01, 0.1635, 0.06, 0.29, 0.059, 3.93, 0.049, 4.02)
 
                 partials = [partial1, partial2,partial3, partial4, partial5, partial6, partial8, partial9, partial14, partial15, partial16, partial17]
-                #partials = [partial1, partial3]
+             
                 return partials
             else:
-                freq_of_samples = 783.99
+                freq_of_samples = 783.99 #Frecuencia con la que se obtuvieron los datos
 
-                multiplier = frequency / freq_of_samples
+                multiplier = frequency / freq_of_samples #Multiplicador de frecuencia que permite shiftear los datos a la frecuencia buscada.
 
                 partial1 = PartialNote(787.56725 * multiplier,0.15037, 0.01, 0.057, 0.445765, 0.4056, 0.47356, 3.5, 0.432, 3.71)
                 
