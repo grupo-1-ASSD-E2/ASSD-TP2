@@ -13,7 +13,13 @@ from multiprocessing import Pool
 import time
 from scipy.io.wavfile import write
 
+from PyQt5.QtCore import QTime
 
+time_1 = QTime(0, 10, 1)
+print(time_1.toString("m:ss"))
+time_1.setHMS(0,65/60,65%60)
+print(time_1.toString("m:ss"))
+exit()
 def hola(a, b):
     return b(a)
 
@@ -24,6 +30,7 @@ def foo2(a):
     b = np.ones(len(a))
     return b
 
+eco = Reverb(buffer_len=a, t_60=10)
 
 my_array = np.array([([1,1],[2,2]),([1,1],[2,2]),([1,1],[2,2]) ])
 print(my_array[:,1])

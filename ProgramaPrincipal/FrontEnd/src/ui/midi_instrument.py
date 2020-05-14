@@ -83,11 +83,11 @@ class Ui_track(object):
         sizePolicy.setHeightForWidth(self.mute.sizePolicy().hasHeightForWidth())
         self.mute.setSizePolicy(sizePolicy)
         self.mute.setStyleSheet(":active{\n"
-"    border-image:url(:/botones/assets/buttons/sound.png);\n"
+"    image:url(:/botones/assets/buttons/sound.png);\n"
 "}\n"
 "\n"
 ":checked{\n"
-"    border-image:url(:/botones/assets/buttons/mute.png);\n"
+"    image:url(:/botones/assets/buttons/mute.png);\n"
 "}\n"
 "")
         self.mute.setText("")

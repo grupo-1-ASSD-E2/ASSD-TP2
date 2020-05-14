@@ -67,6 +67,9 @@ class EditedTrackWidget(QWidget, Ui_worked_track):
     def update_callback(self, prop2change, new_value):
         self.effect_instance.change_param(prop2change, new_value)
 
+    def reset(self):
+        self.effect_instance.clear()
+
     def mute_click(self):
         self.is_muted = not self.is_muted
         self.update_effect.emit()

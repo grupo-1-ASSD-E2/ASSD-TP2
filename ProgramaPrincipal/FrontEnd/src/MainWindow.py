@@ -5,6 +5,8 @@ from multiprocessing import Pool
 
 # PyQt5 modules
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
+from PyQt5.QtCore import QTime
+from PyQt5.QtCore import QTimer
 
 # Project modules
 from FrontEnd.src.ui.main_window import Ui_AudioTool
@@ -74,6 +76,23 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         """ Reproduction thing """
         self.all_tracks = []
         self.all_callbacks = []
+
+        """ Timer things """
+        self.inner_timer = QTimer()
+        self.inner_timer.timeout.connect(self.count_down_callback)
+        self.song_time = QTime()
+
+    def count_down_callback(self):
+        if self.media_player.processing():
+            self.song_time = self.song_time.addSecs(-1)
+            self.count_down.setText(self.song_time.toString("m:ss"))
+        else:
+            self.count_down.setText('00:00')
+            self.media_player.terminate_processing()
+            self.inner_timer.stop()
+            self.media_buttons_widget.play.toggle()
+            for i in self.working_tracks:
+                i.reset()
 
     def disable_effect_enviroment(self):
         self.working = False
@@ -154,8 +173,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         pass
 
     def select_track(self, index):
-
-        if self.synthesis_stage and index in self.available_to_play:
+        if not (not self.synthesis_stage and index in self.available_to_play):
             """ If synthesis is not ready, effects are not possible """
             return
 
@@ -266,16 +284,22 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                 song = np.load(path + 'BackEnd/Tracks/' + 'track' + str(i) + '.npy')
                 all_tracks.append(song)
                 self.all_callbacks.append(self.nothing)  # Adding functions with all ones
-            print(np.array(all_tracks))
             if self.media_player is not None:
                 """ Send input to convolutioner """
                 self.media_player.update_input(np.array(all_tracks), np.dtype('float32'))
+
+            """ Set timer """
+            song_len = len(all_tracks[0])
+            song_len = np.ceil(song_len/44100.0)
+            self.song_time.setHMS(0, int(song_len/60.0), int(song_len % 60))
+            self.count_down.setText(self.song_time.toString("m:ss"))
 
     def play(self):
         if self.media_buttons_widget.stop.isChecked():
             self.media_buttons_widget.stop.toggle()
 
         self.media_player.start_non_blocking_processing()
+        self.inner_timer.start(1000)
 
     def stop(self):
         if self.media_buttons_widget.play.isChecked():

@@ -44,7 +44,7 @@ class AllPassFilter(object):
         self.g = new_gain
         self.m = new_delay
         p2w = self.p2write
-        self.p2read = p2w - new_delay if p2w >= new_delay else p2w - new_delay + self.buffer_len
+        self.p2read = int(p2w - new_delay if p2w >= new_delay else p2w - new_delay + self.buffer_len)
 
     def get_impulse_response(self) -> np.ndarray:
         delta = np.zeros(int(self.buffer_len))
