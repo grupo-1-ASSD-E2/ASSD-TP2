@@ -7,7 +7,7 @@ class Flanger(Effect):
                   "Frecuecia (Hz)": ((float, (0, 100)), 5)}
 
     def __init__(self, buffer_len=2**15, sample_rate=44100, delay=1, f0=5):
-        super(Flanger, self).__init__("Eco")
+        super(Flanger, self).__init__("Flanger")
 
         self.fo = f0
         self.sample_rate = sample_rate
@@ -53,9 +53,11 @@ class Flanger(Effect):
 
         return out
 
-    def change_param(self, new_properties):
-        self.fo = new_properties["Frecuecia (Hz)"]
-        delay = new_properties["Retraso (ms)"]/1000
-        self.m0 = np.floor(self.sample_rate * delay / (1 - self.a))
+    def change_param(self, new_property, value):
+        if new_property == "Frecuecia (Hz)":
+            self.fo = value
+        elif new_property == "Retraso (ms)":
+            delay = value/1000
+            self.m0 = np.floor(self.sample_rate * delay)
 
 

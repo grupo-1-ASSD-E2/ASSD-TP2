@@ -33,9 +33,13 @@ class PlainReverb(Effect):
 
         return h
 
-    def change_param(self, new_properties):
-        new_t_60 = new_properties["Tiempo de Reverberacion (s)"]
-        new_delay = new_properties["Delay (ms)"]
+    def change_param(self, new_property, value):
+        new_t_60 = 0
+        new_delay = 0
+        if new_property == "Tiempo de Reverberacion (s)":
+            new_t_60 = value
+        elif new_property == "Delay (ms)":
+            new_delay = value
         n = np.floor(new_delay * self.sample_rate / 1000.0)
         n = n if n != self.defaults_N else None
         self.change_t_60(new_t_60, n)

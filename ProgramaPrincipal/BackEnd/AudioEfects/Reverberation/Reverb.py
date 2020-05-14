@@ -52,8 +52,11 @@ class Reverb(Effect):
         self.c1.reset()
         self.a2.reset()
 
-    def change_param(self, new_properties):
-        new_t_60 = new_properties["Tiempo de Reverberacion (s)"][1]
+    def change_param(self, new_property, value):
+        new_t_60 = 0
+        if new_property == "Tiempo de Reverberacion (s)":
+            new_t_60 = value
+
         self.change_t_60(new_t_60)
 
     def change_t_60(self, new_t_60: float):

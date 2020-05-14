@@ -17,5 +17,8 @@ class Effect(object):
     def get_impulse_response(self) -> np.ndarray:
         pass
 
-    def change_param(self, new_properties):
+    def change_param(self, new_property, value):
         pass
+
+    def name(self):
+        return self.name

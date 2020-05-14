@@ -3,6 +3,7 @@ from BackEnd.BackEnd import BackEnd
 from FrontEnd.src.MainWindow import MyMainWindow
 import os
 
+from BackEnd.path import origin as path
 
 if __name__ == "__main__":
     app = QApplication([])
@@ -10,7 +11,7 @@ if __name__ == "__main__":
     widget = MyMainWindow(backend=back)
     widget.show()
     app.exec()
-    dir_name = "ProgramaPrincipal/BackEnd/Tracks"
+    dir_name = path + "BackEnd/Tracks"
     test = os.listdir(dir_name)
 
     for item in test:

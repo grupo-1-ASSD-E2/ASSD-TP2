@@ -52,9 +52,13 @@ class LowPassReverb(Effect):
         self.p2read = self.buffer_len - self.m
         self.p2write = 0
 
-    def change_param(self, new_properties):
-        new_gain = new_properties["Absorción"]
-        new_delay = np.floor(new_properties["Retardo (ms)"] * self.sample_rate / 1000.0)
+    def change_param(self, new_property, value):
+        new_delay = 0
+        new_gain = 0
+        if new_property == "Absorción":
+            new_gain = value
+        elif new_property == "Retardo (ms)":
+            new_delay = np.floor(value * self.sample_rate / 1000.0)
 
         self.g = new_gain/5.0
         self.m = new_delay if 0 < new_delay < self.buffer_len else new_delay % self.buffer_len  # Validate input

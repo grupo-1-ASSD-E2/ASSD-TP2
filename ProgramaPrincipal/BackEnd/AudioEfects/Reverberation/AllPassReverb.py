@@ -33,11 +33,16 @@ class AllPassReverb(Effect):
     def clear(self):
         self.c1.reset()
 
-    def change_param(self, new_properties):
-        new_t_60 = new_properties["Tiempo de Reverberacion (s)"]
-        new_delay = new_properties["Delay (ms)"]
-        n = int(np.floor(new_delay * self.sample_rate / 1000.0))
-        n = n if n != self.defaults_N else None
+    def change_param(self, new_property, value):
+        new_t_60 = 0
+        n = 0
+        if new_property == "Tiempo de Reverberacion (s)":
+            new_t_60 = value
+        elif new_property == "Delay (ms)":
+            new_delay = value
+            n = int(np.floor(new_delay * self.sample_rate / 1000.0))
+            n = n if n != self.defaults_N else None
+
         self.change_t_60(new_t_60, n)
 
     def change_t_60(self, new_t_60: float, new_n=None):

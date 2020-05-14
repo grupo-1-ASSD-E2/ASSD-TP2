@@ -28,6 +28,7 @@ import pyaudio
 import time
 import sounddevice as sd
 
+from BackEnd.path import origin as path
 
 class BackEnd:
     def __init__(self):
@@ -36,7 +37,7 @@ class BackEnd:
         self.sb_synthesizer = SB_Synthesizer()
         self.counter = 0
         self.song = Song()
-        self.midi_path = 'ProgramaPrincipal/Resources/'
+        self.midi_path = path + 'Resources/'
         self.play_obj = None
         
         #MALE
@@ -127,11 +128,11 @@ class BackEnd:
             for note in track.notes:
                 self.synthesize_note(note, track.instrument)
                 track.output_signal = self.generate_output_signal(track.time_base.timeline_length, note, track.time_base.fs, delete_subarrays_after_generation=True, output_array=track.output_signal)
-            np.save('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', track.output_signal)
+            np.save(path + 'BackEnd/Tracks/' + 'track' + str(self.counter) + '.npy', track.output_signal)
             self.counter += 1
         else:
             ##Load track from file
-            track.output_signal = np.load('ProgramaPrincipal/BackEnd/Tracks/' + 'track' + str(n_of_track) + '.npy')
+            track.output_signal = np.load(path + 'BackEnd/Tracks/' + 'track' + str(n_of_track) + '.npy')
 
         track.has_changed = False
         print('track synthesis:',time.time() - start_time)
