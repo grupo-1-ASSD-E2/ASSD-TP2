@@ -6,7 +6,7 @@ from scipy import fftpack
 from scipy import signal as sig
 
 
-fs_rate, signal = wavfile.read("ProgramaPrincipal/BackEnd/AdditiveSynthesis/inst/violin-C4.wav")
+fs_rate, signal = wavfile.read("ProgramaPrincipal/BackEnd/AdditiveSynthesis/inst/trumpet-C4.wav")
 
 
 N = signal.shape[0]
@@ -40,7 +40,7 @@ def iterate(n):
 
         axes[i - n, 0].plot(freqs, abs(high_freq_fft) / maxmax)
         axes[i -n, 1].plot(t, filtered_sig / maxsignal)
-        #axes[i-n, 1].set_title("Parcial " + str(i))
+        axes[i-n, 0].set_xlabel("Parcial " + str(i))
         axes[i-n, 1].set_xlabel("Time (s) ")
         axes[i-n, 1].set_ylabel("Amplitude")
         index = np.argmax(abs(high_freq_fft))
@@ -89,5 +89,5 @@ def plot_once():
 plot_once()
 
 #iterate(1)
-#iterate(6)
-#iterate(16)
+iterate(6)
+iterate(11)

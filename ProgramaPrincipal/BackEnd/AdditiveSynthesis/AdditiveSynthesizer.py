@@ -17,7 +17,6 @@ class AdditiveSynthesizer(SynthesizerAbstract):
         
         partials = self.__get_partials__(instrument, note.frequency)
         for i in range(0, len(partials)):
-            print(str(i))
             freq = partials[i].get_freq()
             phase = partials[i].get_phase()
            
@@ -69,36 +68,36 @@ class AdditiveSynthesizer(SynthesizerAbstract):
 
         multiplier = frequency / freq_of_samples
         if (instrument == Instruments.TRUMPET.value[0]):
-            partial1 = PartialNote(261.65532 * multiplier, 0.76483, 0.37, 0.627, 0.039, 0.89, 0.0297, 7.4, 0.028, 7.61)
+            partial1 = PartialNote(261.65532 * multiplier, 0.76483, 0.37, 0.4728, 0.0365, 0.91, 0.0291, 7.4, 0.028, 7.61)
         
-            partial2 = PartialNote(523.310642 * multiplier, 0.1167782, 0.37, 0.487, 0.065, 0.627, 0.069, 7.4, 0.05, 7.60)
+            partial2 = PartialNote(523.310642 * multiplier, 0.1167782, 0.37, 0.46, 0.06, 2.58, 0.058, 7.4, 0.05, 7.6)
 
-            partial3 = PartialNote(784.837889 * multiplier, -1.5167848, 0.37, 0.474, 0.0976, 0.627, 0.1175, 7.4, 0.084,
+            partial3 = PartialNote(784.837889 * multiplier, -1.5167848, 0.37, 0.4728, 0.11, 2.6367, 0.0978, 7.4, 0.084,
+                                7.57)
+
+            partial4 = PartialNote(1046.6212841 * multiplier, 1.4703592579, 0.37, 0.84, 0.165, 2.71, 0.1336, 7.4, 0.1124,
                                 7.54)
 
-            partial4 = PartialNote(1046.6212841 * multiplier, 1.4703592579, 0.37, 0.461, 0.117, 0.88, 0.167, 7.4, 0.1124,
-                                7.51)
+            partial5 = PartialNote(1308.2766 * multiplier, 1.646486, 0.37, 0.748, 0.104565, 2.714, 0.06745, 7.4, 0.05, 7.52)
 
-            partial5 = PartialNote(1308.2766 * multiplier, 1.646486, 0.37, 0.4486, 0.074, 0.716, 0.103, 7.4, 0.048, 7.51)
+            partial6 = PartialNote(1569.803852 * multiplier, -0.554181, 0.37, 0.73668, 0.1596, 2.49, 0.126, 7.4, 0.1, 7.55)
 
-            partial6 = PartialNote(1569.803852 * multiplier, -0.554181, 0.37, 0.473, 0.13, 0.853, 0.162, 7.4, 0.094, 7.52)
+            partial7 = PartialNote(1831.45917 * multiplier, -0.14542, 0.37, 0.786876, 0.098, 2.75693, 0.075, 7.4, 0.065, 7.5)
 
-            partial7 = PartialNote(1831.45917 * multiplier, -0.14542, 0.37, 0.46, 0.069, 0.815, 0.1026, 7.4, 0.0609, 7.5)
+            partial8 = PartialNote(2093.8829 * multiplier, -2.553459, 0.37, 0.786876, 0.0916, 2.5938, 0.05613, 7.4, 0.04, 7.5)
 
-            partial8 = PartialNote(2093.8829 * multiplier, -2.553459, 0.37, 0.46, 0.052, 0.7645, 0.091, 7.4, 0.03686, 7.48)
+            partial9 = PartialNote(2355.92248 * multiplier, 1.5498516, 0.37, 0.786876, 0.058, 2.9075, 0.041, 7.4, 0.03166,
+                                7.52)
 
-            partial9 = PartialNote(2355.92248 * multiplier, 1.5498516, 0.37, 0.46, 0.034, 0.777, 0.0575, 7.4, 0.0271,
-                                7.5)
+            partial10 = PartialNote(2617.5778 * multiplier, -2.80477, 0.37, 0.8245, 0.0688, 2.94515, 0.045785, 7.4, 0.0343, 7.51)
 
-            partial10 = PartialNote(2617.5778 * multiplier, -2.80477, 0.37, 0.4479, 0.037, 0.7645, 0.0684, 7.4, 0.0275, 7.5)
+            partial11 = PartialNote(2879.7454 * multiplier, 2.781639, 0.37, 0.8157, 0.08, 3.2, 0.0425, 7.4, 0.03, 7.5)
 
-            partial11 = PartialNote(2879.7454 * multiplier, 2.781639, 0.37, 0.47, 0.045, 0.79, 0.075, 7.4, 0.0246, 7.5)
+            partial12 = PartialNote(3141.4007 * multiplier, 1.441315, 0.37, 0.8157, 0.0543, 3.33, 0.017, 7.4, 0.014, 7.5)
 
-            partial12 = PartialNote(3141.4007 * multiplier, 1.441315, 0.37, 0.5, 0.0326, 0.82, 0.0488, 7.4, 0.012, 7.47)
+            partial13 = PartialNote(3403.184136 * multiplier, -1.84469,0.37, 0.8284, 0.038, 2.977, 0.0136, 7.4, 0.01, 7.49)
 
-            partial13 = PartialNote(3403.184136 * multiplier, -1.84469, 0.37, 0.449, 0.01259, 0.821, 0.03498, 7.4, 0.006485, 7.47)
-
-            partial14 = PartialNote(3661.50953 * multiplier, 1.0291, 0.37, 0.462, 0.006575, 0.8213, 0.022, 7.4, 0.0051, 7.47)
+            partial14 = PartialNote(3661.50953 * multiplier, 1.0291, 0.37, 0.803, 0.0254, 2.774, 0.0097, 7.4, 0.0063, 7.5)
 
             partials = [partial1, partial2, partial3, partial4, partial5, partial6, partial7, partial8, partial9, partial10,
                         partial11, partial12, partial13, partial14]
