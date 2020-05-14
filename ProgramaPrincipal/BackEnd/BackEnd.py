@@ -33,8 +33,8 @@ from BackEnd.path import origin as path
 class BackEnd:
     def __init__(self):
         self.additive_synthesizer = AdditiveSynthesizer()
-        self.ks_synthesizer = KS_Synthesizer()
-        self.sb_synthesizer = SB_Synthesizer()
+        #self.ks_synthesizer = KS_Synthesizer()
+        #self.sb_synthesizer = SB_Synthesizer()
         self.counter = 0
         self.song = Song()
         self.midi_path = path + 'Resources/'
@@ -56,8 +56,8 @@ class BackEnd:
 
     def test_note(self):
         #Para probar notas
-        note = Note(60,3.5,0.5,1,44100)
-        self.synthesize_note(note, 'Trumpet')
+        note = Note(61,0.3,0.5,1,44100)
+        self.synthesize_note(note, 'Accordeon')
         self.play_signal(note.output_signal)
         self.plot_wave(note.output_signal, 1000000)
         
@@ -100,7 +100,7 @@ class BackEnd:
             self.audio = self.audio.astype(np.int16)
             self.start_time = time.time()
             self.play_obj = sa.play_buffer(self.audio, 1, 2, self.song.fs)
-            wavfile.write("trumpet_synth.wav", self.song.fs, self.audio)
+            #wavfile.write("violin_synth_a#5.wav", self.song.fs, self.audio)
         else:
             return -1
     
