@@ -17,9 +17,12 @@ class PartialNote:
 
         self.stageAslope = self.d_amp / self.d_time
 
+
         self.stageDslope = (self.s_amp - self.d_amp) / (self.s_time - self.d_time)
 
         self.stageSslope = (self.r_amp - self.s_amp) / (self.r_time - self.s_time)
+        if (self.stageSslope >= 0):
+            self.stageSslope =- 0.000001
 
         self.stageRslope = (- self.r_amp) / (self.off_time - self.r_time)
 
@@ -38,7 +41,10 @@ class PartialNote:
     def __get_last_time_value__(self,note): #COMPLETADO
         
         if (note.duration >= self.s_time):
-            return note.duration  -((note.duration - self.s_time) * self.stageSslope + self.s_amp) / self.stageRslope
+            if (note.duration <= self.s_time - self.s_amp/self.stageSslope):
+                return note.duration  -((note.duration - self.s_time) * self.stageSslope + self.s_amp) / self.stageRslope
+            else:
+                return self.s_time - self.s_amp/self.stageSslope
         else: #Si no se completan todas las etapas...
             if note.duration <= self.d_time:
                 #No hay etapa D

@@ -241,7 +241,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                 if volume == 0 or instrument == '':
                     absents.append(i)
                     self.backend.toggle_track(i)
-                    pass
+
             self.available_to_play = list(set(all_num).difference(set(absents)))
             for a in self.available_to_play:
                 self.track_manager[a].setStyleSheet(
@@ -251,6 +251,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                     'QWidget { border-style: solid; background-color: rgbrgb(81, 76, 149); border-radius: 5px;}')
             self.backend.synthesize_song()
             self.enable_effects()
+
             self.working = False
 
             """ Load tracks """
@@ -265,8 +266,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         if self.old_preview is not None:
             pass  # should only play 1 track
         else:
-            pass
-            #  self.backend.play_song()
+            self.backend.play_song()
 
     def stop(self):
         if self.media_buttons_widget.play.isChecked():

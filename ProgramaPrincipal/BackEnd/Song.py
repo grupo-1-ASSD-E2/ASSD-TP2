@@ -20,6 +20,7 @@ class Song:
         self.output_time_signal = []
         self.midi_file = None
         self.fs = 44100
+        self.song_duration = 0
         #self.backend = backend
 
     def set_time_base(self, time_base):
@@ -74,11 +75,13 @@ class Song:
                 total_track_ticks += msg.time
             if total_track_ticks > total_song_ticks:
                 total_song_ticks = total_track_ticks
+
         if first_set_tempo == True:
             last_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, total_song_ticks - prev_ending, 0)
         else:
             last_tempo = Tempo(prev_tempo, self.midi_file.ticks_per_beat, total_song_ticks - prev_ending, prev_ending + 1)
         self.time_base.add_new_tempo(last_tempo)
+        self.song_duration = self.time_base.convert_tick_to_time(total_song_ticks)
         print('total song ticks:', total_song_ticks)
         print('last tempo:', last_tempo.tempo)
         print('last tempo start', last_tempo.start_tick)

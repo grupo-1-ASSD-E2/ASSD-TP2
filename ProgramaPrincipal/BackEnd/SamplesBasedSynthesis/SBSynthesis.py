@@ -12,15 +12,17 @@ from BackEnd.path import origin as path
 class SB_Synthesizer(SynthesizerAbstract):
 
     def __init__ (self):
-        start_time = time.time()
         self.existing_frec_dict()
         self.instrument = 'Piano'
+<<<<<<< HEAD
         #PABLO Y GONZA
         #self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
         #MALE
         self.samples_directory = path + 'BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
+=======
+        self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
+>>>>>>> f14117a997e5b2b442b7fb04cab50ce4cc3017a6
         self.my_samples_frecuencies()
-        print(time.time() - start_time)
 
     def create_note_signal(self, note, instrument):
         #If the instrument changes, search new samples
@@ -33,7 +35,6 @@ class SB_Synthesizer(SynthesizerAbstract):
         data, samplerate = sf.read(self.samples_directory + closest_note)
         note_length = int(round(note.fs * note.duration))
         #Pitch the sample to create the required note
-        #start_time = time.time()
         if int(shift) != 0:
             if note.duration == 0.0:
                 note.output_signal = []
