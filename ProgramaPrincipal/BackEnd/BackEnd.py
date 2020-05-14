@@ -38,6 +38,8 @@ class BackEnd:
         self.song = Song()
         self.midi_path = 'ProgramaPrincipal/Resources/'
         self.play_obj = None
+
+        self.test_note()
         
         #MALE
         #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
@@ -50,9 +52,12 @@ class BackEnd:
 
     def test_note(self):
         #Para probar notas
-        note = Note(62,8,1,1,44100)
-        self.synthesize_note(note, 'Cello')
+        note = Note(60,3.5,0.5,1,44100)
+        self.synthesize_note(note, 'Accordeon')
         self.play_signal(note.output_signal)
+        self.plot_wave(note.output_signal, 1000000)
+        
+        
         
 
     def test_track(self,track_number):
@@ -79,35 +84,37 @@ class BackEnd:
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
+    
 
-    '''
+
     def play_signal(self, signal): 
         
         # Start playback
         #self.plot_wave(signal, 1000000)
         if len(signal) > 0 and np.max(signal) is not 0:
-            self.audio = signal  * (2 ** 15 - 1) 
+            self.audio = signal  * (2 ** 15 - 1)  / (4*np.max(signal))
             self.audio = self.audio.astype(np.int16)
             self.start_time = time.time()
             self.play_obj = sa.play_buffer(self.audio, 1, 2, self.song.fs)
+            wavfile.write("trumpet_synth.wav", self.song.fs, self.audio)
         else:
             return -1
     '''
     
     def play_signal(self, signal): 
         if len(signal) > 0 and np.max(signal) is not 0:
-            self.audio = signal * (2 ** 15) 
+            self.audio = signal * (2 ** 15) / np.max(signal)
             self.start_time = time.time()
             self.audio = self.audio.astype(np.int16)
             sd.play(self.audio)
         else:
-            return -1
+            return -1'''
 
     def plot_wave(self,signal, final_time):
         plt.plot( signal)
         plt.xlabel('time(s)')
         plt.ylabel('amplitude(A)')
-        plt.xlim(0, final_time)
+        #plt.xlim(0, final_time)
         plt.show()
 
     def synthesize_note(self, note, instrument):

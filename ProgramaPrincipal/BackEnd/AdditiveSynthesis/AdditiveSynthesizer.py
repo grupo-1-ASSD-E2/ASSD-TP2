@@ -3,7 +3,9 @@ import numpy as np
 import time
 from BackEnd.AdditiveSynthesis.PartialNote import PartialNote
 from BackEnd.Note import Note
+import sounddevice as sd
 from BackEnd.Instruments import Instruments
+import matplotlib.pyplot as plt
 
 class AdditiveSynthesizer(SynthesizerAbstract):
     def __init__(self):
@@ -20,16 +22,22 @@ class AdditiveSynthesizer(SynthesizerAbstract):
             phase = partials[i].get_phase()
            
             partials[i].get_amplitude_array(note)
+
+            #self.plot_wave(partials[i].output_signal)
+            
+            
             time_vals = np.linspace(0, partials[i].last_time_value, note.fs*partials[i].last_time_value)
 
             output_sine = partials[i].output_signal * np.sin(
-                    freq * 2 * np.pi * (time_vals) +phase*(180/np.pi))
+                    freq * 2 * np.pi * time_vals - 180*phase/np.pi )
+
+            #self.plot_wave(output_sine)
 
             if i == 0:
                 amplitude_array = output_sine
             else:
                 difference = len(amplitude_array) - len(output_sine)
-                zeros = np.zeros(abs(difference), dtype=np.uint16)
+                zeros = np.zeros(abs(difference))
                 if (difference > 0):
 
 
@@ -39,13 +47,22 @@ class AdditiveSynthesizer(SynthesizerAbstract):
                 else:
                     amplitude_array += output_sine
 
+            #self.plot_wave(amplitude_array)
+
 
         note.output_signal =   amplitude_array      
 
         #endtime = time.time()
 
         #print(str(endtime - start_time))
-        
+
+    def plot_wave(self,signal):
+        plt.plot( signal)
+        plt.xlabel('time(s)')
+        plt.ylabel('amplitude(A)')
+        #plt.xlim(0, final_time)
+        plt.show()
+
 
     def __get_partials__(self, instrument, frequency):
         freq_of_samples = 261.63
@@ -101,46 +118,49 @@ class AdditiveSynthesizer(SynthesizerAbstract):
 
             partial6 = PartialNote(1564.85257 * multiplier,-2.6445677, 0, 0.103, 0.307, 0.24, 0.297, 6.36, 0.216, 6.7)
 
-            partial7 = PartialNote(1825.92388 * multiplier,-1.5581, 0, 0.092, 0.2, 0.43, 0.2, 6.36, 0.185, 6.7)
+            partial7 = PartialNote(1825.92388 * multiplier,-1.5581, 0, 0.092, 0.2, 0.43, 0.2, 6.36, 0.2, 6.7)
 
             partial8 = PartialNote(2086.85198 * multiplier,-1.8931935, 0, 0.137, 0.0857, 0.375, 0.089, 6.36, 0.0688, 6.76)
 
 
             partial9 = PartialNote(2347.78 * multiplier,2.433, 0, 0.103, 0.013, 0.6, 0.019, 6.36, 0.019, 6.75)
 
-            partials = [partial1, partial2, partial3, partial4, partial5, partial6, partial7, partial8, partial9]
-            #partials = [partial1]
+
+            
+            partials = [partial1, partial2, partial3,partial4, partial5, partial6, partial8, partial9]
             return partials
 
         elif (instrument == Instruments.VIOLIN.value[0]):
-            partial1 = PartialNote(261.58854 * multiplier, -2.93465, 0.47, 0.558, 0.16, 0.9566, 0.36457, 3.55, 0.3236, 3.942)
+            partial1 = PartialNote(261.58854 * multiplier, -2.93465, 0.026, 0.5, 0.35, 0.569, 0.2837, 3, 0.2837, 3.489)
 
-            partial2 = PartialNote(522.94078 * multiplier, 2.7098, 0.47, 0.558, 0.0365, 1, 0.16, 3.55, 0.153, 3.7)
+            partial2 = PartialNote(522.94078 * multiplier, 2.7098, 0.026, 0.453, 0.091, 0.523, 0.11, 3, 0.09, 3.27575)
 
-            partial3 = PartialNote(784.52932 * multiplier, 0.363645, 0.47, 0.5173, 0.049, 1, 0.157, 3.55, 0.1317, 3.73)
+            partial3 = PartialNote(784.52932 * multiplier, 0.363645, 0.026, 0.0713, 0.0594, 0.546, 0.1496, 3, 0.1307, 3.29)
 
-            partial4 = PartialNote(1039.73765 * multiplier, 2.1862, 0.47, 0.5447, 0.0255, 0.86, 0.067, 3.55, 0.0429, 3.74)
+            partial4 = PartialNote(1039.73765 * multiplier, 2.1862, 0.026, 0.03234, 0.0376, 0.54, 0.07, 3, 0.0495, 3.3)
 
-            partial5 = PartialNote(1314.3229 * multiplier, 1.46007, 0.47, 0.517, 0.04, 0.98, 0.1, 3.55, 0.0575, 3.71)
+            partial5 = PartialNote(1314.3229 * multiplier, 1.46007, 0.026, 0.0488, 0.0388, 0.724, 0.12, 3, 0.1, 3.3)
 
-            partial6 = PartialNote(1580.4012 * multiplier, 1.971578, 0.47, 0.724, 0.0245, 0.897, 0.0896, 3.55, 0.08, 3.74)
+            partial6 = PartialNote(1580.4012 * multiplier, 1.971578, 0.026, 0.297, 0.029, 0.53, 0.107, 3, 0.077, 3.3)
 
-            partial7 = PartialNote(1841.98978 * multiplier, -0.59578, 0.47, 0.744, 0.0146, 1, 0.0472, 3.55, 0.0254, 3.7)
+            partial7 = PartialNote(1841.98978 * multiplier, -0.59578, 0.026, 0.05, 0.024, 0.56, 0.05, 3, 0.0425, 3.3)
 
-            partial8 = PartialNote(2091.054205 * multiplier, 3.101057, 0.47, 0.786, 0.00187, 0.99, 0.068, 3.55, 0.0432, 3.65)
+            partial8 = PartialNote(2091.054205 * multiplier, 3.101057, 0.026, 0.05238, 0.02, 0.59, 0.07, 3, 0.069, 3.3)
 
-            partial9 = PartialNote(2589.18306 * multiplier,0.03179217, 0.47, 0.856, 0.0347, 1.08, 0.079, 3.55, 0.0235, 3.7)
+            partial9 = PartialNote(2589.18306 * multiplier,0.03179217, 0.026, 0.058, 0.0236, 0.61, 0.06, 3, 0.06, 3.3)
 
             partials = [partial1, partial2, partial3, partial4, partial5, partial6, partial7, partial8, partial9]
             #partials = [partial1]
             return partials
         elif (instrument == Instruments.ACCORDEON.value[0]):
+
             partial1 = PartialNote(262.3775 * multiplier, 2.151939, 0.01, 0.114, 0.3647, 0.192, 0.339, 3.93, 0.3124, 4.119)
-
+            
+            
             partial2 = PartialNote(524.755 * multiplier, 0.1374, 0.01, 0.146, 0.379, 0.264, 0.345, 3.93, 0.218, 4.06)
-
-            partial3 = PartialNote(787.13263 * multiplier, -0.2871, 0.01, 0.208, 0.6765, 0.4, 0.65233, 3.93, 0.507, 4.07)
-
+            
+            partial3 = PartialNote(787.13263 * multiplier, -0.2871, 0.01, 0.298656, 0.706515, 0.51749, 0.671, 3.93, 0.511, 4.07)
+            
             partial4 = PartialNote(1049.35665 * multiplier, 1.305462, 0.01, 0.0666, 0.205, 0.156, 0.0753, 3.93, 0.0623, 4.08)
 
             partial5 = PartialNote(1311.7342 * multiplier, 1.722816, 0.01, 0.085, 0.308, 0.286, 0.2635, 3.93, 0.2, 4)
@@ -159,6 +179,6 @@ class AdditiveSynthesizer(SynthesizerAbstract):
 
             partial17 = PartialNote(4460.26472 * multiplier, 2.4423946, 0.01, 0.1635, 0.06, 0.29, 0.059, 3.93, 0.049, 4.02)
 
-            partials = [partial1, partial2, partial3, partial4, partial5, partial6, partial8, partial9, partial14,partial15,partial16,partial17]
-            #partials = [partial1]
+            partials = [partial1, partial2,partial3, partial4, partial5, partial6, partial8, partial9, partial14, partial15, partial16, partial17]
+            #partials = [partial1, partial3]
             return partials
