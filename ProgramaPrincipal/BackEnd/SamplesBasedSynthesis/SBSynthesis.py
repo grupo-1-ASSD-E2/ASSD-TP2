@@ -6,6 +6,7 @@ import soundfile as sf
 import os
 import time
 
+from BackEnd.path import origin as path
 
 
 class SB_Synthesizer(SynthesizerAbstract):
@@ -13,7 +14,7 @@ class SB_Synthesizer(SynthesizerAbstract):
     def __init__ (self):
         self.existing_frec_dict()
         self.instrument = 'Piano'
-        self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
+        self.samples_directory = path + 'BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
         self.my_samples_frecuencies()
 
     def create_note_signal(self, note, instrument):

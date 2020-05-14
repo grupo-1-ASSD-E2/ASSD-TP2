@@ -9,9 +9,27 @@ from BackEnd.AudioEfects.Flanger.Flanger import Flanger
 import matplotlib.pyplot as plt
 import librosa
 import numpy as np
+from multiprocessing import Pool
 import time
 from scipy.io.wavfile import write
 
+
+def hola(a, b):
+    return b(a)
+
+def foo1(a):
+    return a
+
+def foo2(a):
+    b = np.ones(len(a))
+    return b
+
+
+my_array = np.array([([1,1],[2,2]),([1,1],[2,2]),([1,1],[2,2]) ])
+print(my_array[:,1])
+
+
+"""
 new_data, new_rate = librosa.load('D:\\santi\\facultad\\3ero\\2do cuatri\\ASSD\\GIT\\ASSD-TP2\\ProgramaPrincipal\\Resources\\hola.wav',
                                   sr=44100)
 print(len(new_data))
@@ -43,3 +61,5 @@ plt.show()
 #conv.get_output_file('D:\\santi\\facultad\\3ero\\2do cuatri\\ASSD\\GIT\\ASSD-TP2\\ProgramaPrincipal\\Resources\\hola_bueno.mp3',
                      #44100)
 
+def compute(smaple, index):
+"""

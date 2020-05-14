@@ -20,8 +20,8 @@ class EcoSimple(Effect):
         self.g = gain
 
     def compute(self, sample: np.ndarray) -> np.ndarray:
-        sample = sample[0]
         out = np.array([list(map(self.one_run, sample))])
+
         return (out, out)
 
     def one_run(self, sample):
@@ -52,12 +52,16 @@ class EcoSimple(Effect):
 
         return h
 
-    def change_param(self, new_properties):
-        new_gain = new_properties["Absorción"]
-        new_delay = np.floor(new_properties["Retardo (ms)"]*self.sample_rate/1000.0)
+    def change_param(self, new_property, value):
+        new_gain = 0
+        new_delay = 0
+        if new_property == "Absorción":
+            new_gain = value
+        elif new_property == "Retardo (ms)":
+            new_delay = np.floor(value*self.sample_rate/1000.0)
 
         self.g = new_gain if new_gain > 1 else self.g  # Validate input
         self.m = new_delay if 0 < new_delay < self.buffer_len else new_delay % self.buffer_len  # Validate input
         p2w = self.p2write
-        self.p2read = p2w - new_delay if p2w >= new_delay else p2w - new_delay + self.buffer_len
+        self.p2read = int(p2w - new_delay if p2w >= new_delay else p2w - new_delay + self.buffer_len)
 

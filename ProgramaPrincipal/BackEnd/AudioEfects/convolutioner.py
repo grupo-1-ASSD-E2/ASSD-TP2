@@ -290,6 +290,7 @@ class Convolutioner:
         audio_left, audio_right = self.processing_callback(audio_frame)
 
         # Mixing tracks.
+        #print(audio_left)
         audio_left = self.mixing_gain * np.sum(audio_left, axis=0)
         audio_right = self.mixing_gain * np.sum(audio_right, axis=0)
 
@@ -306,6 +307,8 @@ class Convolutioner:
         ret_data = out_data.tostring()
 
         self.cycle_count += 1
+
+        #print(audio_frame)
 
         return (ret_data, pyaudio.paContinue)
 

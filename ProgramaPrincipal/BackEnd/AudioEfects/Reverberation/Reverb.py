@@ -25,8 +25,6 @@ class Reverb(Effect):
         self.a2 = AllPassFilter(buffer_len, self.gj[1], self.defaults_N_2[1])
 
     def compute(self, audio_input: np.ndarray):
-
-        audio_input = audio_input[0]
         y_a = (self.c1.compute(audio_input) + self.c2.compute(audio_input) + self.c3.compute(audio_input) +
                self.c4.compute(audio_input)) / 4
         out = self.a1.compute(self.a2.compute(y_a))
@@ -52,8 +50,11 @@ class Reverb(Effect):
         self.c1.reset()
         self.a2.reset()
 
-    def change_param(self, new_properties):
-        new_t_60 = new_properties["Tiempo de Reverberacion (s)"][1]
+    def change_param(self, new_property, value):
+        new_t_60 = 0
+        if new_property == "Tiempo de Reverberacion (s)":
+            new_t_60 = value
+
         self.change_t_60(new_t_60)
 
     def change_t_60(self, new_t_60: float):

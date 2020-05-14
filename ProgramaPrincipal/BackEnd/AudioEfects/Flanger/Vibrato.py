@@ -21,7 +21,6 @@ class Vibrato(Effect):
         self.p2write = 0
 
     def compute(self, sample: np.ndarray) -> np.ndarray:
-        sample = sample[0]
         """ To increase efficiency """
         k = 2*np.pi*self.fo/self.sample_rate
         sin = np.sin
@@ -53,10 +52,13 @@ class Vibrato(Effect):
 
         return out
 
-    def change_param(self, new_properties):
-        self.fo = new_properties["Frecuecia (Hz)"]
-        self.g = new_properties["Profundidad"]
-        delay = new_properties["Retraso (ms)"]/1000
-        self.m0 = np.floor(self.sample_rate * delay / (1 - self.a))
+    def change_param(self, new_property, value):
+        if new_property == "Frecuecia (Hz)":
+            self.fo = value
+        elif new_property == "Profundidad":
+            self.g = value
+        elif new_property == "Retraso (ms)":
+            delay = value/1000
+            self.m0 = np.floor(self.sample_rate * delay)
 
 

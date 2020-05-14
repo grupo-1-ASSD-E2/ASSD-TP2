@@ -150,11 +150,11 @@
         </property>
         <property name="styleSheet">
          <string notr="true">:active{
-	border-image:url(:/botones/assets/buttons/sound.png);
+	image:url(:/botones/assets/buttons/sound.png);
 }
 
 :checked{
-	border-image:url(:/botones/assets/buttons/mute.png);
+	image:url(:/botones/assets/buttons/mute.png);
 }
 </string>
         </property>
@@ -163,13 +163,6 @@
         </property>
         <property name="checkable">
          <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="preview">
-        <property name="text">
-         <string/>
         </property>
        </widget>
       </item>
