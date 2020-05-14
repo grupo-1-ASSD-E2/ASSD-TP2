@@ -7,7 +7,7 @@ from scipy import signal as sig
 import xlwt
 
 
-fs_rate, signal = wavfile.read("ProgramaPrincipal/BackEnd/AdditiveSynthesis/trumpetnotes/trumpet-G5_783.99.wav")
+fs_rate, signal = wavfile.read("ProgramaPrincipal\\BackEnd\\AdditiveSynthesis\\inst\\accordeon-g5.wav")
 book = xlwt.Workbook(encoding="utf-8")
 
 sheet1 = book.add_sheet("Sheet 1")

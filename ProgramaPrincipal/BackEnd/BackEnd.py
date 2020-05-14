@@ -57,7 +57,7 @@ class BackEnd:
     def test_note(self):
         #Para probar notas
         note = Note(79,3.5,0.5,1,44100)
-        self.synthesize_note(note, 'Trumpet')
+        self.synthesize_note(note, 'Accordeon')
         self.play_signal(note.output_signal)
         self.plot_wave(note.output_signal, 1000000)
         
@@ -100,7 +100,7 @@ class BackEnd:
             self.audio = self.audio.astype(np.int16)
             self.start_time = time.time()
             self.play_obj = sa.play_buffer(self.audio, 1, 2, self.song.fs)
-            wavfile.write("trumpet_synth_g5.wav", self.song.fs, self.audio)
+            wavfile.write("accordeon_synth_g5.wav", self.song.fs, self.audio)
         else:
             return -1
     
