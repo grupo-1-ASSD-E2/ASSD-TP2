@@ -254,11 +254,10 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
 
     def audio_callback(self, sample):
         foo = []
-        p = Pool(len(sample))
         for i in range(0, len(sample)):
             foo.append((sample[i], self.all_callbacks[i]))
 
-        out = np.array(list(p.map(self.effects_to_apply, foo)))
+        out = np.array(list(map(self.effects_to_apply, foo)))
         return out[:, 0], out[:, 1]
 
     def effects_to_apply(self, var):
