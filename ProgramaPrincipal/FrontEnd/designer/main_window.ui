@@ -568,7 +568,7 @@
         </item>
         <item>
          <widget class="QStackedWidget" name="plot_space">
-          <widget class="QWidget" name="plot_spacePage1" native="true">
+          <widget class="QWidget" name="plot_spacePage1">
            <layout class="QVBoxLayout" name="verticalLayout_11"/>
           </widget>
          </widget>
@@ -610,6 +610,12 @@
                 <property name="frame">
                  <bool>false</bool>
                 </property>
+                <property name="minimum">
+                 <number>28</number>
+                </property>
+                <property name="maximum">
+                 <number>4186</number>
+                </property>
                </widget>
               </item>
              </layout>
@@ -621,12 +627,15 @@
               <item>
                <widget class="QLabel" name="label_5">
                 <property name="text">
-                 <string>T inicio</string>
+                 <string>Tiempo de inicio (s)</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="note_time">
+               <widget class="QSpinBox" name="note_time">
                 <property name="frame">
                  <bool>false</bool>
                 </property>
@@ -641,7 +650,7 @@
               <item>
                <widget class="QLabel" name="label_6">
                 <property name="text">
-                 <string>Duracion</string>
+                 <string>Duracion (s)</string>
                 </property>
                </widget>
               </item>
@@ -667,6 +676,9 @@
               </item>
               <item>
                <widget class="QSlider" name="note_volume">
+                <property name="maximum">
+                 <number>127</number>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -704,8 +716,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>98</width>
-                <height>28</height>
+                <width>616</width>
+                <height>380</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">

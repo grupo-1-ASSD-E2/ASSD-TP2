@@ -232,9 +232,9 @@ class BackEnd:
     def create_chord(self, list_of_notes):
         chord = np.array([])
         for note_ in list_of_notes:
-            new_note = Note(note_.note_number, note_.duration, note_.velocity, note_.initial_time, note_.fs)
+            new_note = Note(note_.note_number, note_.duration, note_.velocity, note_.init_time, note_.fs)
             self.synthesize_note(new_note,note_.instrument)
-            chord = self.generate_output_signal(note_.initial_time + note_.duration*note_.fs, new_note, new_note.fs, delete_subarrays_after_generation=True,output_array=chord)
+            chord = self.generate_output_signal(note_.init_time + note_.duration*note_.fs, new_note, new_note.fs, delete_subarrays_after_generation=True,output_array=chord)
         self.play_signal(chord)
 
     def save_as_wav_file(self, filename):

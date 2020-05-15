@@ -23,7 +23,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
            
             partials[i].get_amplitude_array(note)   #Se obtiene la ADSR de los parciales            
             
-            time_vals = np.linspace(0, partials[i].last_time_value, note.fs*partials[i].last_time_value)    #Se crea el arreglo de tiempo para la señal
+            time_vals = np.linspace(0, partials[i].last_time_value, int(note.fs*partials[i].last_time_value))    #Se crea el arreglo de tiempo para la señal
 
             output_sine = partials[i].output_signal * np.sin(freq * 2 * np.pi * time_vals - 180*phase/np.pi )   #Se multiplica la ADSR con el seno de cada parcial
 

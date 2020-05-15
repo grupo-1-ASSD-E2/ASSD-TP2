@@ -14,8 +14,11 @@ from FrontEnd.src.widgets.trackconfig import TrackConfigWidget
 from FrontEnd.src.widgets.instruments import InstrumentsPopUp
 from FrontEnd.src.widgets.effectwidget import EffectPropertyWidget
 from FrontEnd.src.widgets.effectedtrack import EditedTrackWidget
+from FrontEnd.src.widgets.notewidget import NoteWidget
+from FrontEnd.src.note import note
 from BackEnd.BackEnd import BackEnd
 from BackEnd.Effects import Effects
+from BackEnd.Instruments import Instruments
 from BackEnd.GUI_resources.spectrogram_plotter import Spectrogrammer, PyQtPlotter
 from BackEnd.path import origin as path
 """
@@ -87,6 +90,36 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.spectrogrammer = Spectrogrammer()
         self.plotter = PyQtPlotter()
         self.plot_work.clicked.connect(self.sepectro_plot)
+
+        """ Notes """
+        for i in Instruments:
+            self.note_instrument.addItem(i.value[0])
+        self.note_add.clicked.connect(self.add_note)
+        self.note_play.clicked.connect(self.play_notes)
+        self.all_notes = []
+
+    def play_notes(self):
+        notas = []
+        for i in self.all_notes:
+            i, l, v, ins, f = i.get_data()
+            notas.append(note(i, l, v, ins, f))
+
+        self.backend.create_chord(notas)
+
+    def add_note(self):
+        init = self.note_time.value()
+        long = self.note_duration.value()
+        velocity = self.note_volume.value()
+        instrument = self.note_instrument.currentText()
+        freq = self.note_freq.value()
+        note = NoteWidget(freq, instrument, velocity, init, long, self)
+        note.delete.connect(functools.partial(self.remove_note, note))
+        self.all_notes.append(note)
+        self.note_area.layout().addWidget(note)
+
+    def remove_note(self, note: NoteWidget):
+        self.all_notes.remove(note)
+        note.close()
 
     def sepectro_plot(self):
         source = self.plot_track.currentText()

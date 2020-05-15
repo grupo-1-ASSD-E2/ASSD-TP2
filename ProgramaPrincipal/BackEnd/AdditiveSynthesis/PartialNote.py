@@ -86,7 +86,7 @@ class PartialNote:
     
     def get_adsr(self, note, last_time_value):
 
-        note_out = np.linspace(0, last_time_value, last_time_value*note.fs) #Arreglo de valores (depende de last_time_value)
+        note_out = np.linspace(0, last_time_value, int(last_time_value*note.fs)) #Arreglo de valores (depende de last_time_value)
         
         r_time_index = int(round(note.duration * note.fs)) 
      
