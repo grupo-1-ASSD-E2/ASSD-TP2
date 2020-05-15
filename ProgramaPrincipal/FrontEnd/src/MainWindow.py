@@ -2,6 +2,7 @@
 import functools
 import numpy as np
 from multiprocessing import Pool
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavegationToolBar
 
 # PyQt5 modules
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
@@ -88,8 +89,9 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
 
         """ Spectrogram things """
         self.spectrogrammer = Spectrogrammer()
-        self.plotter = PyQtPlotter()
         self.plot_work.clicked.connect(self.sepectro_plot)
+        self.prev_plot = None
+        self.prev_nav = None
 
         """ Notes """
         for i in Instruments:
@@ -137,6 +139,8 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             data = self.all_tracks[useful_index]
         """ Ya tenemos los datos ahora hay que cortar el tramo de tiempo que se quiera """
 
+        title = source + ' init: ' + str(self.plot_time.time().minute()) + ':' + str(self.plot_time.time().second()) + \
+                ' + ' + str(self.plot_long.value()) + 's'
         init = 44100*self.plot_time.time().minute()*60+self.plot_time.time().second()
         fin = init+(self.plot_long.value()*44100)
 
@@ -149,28 +153,22 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         time = self.spectrogrammer.get_resampled_time_array()
         freq = self.spectrogrammer.get_FFTs_freq()
 
-        util_canvas = self.plotter.spectrogram(time, freq, mag)
+        plotter = PyQtPlotter()
+        plotter.spectrogram(time, freq, mag, title, f_bottom=20, f_top=20000)
+        util_canvas = plotter.canvas
 
+        if self.prev_plot is not None:
+            """ remove previous plot """
+            self.plot_space.removeWidget(self.prev_plot)
 
+        i = self.plot_space.addWidget(util_canvas)
+        self.plot_space.setCurrentIndex(i)
 
-        """
-        if self.plot_space.count() > 2:
-        
-        try:
-            old = self.plot_space
-            self.plot_space.layout().removeWidget(old)
-        except Exception:
-            pass
-        """
-
-        self.plot_space.addWidget(util_canvas)
-
-        #toolbar = NavigationToolbar(self.plotters[0].canvas, self)
-        #if self.toolbar_1.count() > 2:
-        #    # Cleaning stacked widget
-        #    self.toolbar_1.removeWidget(self.filter_data.currentWidget())
-        #self.toolbar_1.setCurrentIndex(self.toolbar_1.addWidget(toolbar))
-
+        nav = NavegationToolBar(util_canvas, self)
+        if self.prev_nav is not None:
+            self.tool_bar.removeWidget(self.prev_nav)
+        i = self.tool_bar.addWidget(nav)
+        self.tool_bar.setCurrentIndex(i)
 
     def count_down_callback(self):
         if self.media_player.processing():

@@ -96,7 +96,7 @@ class PyQtPlotter():
         self.axes = self.figure.add_subplot(111)
 
 
-    def spectrogram(self, time, freq, mag, mag_min=None, mag_max=None, f_bottom=None, f_top=None):
+    def spectrogram(self, time, freq, mag, title='Spectrogram', mag_min=None, mag_max=None, f_bottom=None, f_top=None):
         '''
         kwargs can be any of the supported by matplotlib.pyplot.pcolor
         '''
@@ -120,4 +120,5 @@ class PyQtPlotter():
         if f_top is not None:
             self.axes.set_ylim(top=f_top)
 
+        self.axes.set_title(title)
         self.canvas.draw()

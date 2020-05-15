@@ -43,7 +43,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -567,10 +567,21 @@
          </widget>
         </item>
         <item>
-         <widget class="QStackedWidget" name="plot_space">
-          <widget class="QWidget" name="plot_spacePage1">
-           <layout class="QVBoxLayout" name="verticalLayout_11"/>
-          </widget>
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_11">
+           <item>
+            <widget class="QStackedWidget" name="plot_space">
+             <widget class="QWidget" name="page"/>
+             <widget class="QWidget" name="page_2"/>
+            </widget>
+           </item>
+           <item>
+            <widget class="QStackedWidget" name="tool_bar">
+             <widget class="QWidget" name="page_3"/>
+             <widget class="QWidget" name="page_4"/>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -716,8 +727,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>616</width>
-                <height>380</height>
+                <width>98</width>
+                <height>28</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">

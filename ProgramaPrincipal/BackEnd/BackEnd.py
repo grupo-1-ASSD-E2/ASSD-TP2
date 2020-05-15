@@ -33,8 +33,8 @@ from BackEnd.path import origin as path
 class BackEnd:
     def __init__(self):
         self.additive_synthesizer = AdditiveSynthesizer()
-        #self.ks_synthesizer = KS_Synthesizer()
-        #self.sb_synthesizer = SB_Synthesizer()
+        self.ks_synthesizer = KS_Synthesizer()
+        self.sb_synthesizer = SB_Synthesizer()
         self.counter = 0
         self.song = Song()
         self.midi_path = path + 'Resources/'
