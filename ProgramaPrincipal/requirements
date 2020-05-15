@@ -1,5 +1,7 @@
 mido
 simpleaudio
 librosa
-os
 sounddevice
+numpy
+scipy
+matplotlib
