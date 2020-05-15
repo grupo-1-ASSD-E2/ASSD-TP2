@@ -28,10 +28,17 @@ import pyaudio
 import time
 import sounddevice as sd
 
+from PyQt5.QtCore import pyqtSignal, QObject, QThread
 from BackEnd.path import origin as path
 
-class BackEnd:
+
+class BackEnd(QObject):
+
+    track_done = pyqtSignal(int)
+
     def __init__(self):
+        QObject.__init__(self)
+
         self.additive_synthesizer = AdditiveSynthesizer()
         self.ks_synthesizer = KS_Synthesizer()
         self.sb_synthesizer = SB_Synthesizer()
@@ -52,7 +59,6 @@ class BackEnd:
 
         #self.test_song()
         #self.test_track(0)
-
 
     def test_note(self):
         #Para probar notas
@@ -147,6 +153,7 @@ class BackEnd:
             if track.activated:
                 self.synthesize_track(track, it)
                 song_activated_tracks.append(track)
+                self.track_done.emit(it)
             it +=1
         
     def generate_output_signal(self, N, array_to_add, fs, delete_subarrays_after_generation = False, output_array = np.array([])):

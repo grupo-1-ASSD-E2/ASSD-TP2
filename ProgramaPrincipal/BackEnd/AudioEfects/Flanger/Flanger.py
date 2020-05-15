@@ -52,6 +52,12 @@ class Flanger(Effect):
 
         return out
 
+    def clear(self):
+        self.p2read = self.buffer_len - self.m0
+        self.old_input = np.zeros(int( self.buffer_len))
+        self.old_output = np.zeros(int( self.buffer_len))
+        self.p2write = 0
+
     def change_param(self, new_property, value):
         if new_property == "Frecuecia (Hz)":
             self.fo = value

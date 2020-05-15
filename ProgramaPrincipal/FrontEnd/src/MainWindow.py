@@ -7,8 +7,7 @@ from scipy.io.wavfile import write
 
 # PyQt5 modules
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
-from PyQt5.QtCore import QTime
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTime, QTimer
 
 # Project modules
 from FrontEnd.src.ui.main_window import Ui_AudioTool
@@ -17,6 +16,7 @@ from FrontEnd.src.widgets.instruments import InstrumentsPopUp
 from FrontEnd.src.widgets.effectwidget import EffectPropertyWidget
 from FrontEnd.src.widgets.effectedtrack import EditedTrackWidget
 from FrontEnd.src.widgets.notewidget import NoteWidget
+from FrontEnd.src.widgets.thread import Thread
 from FrontEnd.src.note import note
 from BackEnd.BackEnd import BackEnd
 from BackEnd.Effects import Effects
@@ -24,12 +24,6 @@ from BackEnd.Instruments import Instruments
 from BackEnd.GUI_resources.spectrogram_plotter import Spectrogrammer, PyQtPlotter
 from BackEnd.path import origin as path
 from scipy import signal
-"""
-Reminders:
-            + Espectrogram
-            + Convolutioner
-
-"""
 
 
 class MyMainWindow(QMainWindow, Ui_AudioTool):
@@ -39,6 +33,8 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.setupUi(self)
 
         self.backend = backend
+
+        self.backend.track_done.connect(self.progress_count)
         self.media_player = convolutioner
         self.media_player.custom_processing_callback(self.audio_callback)
 
@@ -376,16 +372,12 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             self.working = True
             absents = []
             all_num = []
-            if fin == 1:
-                self.progress_bar.setValue(50)
-            else:
-                self.progress_bar.setValue(0)
-            self.progress_bar.show()
+
+
             for i in range(0, fin):
                 all_num.append(i)
                 volume, instrument = self.track_manager[i].get_data()
                 self.backend.assign_instrument_to_track(i, instrument, volume/100.0)
-                #self.progress_bar.setValue(100*i/fin)
                 if volume == 0 or instrument == '':
                     absents.append(i)
                     self.backend.toggle_track(i)
@@ -394,36 +386,47 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                 print('Compilando vacio')
                 return
 
-            self.available_to_play = list(set(all_num).difference(set(absents)))
-            for a in self.available_to_play:
-                self.track_manager[a].setStyleSheet(
-                    'QWidget { border-style: solid; background-color: rgb(31, 172, 102); border-radius: 5px;}')
-            for a in absents:  # This may be useful in future
-                self.track_manager[a].setStyleSheet(
+            for a in self.track_manager:  # This may be useful in future
+                a.setStyleSheet(
                     'QWidget { border-style: solid; background-color: rgbrgb(81, 76, 149); border-radius: 5px;}')
-            self.backend.synthesize_song()
-            self.enable_effects()
-            self.plot_track.addItem('Plain Song')
-            self.plot_track.addItems(['Track '+str(i+1) for i in self.available_to_play])
-            self.working = False
-            all_tracks = []
-            """ Load tracks """
-            for i in range(0, len(self.available_to_play)):
-                song = np.load(path + 'BackEnd/Tracks/' + 'track' + str(i) + '.npy')
-                all_tracks.append(song)
-                self.all_callbacks.append(self.nothing)  # Adding functions with all ones
-            if self.media_player is not None:
-                """ Send input to convolutioner """
-                self.media_player.update_input(np.array(all_tracks), np.dtype('float32'))
 
-            self.all_tracks = all_tracks.copy()
-            """ Set timer """
-            song_len = len(all_tracks[0])
-            song_len = np.ceil(song_len/44100.0)
-            self.song_time.setHMS(0, int(song_len/60.0), int(song_len % 60))
-            self.count_down.setText(self.song_time.toString("m:ss"))
-            self.progress_bar.hide()
-            self.label.setText('Ahora puede poner play, haciendo click sobre un track podrá seleccionalo para agregar efectos')
+            self.available_to_play = list(set(all_num).difference(set(absents)))
+            self.progress_bar.setMaximum(len(self.available_to_play))
+            self.progress_bar.setValue(0)
+            self.progress_bar.show()
+
+            self.backend.synthesize_song()
+            self.fin()
+
+    def progress_count(self, a):
+        self.progress_bar.setValue(self.progress_bar.value() + 1)
+        self.track_manager[a].setStyleSheet(
+            'QWidget { border-style: solid; background-color: rgb(31, 172, 102); border-radius: 5px;}')
+
+    def fin(self):
+        #self.progress_bar.hide()
+        self.enable_effects()
+        self.plot_track.addItem('Plain Song')
+        self.plot_track.addItems(['Track ' + str(i + 1) for i in self.available_to_play])
+        self.working = False
+        all_tracks = []
+        """ Load tracks """
+        for i in range(0, len(self.available_to_play)):
+            song = np.load(path + 'BackEnd/Tracks/' + 'track' + str(i) + '.npy')
+            all_tracks.append(song)
+            self.all_callbacks.append(self.nothing)  # Adding functions with all ones
+        if self.media_player is not None:
+            """ Send input to convolutioner """
+            self.media_player.update_input(np.array(all_tracks), np.dtype('float32'))
+
+        self.all_tracks = all_tracks.copy()
+        """ Set timer """
+        song_len = len(all_tracks[0])
+        song_len = np.ceil(song_len / 44100.0)
+        self.song_time.setHMS(0, int(song_len / 60.0), int(song_len % 60))
+        self.count_down.setText(self.song_time.toString("m:ss"))
+        self.label.setText(
+            'Ahora puede poner play, haciendo click sobre un track podrá seleccionalo para agregar efectos')
 
     def play(self):
         if self.media_buttons_widget.stop.isChecked():
