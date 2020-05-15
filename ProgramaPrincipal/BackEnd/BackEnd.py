@@ -127,7 +127,7 @@ class BackEnd(QObject):
             self.sb_synthesizer.create_note_signal(note, instrument)
 
     def synthesize_track(self, track, n_of_track):
-        start_time = time.time()
+        start_time = time.time() 
         if (track.has_changed):
             for note in track.notes:
                 self.synthesize_note(note, track.instrument)

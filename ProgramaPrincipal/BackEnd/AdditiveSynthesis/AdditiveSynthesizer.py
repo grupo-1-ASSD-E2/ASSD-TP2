@@ -23,12 +23,11 @@ class AdditiveSynthesizer(SynthesizerAbstract):
             phase = partials[i].get_phase()
            
             partials[i].get_amplitude_array(note)   #Se obtiene la ADSR de los parciales            
-            
             time_vals = np.linspace(0, partials[i].last_time_value, int(note.fs*partials[i].last_time_value))    #Se crea el arreglo de tiempo para la señal
 
             output_sine = partials[i].output_signal * np.sin(freq * 2 * np.pi * time_vals - 180*phase/np.pi )   #Se multiplica la ADSR con el seno de cada parcial
-
-            #Se suman las señakes de cada parcial
+            partials[i].output_signal = None #Free memory
+            #Se suman las señales de cada parcial
             if i == 0:
                 amplitude_array = output_sine
             else:
@@ -44,6 +43,8 @@ class AdditiveSynthesizer(SynthesizerAbstract):
 
 
         note.output_signal =   amplitude_array    #Se obtuvo la señal de salida de la nota  
+
+
 
     def __get_partials__(self, instrument, frequency):
         #Funcion para obtener los parciales de un instrumento a una frecuencia indicada.
