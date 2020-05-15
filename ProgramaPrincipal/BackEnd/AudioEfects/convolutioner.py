@@ -230,8 +230,11 @@ class Convolutioner:
         # Resets count.
         self.cycle_count = 0
 
+
+    def clear_output(self):
         # Resets output.
         self.output_array = np.array([[], []], dtype=self.input_array.dtype).T
+        
 
     def start_blocking_processing(self):
         # Setting up output arrays.
