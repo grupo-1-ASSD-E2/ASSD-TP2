@@ -3,7 +3,7 @@ import numpy as np
 class note:
     def __init__(self, init_time=0, duration=0, velocity=0, instrument='', note_freq=0):
         self.init_time = init_time
-        self.duration = duration
+        self.duration = duration + init_time
         self.velocity = velocity
         self.instrument = instrument #recordar que los instrumentos empiezan con mayusc
         self.note_number = self.__freq_to_note__(note_freq)
