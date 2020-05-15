@@ -43,7 +43,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -131,6 +131,16 @@
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progress_bar">
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="format">
+              <string>%p%</string>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLabel" name="count_down">
@@ -265,7 +275,7 @@
                  <string notr="true">color: rgb(255, 255, 255);</string>
                 </property>
                 <property name="text">
-                 <string>Sintetizar</string>
+                 <string>Synthetis</string>
                 </property>
                </widget>
               </item>
@@ -389,7 +399,7 @@
                      <item>
                       <widget class="QPushButton" name="discard_effect">
                        <property name="text">
-                        <string>Descartar</string>
+                        <string>Discard</string>
                        </property>
                       </widget>
                      </item>
@@ -727,8 +737,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>98</width>
-                <height>28</height>
+                <width>616</width>
+                <height>380</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">

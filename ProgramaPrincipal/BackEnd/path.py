@@ -1,3 +1,3 @@
 paht_pycharm = ''
 path_vs = 'ProgramaPrincipal/'
-origin = path_vs
+origin = paht_pycharm

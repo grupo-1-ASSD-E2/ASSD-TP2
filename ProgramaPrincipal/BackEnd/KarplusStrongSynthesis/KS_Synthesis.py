@@ -15,7 +15,7 @@ class KS_Synthesizer(SynthesizerAbstract):
         if instrument == 'ElecGuitar':
             self.karplus_strong(note)
         elif instrument == 'Drum':
-            self.b = 0.49
+            self.b = 0.5
             self.s = 1
             self.karplus_strong_extended(note, self.b)
             #self.karplus_strong_extended_modified(note, self.b, self.s)
@@ -23,11 +23,12 @@ class KS_Synthesizer(SynthesizerAbstract):
 
     def karplus_strong(self, note):
         N = np.linspace(0, note.duration, int(round(note.fs * note.duration)))
-        rl = 1
+        rl = 0.999
         L = int(np.rint((note.fs / note.frequency) - 0.5))
         wavetable = (2 * np.random.randint(0, 2, L+2) - 1).astype(np.float) #va L+1
         sample_k = 0
         y = []
+
         for k in range(N.size):
             if k <= L:
                 sample_k = 0.5 * rl * (wavetable[k+1] + wavetable[k])
@@ -39,7 +40,8 @@ class KS_Synthesizer(SynthesizerAbstract):
     def karplus_strong_extended(self, note, b):
         N = np.linspace(0, note.duration, int(round(note.fs * note.duration)))
         rl = 0.9995
-        L = int(np.rint((note.fs / note.frequency) - 0.5))
+        frequency = 244 if note.frequency > 245 else note.frequency
+        L = int(np.rint((note.fs / frequency) - 0.5))
         wavetable = (2 * np.random.randint(0, 2, L+2) - 1).astype(np.float) #va L+1
         sample_k = 0
         y = []
