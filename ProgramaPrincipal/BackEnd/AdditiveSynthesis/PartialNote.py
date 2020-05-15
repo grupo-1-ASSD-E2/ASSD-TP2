@@ -39,9 +39,6 @@ class PartialNote:
         self.stageSslope = (self.r_amp - self.s_amp) / (self.r_time - self.s_time)#Pendiente de la etapa de sustain.
 
 
-        if (self.stageSslope >= 0):
-            self.stageSslope = -0.000001    
-
         self.stageRslope = (- self.r_amp) / (self.off_time - self.r_time)#Pendiente de la etapa de release.
 
         self.output_signal = np.array([])   #ADSR del parcial
