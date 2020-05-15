@@ -107,7 +107,12 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         if self.audio_available:
             to_save = self.media_player.output_array.copy()
         else:
-            to_save = np.sum(self.all_tracks, axis=0)
+            sum =  np.sum(self.all_tracks, axis=0)
+            max = np.max(sum)
+            if max!=0:
+                to_save = sum / max
+            else:
+                to_save = sum
 
         file = self.root+'.wav'
         write(file, 44100, np.int16(to_save * 32767))

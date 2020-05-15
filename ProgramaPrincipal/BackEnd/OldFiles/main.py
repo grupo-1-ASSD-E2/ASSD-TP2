@@ -91,6 +91,9 @@ def play_sine_wave(audio):
 
 
 def create_wav_file(file_name, fs, audio):
+    audio = volume * y * (2 ** 15 - 1) / np.max(np.abs(y))
+    # Convert to 16-bit data
+    audio = audio.astype(np.int16)
     wavfile.write(file_name, fs, audio)
 
 #print_midi_info()
