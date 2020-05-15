@@ -55,7 +55,7 @@ class SB_Synthesizer(SynthesizerAbstract):
     def init_instrument_samples(self, instrument):
         if self.instrument != instrument:
             self.instrument = instrument
-            self.samples_directory = 'ProgramaPrincipal/BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
+            self.samples_directory = path + 'BackEnd/SamplesBasedSynthesis/samples/' + self.instrument + '/'
             self.my_samples_frecuencies()            
 
     
