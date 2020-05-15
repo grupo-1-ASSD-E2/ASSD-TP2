@@ -3,6 +3,7 @@ import functools
 import numpy as np
 from multiprocessing import Pool
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavegationToolBar
+from scipy.io.wavfile import write
 
 # PyQt5 modules
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
@@ -48,7 +49,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         """ Hide samples """
         self.track_0.hide()
         self.effect_0.hide()
-
+        self.root = ''
         """ Set up sintesis enviroment """
         self.track_manager = []
         self.instrument_panel = InstrumentsPopUp()
@@ -98,6 +99,19 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.note_add.clicked.connect(self.add_note)
         self.note_play.clicked.connect(self.play_notes)
         self.all_notes = []
+
+        self.save.clicked.connect(self.save_wav)
+
+    def save_wav(self):
+        to_save = None
+        if self.audio_available:
+            to_save = self.media_player.output_array.copy()
+        else:
+            to_save = np.sum(self.all_tracks, axis=0)
+
+        file = self.root+'.wav'
+        write(file, 44100, np.int16(to_save * 32767))
+
 
     def play_notes(self):
         notas = []
@@ -262,8 +276,8 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
 
     def effects_to_apply(self, var):
         func = var[1]
-        return func(var[0]
-                    )
+        return func(var[0])
+
     def effect_to_song(self):
         print('hola')
 
@@ -330,7 +344,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
 
         """ Clear previous things"""
         self.disable_effect_enviroment()
-
+        self.root = filename.split('.')[0]
         name = filename.split('/')[-1]
         self.midi_name.setText(name)
         self.backend.load_midi_file(filename)
@@ -343,6 +357,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             self.track_manager.append(aux_track)
             layout.addWidget(self.track_manager[i])
             # i += 1
+        self.label.setText('Seleccione los instrumentos, y al sintetizar espere a que se pongan verdes los tracks')
 
         self.sintetizar.setDisabled(False)
 
@@ -390,6 +405,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             song_len = np.ceil(song_len/44100.0)
             self.song_time.setHMS(0, int(song_len/60.0), int(song_len % 60))
             self.count_down.setText(self.song_time.toString("m:ss"))
+            self.label.setText('Ahora puede poner play, haciendo click sobre un track podrá seleccionalo para agregar efectos')
 
     def play(self):
         if self.media_buttons_widget.stop.isChecked():
@@ -403,7 +419,13 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             self.media_buttons_widget.play.toggle()
 
         self.media_player.terminate_processing()
-
+        song_len = len(self.all_tracks[0])
+        song_len = np.ceil(song_len / 44100.0)
+        self.song_time.setHMS(0, int(song_len / 60.0), int(song_len % 60))
+        self.count_down.setText(self.song_time.toString("m:ss"))
+        self.inner_timer.stop()
+        for i in self.working_tracks:
+            i.reset()
 
     def preview_adjust(self, track_number):
         if self.old_preview is not None:
