@@ -73,7 +73,6 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             self.choose_effect.addItem(i.value[0])
         self.choose_effect.currentIndexChanged.connect(self.renew_effect)
         self.to_song.clicked.connect(self.effect_to_song)
-        self.to_track.clicked.connect(self.effect_to_track)
         self.discard_effect.clicked.connect(self.clean_current_effect)
 
         self.disable_effect_enviroment()
@@ -254,14 +253,20 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.working_tracks[who].show_properties()
 
     def audio_callback(self, sample):
-        out = np.array(list(map(lambda audio, fun: fun(audio), sample, self.all_callbacks)))
+        foo = []
+        p = Pool(len(sample))
+        for i in range(0, len(sample)):
+            foo.append((sample[i], self.all_callbacks[i]))
+
+        out = np.array(list(p.map(self.effects_to_apply, foo)))
         return out[:, 0], out[:, 1]
 
+    def effects_to_apply(self, var):
+        func = var[1]
+        return func(var[0]
+                    )
     def effect_to_song(self):
         print('hola')
-
-    def effect_to_track(self, selected):
-        pass
 
     def select_track(self, index):
         if not (not self.synthesis_stage and index in self.available_to_play):
@@ -397,6 +402,9 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
     def stop(self):
         if self.media_buttons_widget.play.isChecked():
             self.media_buttons_widget.play.toggle()
+
+        self.media_player.terminate_processing()
+
 
     def preview_adjust(self, track_number):
         if self.old_preview is not None:
