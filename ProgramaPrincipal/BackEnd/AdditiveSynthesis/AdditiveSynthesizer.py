@@ -17,7 +17,7 @@ class AdditiveSynthesizer(SynthesizerAbstract):
 
         amplitude_array = None
         
-        partials = self.__get_partials__(instrument, note.frequency)    #Se buscan los parciales del instrumento indicado
+        partials = self.__get_partials__(instrument, note.frequency )    #Se buscan los parciales del instrumento indicado
         for i in range(0, len(partials)):
             freq = partials[i].get_freq()
             phase = partials[i].get_phase()
@@ -534,6 +534,6 @@ class AdditiveSynthesizer(SynthesizerAbstract):
                 return partials
 
     def get_multiplier(self, percentage):
-        
-        return random.uniform(-percentage, +percentage)/100
+        rand = random.uniform(-percentage, +percentage)/100
+        return rand
 

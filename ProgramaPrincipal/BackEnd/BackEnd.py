@@ -56,8 +56,8 @@ class BackEnd:
 
     def test_note(self):
         #Para probar notas
-        note = Note(61,0.3,0.5,1,44100)
-        self.synthesize_note(note, 'Accordeon')
+        note = Note(61,10,0.5,1,44100)
+        self.synthesize_note(note, 'Violin')
         self.play_signal(note.output_signal)
         self.plot_wave(note.output_signal, 1000000)
         
