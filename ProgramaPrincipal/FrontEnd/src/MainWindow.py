@@ -1,7 +1,7 @@
 # Python modules
 import functools
 import numpy as np
-from multiprocessing import Pool
+from matplotlib import pyplot as plt
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavegationToolBar
 from scipy.io.wavfile import write
 
@@ -23,6 +23,7 @@ from BackEnd.Effects import Effects
 from BackEnd.Instruments import Instruments
 from BackEnd.GUI_resources.spectrogram_plotter import Spectrogrammer, PyQtPlotter
 from BackEnd.path import origin as path
+from scipy import signal
 """
 Reminders:
             + Espectrogram
@@ -159,7 +160,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         fin = init+(self.plot_long.value()*44100)
 
         song = data[init:fin]
-        time_array = np.arange(0, song.size/44100.0, 1/44100, dtype=song.dtype)
+        time_array = np.arange(init, init+song.size/44100.0, 1/44100.0, dtype=song.dtype)
         self.spectrogrammer.compute_audio_array(time_array, song)
         self.spectrogrammer.calculate_FFTs()
 
@@ -301,15 +302,17 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.working_tracks.append(temp)
         self.working_effects.layout().addWidget(temp)
         self.current_track = self.working_tracks.index(temp)
-        temp.update_effect.connect(self.audio_procesing)
+        temp.update_effect.connect(functools.partial(self.audio_procesing, index+1))
         temp.clicked.connect(self.get_back_effect)
 
-    def audio_procesing(self):
-        track = self.working_tracks[self.current_track].track_num-1
-        useful_index = self.available_to_play.index(track)
-        if useful_index < 0:
-            print('Fatal ERROR')
-        self.all_callbacks[useful_index] = self.working_tracks[self.current_track].get_callback()
+    def audio_procesing(self, track_num):
+        index = 0
+        for i in range(0, len(self.working_tracks)):
+            if self.working_tracks[i].me(track_num):
+                index = i
+                break
+        index_2 = self.available_to_play.index(track_num-1)
+        self.all_callbacks[index_2] = self.working_tracks[index].get_callback()
 
     def tracks_audio_prcesing(self, state: bool, index: int):
         index = index-1
@@ -382,7 +385,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                 all_num.append(i)
                 volume, instrument = self.track_manager[i].get_data()
                 self.backend.assign_instrument_to_track(i, instrument, volume/100.0)
-                self.progress_bar.setValue(100*i/fin)
+                #self.progress_bar.setValue(100*i/fin)
                 if volume == 0 or instrument == '':
                     absents.append(i)
                     self.backend.toggle_track(i)

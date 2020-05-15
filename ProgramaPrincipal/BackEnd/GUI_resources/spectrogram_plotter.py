@@ -61,7 +61,7 @@ class Spectrogrammer():
 
 
     def calculate_FFTs(self):
-        k = int(np.round(self.audio_array.size / self.frame_size))
+        k = int(np.floor(self.audio_array.size / self.frame_size))
         audio_sliced = np.reshape(self.audio_array[:k*self.frame_size], (k, self.frame_size))
         self.FFTs = np.fft.fftn(audio_sliced)
 
@@ -71,10 +71,14 @@ class Spectrogrammer():
 
         return self.FFTs
 
-
     def get_FFTs_magnitude(self):
-        return 20 * np.log10((np.abs(self.FFTs) / self.frame_size))
+        try:
+            my_abs = 20 * np.log10((np.abs(self.FFTs) / self.frame_size))
+        except ZeroDivisionError:
+            plt.plot(np.abs(self.FFTs))
+            plt.show()
 
+        return my_abs
 
     def get_FFTs_freq(self):
         return self.freq
@@ -110,7 +114,7 @@ class PyQtPlotter():
         # Plotting spectrogram.
         x_time, y_freq = np.meshgrid(time, freq)
         self.axes.clear()
-        pcolor = self.axes.pcolor(x_time, np.fft.fftshift(y_freq), np.fft.fftshift(mag.T), vmin=mag_min_to_use, vmax=mag_max_to_use, cmap='coolwarm')
+        pcolor = self.axes.pcolormesh(x_time, np.fft.fftshift(y_freq), np.fft.fftshift(mag.T), vmin=mag_min_to_use, vmax=mag_max_to_use, cmap='coolwarm')
         self.axes.set_yscale('log')
         self.axes.set_xlabel('Time (s)')
         self.axes.set_ylabel('Frequency (Hz)')

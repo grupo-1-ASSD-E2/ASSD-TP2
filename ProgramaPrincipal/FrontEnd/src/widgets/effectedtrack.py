@@ -31,6 +31,9 @@ class EditedTrackWidget(QWidget, Ui_worked_track):
         self.is_muted = False
         self.mute.clicked.connect(self.mute_click)
 
+    def me(self, track_num) -> bool:
+        return ( track_num == self.track_num)
+
     def go_backstage(self):
         for each in self.properties:
             each.hide()
@@ -62,7 +65,7 @@ class EditedTrackWidget(QWidget, Ui_worked_track):
             new_prop.value_change.connect(self.update_callback)
 
         """ After changing instance renew the callback for convolutioner """
-        self.update_effect.emit()
+        #self.update_effect.emit()
 
     def update_callback(self, prop2change, new_value):
         self.effect_instance.change_param(prop2change, new_value)
