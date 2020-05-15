@@ -16,8 +16,8 @@ class AdditiveSynthesizer(SynthesizerAbstract):
         #Crear la señal de salida de la nota que ingrese como parametro
 
         amplitude_array = None
-        
-        partials = self.__get_partials__(instrument, note.frequency )    #Se buscan los parciales del instrumento indicado
+        partials = self.__get_partials__(instrument, note.frequency)    #Se buscan los parciales del instrumento indicado
+        #partials = self.get_partials_with_frequency_shift(instrument, note.frequency,2 )    #Para intentar realizar un corrimiento manual del espectro (el corrimiento es aleatorio dentro del porcentaje indicado)
         for i in range(0, len(partials)):
             freq = partials[i].get_freq()
             phase = partials[i].get_phase()
