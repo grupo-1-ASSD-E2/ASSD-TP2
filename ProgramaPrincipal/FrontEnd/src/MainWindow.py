@@ -43,10 +43,12 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
 
         self.working = False
         self.audio_available = False
+        self.playing = False
         self.old_preview = None
         self.synthesis_stage = True
 
         """ Hide samples """
+        self.progress_bar.hide()
         self.track_0.hide()
         self.effect_0.hide()
         self.root = ''
@@ -117,7 +119,6 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         file = self.root+'.wav'
         write(file, 44100, np.int16(to_save * 32767))
 
-
     def play_notes(self):
         notas = []
         for i in self.all_notes:
@@ -150,7 +151,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         elif source == 'Plain Song':
             data = np.sum(self.all_tracks, axis=0)
         elif source == 'Edited Song':
-            data = self.media_player.output_array.copy()
+            data = np.sum(self.media_player.output_array.copy(), axis=0)
         else:
             track_num = int(source.split()[-1])
             useful_index = self.available_to_play.index(track_num-1)
@@ -193,6 +194,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             self.song_time = self.song_time.addSecs(-1)
             self.count_down.setText(self.song_time.toString("m:ss"))
         else:
+            self.playing = False
             self.plot_track.addItem('Edited Song')
             self.count_down.setText('00:00')
             self.media_player.terminate_processing()
@@ -340,7 +342,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
 
     def open_midi(self):
         layout = self.track_setter.layout()
-
+        self.plot_track.clear()
         """ Go to find new """
         filename, _ = QFileDialog.getOpenFileName(self, 'Open File', '', 'Midi (*.mid)')
         """ If no file is selected quit """
@@ -370,17 +372,29 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
 
         """ working is a bool to avoid  conflicts while synthesizing """
         if not self.working:
+
+            fin = len(self.track_manager)
             """ May be good looking to start a timer and do something meanwhile.. """
             self.working = True
             absents = []
             all_num = []
-            for i in range(0, len(self.track_manager)):
+            if fin == 1:
+                self.progress_bar.setValue(50)
+            else:
+                self.progress_bar.setValue(0)
+            self.progress_bar.show()
+            for i in range(0, fin):
                 all_num.append(i)
                 volume, instrument = self.track_manager[i].get_data()
                 self.backend.assign_instrument_to_track(i, instrument, volume/100.0)
+                self.progress_bar.setValue(100*i/fin)
                 if volume == 0 or instrument == '':
                     absents.append(i)
                     self.backend.toggle_track(i)
+
+            if len(absents) == len(self.track_manager):
+                print('Compilando vacio')
+                return
 
             self.available_to_play = list(set(all_num).difference(set(absents)))
             for a in self.available_to_play:
@@ -410,11 +424,23 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             song_len = np.ceil(song_len/44100.0)
             self.song_time.setHMS(0, int(song_len/60.0), int(song_len % 60))
             self.count_down.setText(self.song_time.toString("m:ss"))
+            self.progress_bar.hide()
             self.label.setText('Ahora puede poner play, haciendo click sobre un track podrá seleccionalo para agregar efectos')
 
     def play(self):
         if self.media_buttons_widget.stop.isChecked():
             self.media_buttons_widget.stop.toggle()
+
+        if self.playing:
+            self.media_player.terminate_processing()
+            song_len = len(self.all_tracks[0])
+            song_len = np.ceil(song_len / 44100.0)
+            self.song_time.setHMS(0, int(song_len / 60.0), int(song_len % 60))
+            self.count_down.setText(self.song_time.toString("m:ss"))
+            self.inner_timer.stop()
+            for i in self.working_tracks:
+                i.reset()
+        self.playing = True
 
         self.media_player.start_non_blocking_processing()
         self.inner_timer.start(1000)
@@ -422,7 +448,9 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
     def stop(self):
         if self.media_buttons_widget.play.isChecked():
             self.media_buttons_widget.play.toggle()
-
+        if not self.playing:
+            return
+        self.playing = False
         self.media_player.terminate_processing()
         song_len = len(self.all_tracks[0])
         song_len = np.ceil(song_len / 44100.0)
