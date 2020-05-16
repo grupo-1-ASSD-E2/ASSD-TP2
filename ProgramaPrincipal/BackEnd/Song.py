@@ -43,6 +43,7 @@ class Song:
 
     def load_midi_file_info(self, midi_file_path):
         self.midi_file = MidiFile(midi_file_path, clip=True)
+        self.tracks.clear()
         print(self.midi_file)
         self.time_base = TimeBase(self.fs)
         ticks_counter = 0
@@ -123,12 +124,6 @@ class Song:
                 self.tracks.append(new_track)
                 track_counter += 1
         print('track counter:', track_counter)
-            # print('good_notes_counter', good_notes_counter)
-            # print('same_time_counter:', same_time_counter)
-            # print('notes_Still_on_counter:', notes_still_on_counter)
-
-
-    
 
     def play_song(self): #MOVER?
         # Start playback

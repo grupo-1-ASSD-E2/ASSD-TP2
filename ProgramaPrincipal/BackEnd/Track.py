@@ -17,9 +17,9 @@ class Track:
         self.velocity = 127 #Represents the volume. min: 0. max: 127.
         
     def assign_instrument(self, instrument):
-        self.instrument = instrument
-        self.has_changed = True
-
+        if instrument != self.instrument:
+            self.instrument = instrument
+            self.has_changed = True
 
     def get_output_signal(self):
         return self.output_signal
@@ -34,10 +34,10 @@ class Track:
             self.has_changed = True
             self.activated = activated
 
-    def toggle_track(self):
-        self.activated = not self.activated
-        self.has_changed = True
-
+    def set_active_track(self, is_active):
+        if self.activated != is_active:
+            self.activated = is_active
+            self.has_changed = True
 
     def set_volume(self, volume):
         """Defines volumen of the track.
@@ -45,7 +45,9 @@ class Track:
         max: 1 
         """
         if (0 <= volume <= 127):
-            self.velocity = volume * 127
-            self.has_changed = True
+            new_vol = volume * 127
+            if new_vol != self.velocity:
+                self.velocity = new_vol
+                self.has_changed = True
         else:
             return -1

@@ -33,7 +33,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.setupUi(self)
 
         self.backend = backend
-
+        self.backend.finished.connect(self.fin)
         self.backend.track_done.connect(self.progress_count)
         self.media_player = convolutioner
         self.media_player.custom_processing_callback(self.audio_callback)
@@ -49,6 +49,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         self.track_0.hide()
         self.effect_0.hide()
         self.root = ''
+
         """ Set up sintesis enviroment """
         self.track_manager = []
         self.instrument_panel = InstrumentsPopUp()
@@ -80,6 +81,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         """ Reproduction thing """
         self.all_tracks = []
         self.all_callbacks = []
+        self.eddited_song = []
 
         """ Timer things """
         self.inner_timer = QTimer()
@@ -193,8 +195,15 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         else:
             self.playing = False
             self.plot_track.addItem('Edited Song')
-            self.count_down.setText('00:00')
+
+            song_len = len(self.all_tracks[0])
+            song_len = np.ceil(song_len / 44100.0)
+            self.song_time.setHMS(0, int(song_len / 60.0), int(song_len % 60))
+            self.count_down.setText(self.song_time.toString("m:ss"))
+
             self.media_player.terminate_processing()
+            self.eddited_song = self.media_player.output_array.copy()
+            self.media_player.clear_output()
             self.inner_timer.stop()
             self.media_buttons_widget.play.toggle()
             for i in self.working_tracks:
@@ -219,6 +228,8 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
 
         for tracks in self.track_manager:  # Closing old midi tracks
             tracks.close()
+
+        self.track_manager = []
 
         for track_edits in self.working_tracks:
             track_edits.close_all()  # Clean up old work / be careful with convolutioner!!!
@@ -306,6 +317,22 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         temp.update_effect.connect(functools.partial(self.audio_procesing, index+1))
         temp.clicked.connect(self.get_back_effect)
 
+        """
+        plot = PyQtPlotter()
+        data = self.all_tracks[self.available_to_play.index(index)]
+        time = np.arange(len(data))/44100.0
+        plot.x_vs_y(time, data,"Track "+str(index+1))
+
+        util_canvas = plot.canvas
+
+        if self.prev_wave is not None:
+            
+            self.waveform.removeWidget(self.prev_wave)
+
+        i = self.waveform.addWidget(util_canvas)
+        self.waveform.setCurrentIndex(i)
+        """
+
     def audio_procesing(self, track_num):
         index = 0
         for i in range(0, len(self.working_tracks)):
@@ -313,6 +340,8 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
                 index = i
                 break
         index_2 = self.available_to_play.index(track_num-1)
+        print(index)
+        print(self.working_tracks)
         self.all_callbacks[index_2] = self.working_tracks[index].get_callback()
 
     def tracks_audio_prcesing(self, state: bool, index: int):
@@ -347,7 +376,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
         """ If no file is selected quit """
         if filename == '':
             return
-
+        self.progress_bar.setValue(0)
         """ Clear previous things"""
         self.disable_effect_enviroment()
         self.root = filename.split('.')[0]
@@ -378,14 +407,14 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             absents = []
             all_num = []
 
-
             for i in range(0, fin):
                 all_num.append(i)
                 volume, instrument = self.track_manager[i].get_data()
-                self.backend.assign_instrument_to_track(i, instrument, volume/100.0)
+                active = True
                 if volume == 0 or instrument == '':
                     absents.append(i)
-                    self.backend.toggle_track(i)
+                    active = False
+                self.backend.assign_instrument_to_track(i, instrument, volume/100.0, active)
 
             if len(absents) == len(self.track_manager):
                 print('Compilando vacio')
@@ -400,8 +429,8 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             self.progress_bar.setValue(0)
             self.progress_bar.show()
 
-            self.backend.synthesize_song()
-            self.fin()
+            self.backend.start()
+
 
     def progress_count(self, a):
         self.progress_bar.setValue(self.progress_bar.value() + 1)
@@ -439,6 +468,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
 
         if self.playing:
             self.media_player.terminate_processing()
+            self.media_player.clear_output()
             song_len = len(self.all_tracks[0])
             song_len = np.ceil(song_len / 44100.0)
             self.song_time.setHMS(0, int(song_len / 60.0), int(song_len % 60))
@@ -458,6 +488,7 @@ class MyMainWindow(QMainWindow, Ui_AudioTool):
             return
         self.playing = False
         self.media_player.terminate_processing()
+        self.media_player.clear_output()
         song_len = len(self.all_tracks[0])
         song_len = np.ceil(song_len / 44100.0)
         self.song_time.setHMS(0, int(song_len / 60.0), int(song_len % 60))

@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtSignal
 # Project modules
 from FrontEnd.src.ui.used_tack import Ui_worked_track
 from BackEnd.AudioEfects.BaseAudioEffect.BaseEffect import Effect
+
 import numpy as np
 
 
@@ -71,7 +72,8 @@ class EditedTrackWidget(QWidget, Ui_worked_track):
         self.effect_instance.change_param(prop2change, new_value)
 
     def reset(self):
-        self.effect_instance.clear()
+        if self.effect_instance is not None:
+            self.effect_instance.clear()
 
     def mute_click(self):
         self.is_muted = not self.is_muted
@@ -81,12 +83,21 @@ class EditedTrackWidget(QWidget, Ui_worked_track):
         if self.is_muted:
             return self.muted_callback
         else:
-            return self.effect_instance.compute
+            if self.effect_instance is not None:
+                return self.effect_instance.compute
+            else:
+                return self.nothing
 
     @staticmethod
     def muted_callback(sample):
         out = np.array([np.zeros(len(sample))])
         return (out, out)
+
+    @staticmethod
+    def nothing(sample):
+        """ All deltas response, for no effect output """
+        return (sample, sample)
+
 
 
 if __name__ == "__main__":

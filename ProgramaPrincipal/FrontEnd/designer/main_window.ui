@@ -162,7 +162,7 @@
             </widget>
            </item>
            <item>
-            <widget class="MediaButtonsWidget" name="media_buttons_widget">
+            <widget class="MediaButtonsWidget" name="media_buttons_widget" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                <horstretch>0</horstretch>
@@ -226,13 +226,13 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>256</width>
-                   <height>278</height>
+                   <width>248</width>
+                   <height>286</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout">
                   <item>
-                   <widget class="TrackConfigWidget" name="track_0">
+                   <widget class="TrackConfigWidget" name="track_0" native="true">
                     <property name="toolTip">
                      <string/>
                     </property>
@@ -308,41 +308,47 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>508</width>
-                <height>352</height>
+                <width>516</width>
+                <height>360</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_3">
                <item>
-                <widget class="QScrollArea" name="scroll_2">
-                 <property name="frameShape">
-                  <enum>QFrame::WinPanel</enum>
-                 </property>
-                 <property name="widgetResizable">
-                  <bool>true</bool>
-                 </property>
-                 <widget class="QWidget" name="working_effects">
-                  <property name="geometry">
-                   <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>486</width>
-                    <height>99</height>
-                   </rect>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_5">
-                   <item>
-                    <widget class="QLabel" name="label">
-                     <property name="text">
-                      <string>Stay At Home</string>
+                <widget class="QWidget" name="widget_11" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_14">
+                  <item>
+                   <widget class="QScrollArea" name="scroll_2">
+                    <property name="frameShape">
+                     <enum>QFrame::WinPanel</enum>
+                    </property>
+                    <property name="widgetResizable">
+                     <bool>true</bool>
+                    </property>
+                    <widget class="QWidget" name="working_effects">
+                     <property name="geometry">
+                      <rect>
+                       <x>0</x>
+                       <y>0</y>
+                       <width>476</width>
+                       <height>164</height>
+                      </rect>
                      </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_5">
+                      <item>
+                       <widget class="QLabel" name="label">
+                        <property name="text">
+                         <string>Stay At Home</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </widget>
-                   </item>
-                  </layout>
-                 </widget>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
                </item>
                <item>
@@ -428,13 +434,13 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>361</width>
-                       <height>201</height>
+                       <width>369</width>
+                       <height>126</height>
                       </rect>
                      </property>
                      <layout class="QHBoxLayout" name="horizontalLayout_10">
                       <item>
-                       <widget class="EffectPropertyWidget" name="effect_0">
+                       <widget class="EffectPropertyWidget" name="effect_0" native="true">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                           <horstretch>0</horstretch>
@@ -737,8 +743,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>616</width>
-                <height>380</height>
+                <width>98</width>
+                <height>28</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">

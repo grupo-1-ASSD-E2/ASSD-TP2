@@ -99,6 +99,11 @@ class PyQtPlotter():
         self.canvas = FigureCanvas(self.figure)
         self.axes = self.figure.add_subplot(111)
 
+    def x_vs_y(self, x, y, title):
+        self.axes.clear()
+        self.axes.plot(x, y)
+        self.axes.set_title(title)
+        self.canvas.draw()
 
     def spectrogram(self, time, freq, mag, title='Spectrogram', mag_min=None, mag_max=None, f_bottom=None, f_top=None):
         '''

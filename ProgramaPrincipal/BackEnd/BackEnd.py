@@ -32,12 +32,12 @@ from PyQt5.QtCore import pyqtSignal, QObject, QThread
 from BackEnd.path import origin as path
 
 
-class BackEnd(QObject):
+class BackEnd(QThread):
 
     track_done = pyqtSignal(int)
 
     def __init__(self):
-        QObject.__init__(self)
+        QThread.__init__(self)
 
         self.additive_synthesizer = AdditiveSynthesizer()
         self.ks_synthesizer = KS_Synthesizer()
@@ -47,18 +47,8 @@ class BackEnd(QObject):
         self.midi_path = path + 'Resources/'
         self.play_obj = None
 
-        #self.test_note()
-        
-        #MALE
-        #self.song.load_midi_file_info('Resources/Michael Jackson - Billie Jean.mid')
-        #self.song.load_midi_file_info('Resources/Movie_Themes_-_Star_Wars_-_by_John_Willams.mid')
-        #self.song.load_midi_file_info('Resources/Queen - Bohemian Rhapsody.mid')
-        #self.song.load_midi_file_info('Resources/Disney_Themes_-_Under_The_Sea.mid')
-        #self.song.load_midi_file_info('Resources/faded.mid')
-        #self.song.load_midi_file_info('Resources/fragmento-rodrigo.mid')
-
-        #self.test_song()
-        #self.test_track(0)
+    def run(self) -> None:
+        self.synthesize_song()
 
     def test_note(self):
         #Para probar notas
@@ -67,9 +57,6 @@ class BackEnd(QObject):
         self.play_signal(note.output_signal)
         self.plot_wave(note.output_signal, 1000000)
         
-        
-        
-
     def test_track(self,track_number):
         #Para probar un track
         self.song.tracks[track_number].assign_instrument('Piano')
@@ -94,8 +81,6 @@ class BackEnd(QObject):
 
     def assign_midi_path(self, midi_file_name):
         self.song.load_midi_file_info(self.midi_path + midi_file_name)
-    
-
 
     def play_signal(self, signal): 
         
@@ -198,10 +183,11 @@ class BackEnd(QObject):
     def get_instrument_list(self):
         return Instruments.list()
 
-    def assign_instrument_to_track(self, n_of_track, instrument, volume):
+    def assign_instrument_to_track(self, n_of_track, instrument, volume, activity):
         if (n_of_track < len(self.song.tracks)):
             self.song.tracks[n_of_track].assign_instrument(instrument)
             self.song.tracks[n_of_track].set_volume(volume)
+            self.song.tracks[n_of_track].set_active_track(activity)
 
     def synthesize_song(self):
         if (self.song is not None):
