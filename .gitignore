@@ -182,6 +182,7 @@ cython_debug/
 *.user
 *.userosscache
 *.sln.docstates
+*.settings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -536,3 +537,7 @@ FodyWeavers.xsd
 # ADDED BY FACUNDO FARALL
 .vs
 .vscode
+
+# ADDED BY SANTIAGO ARRIBERE
+.idea
+

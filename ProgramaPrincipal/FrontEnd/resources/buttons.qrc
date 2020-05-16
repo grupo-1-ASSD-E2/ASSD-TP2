@@ -1,0 +1,35 @@
+<RCC>
+  <qresource prefix="instruments">
+    <file>../assets/instruments/accordeon.png</file>
+    <file>../assets/instruments/banjo.png</file>
+    <file>../assets/instruments/bassoon.png</file>
+    <file>../assets/instruments/cello.png</file>
+    <file>../assets/instruments/drum.png</file>
+    <file>../assets/instruments/electric_bass.png</file>
+    <file>../assets/instruments/electric_guitar.png</file>
+    <file>../assets/instruments/guitar.png</file>
+    <file>../assets/instruments/mandolin.png</file>
+    <file>../assets/instruments/oboe.png</file>
+    <file>../assets/instruments/piano.png</file>
+    <file>../assets/instruments/saxophone.png</file>
+    <file>../assets/instruments/trumpet.png</file>
+    <file>../assets/instruments/viola.png</file>
+    <file>../assets/instruments/violin.png</file>
+    <file>../assets/instruments/nota.webp</file>
+    <file>../assets/instruments/note.png</file>
+  </qresource>
+  <qresource prefix="botones">
+    <file>../assets/buttons/cross.png</file>
+    <file>../assets/buttons/pause_on.png</file>
+    <file>../assets/buttons/file.png</file>
+    <file>../assets/buttons/file_hoover.png</file>
+    <file>../assets/buttons/file_press.png</file>
+    <file>../assets/buttons/play_on.png</file>
+    <file>../assets/buttons/stop_on.png</file>
+    <file>../assets/buttons/pause.png</file>
+    <file>../assets/buttons/mute.png</file>
+    <file>../assets/buttons/sound.png</file>
+    <file>../assets/buttons/play.png</file>
+    <file>../assets/buttons/stop.png</file>
+  </qresource>
+</RCC>
